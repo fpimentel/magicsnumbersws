@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Collection;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -16,6 +17,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -43,6 +45,10 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "WayToWin.findByAmountToWin", query = "SELECT w FROM WayToWin w WHERE w.amountToWin = :amountToWin"),
     @NamedQuery(name = "WayToWin.findByRoloverAmount", query = "SELECT w FROM WayToWin w WHERE w.roloverAmount = :roloverAmount")})
 public class WayToWin implements Serializable {
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "wayToWin1")
+    private Collection<WayTOWinBet> wayTOWinBetCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "wayToWin1")
+    private Collection<WaysTOWinLottery> waysTOWinLotteryCollection;
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -258,6 +264,24 @@ public class WayToWin implements Serializable {
     @Override
     public String toString() {
         return "com.exception.magicsnumbersws.entities.WayToWin[ id=" + id + " ]";
+    }
+
+    @XmlTransient
+    public Collection<WayTOWinBet> getWayTOWinBetCollection() {
+        return wayTOWinBetCollection;
+    }
+
+    public void setWayTOWinBetCollection(Collection<WayTOWinBet> wayTOWinBetCollection) {
+        this.wayTOWinBetCollection = wayTOWinBetCollection;
+    }
+
+    @XmlTransient
+    public Collection<WaysTOWinLottery> getWaysTOWinLotteryCollection() {
+        return waysTOWinLotteryCollection;
+    }
+
+    public void setWaysTOWinLotteryCollection(Collection<WaysTOWinLottery> waysTOWinLotteryCollection) {
+        this.waysTOWinLotteryCollection = waysTOWinLotteryCollection;
     }
     
 }

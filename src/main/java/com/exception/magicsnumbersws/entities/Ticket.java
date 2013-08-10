@@ -38,6 +38,20 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Ticket.findByInsertionDate", query = "SELECT t FROM Ticket t WHERE t.insertionDate = :insertionDate"),
     @NamedQuery(name = "Ticket.findByUserId", query = "SELECT t FROM Ticket t WHERE t.userId = :userId")})
 public class Ticket implements Serializable {
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "CREATION_DATE")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date creationDate;
+    @Column(name = "MODIFICATION_DATE")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date modificationDate;
+    @JoinColumn(name = "USER_ID", referencedColumnName = "ID")
+    @ManyToOne(optional = false)
+    private User userId;
+    @JoinColumn(name = "MODIFICATION_USER", referencedColumnName = "ID")
+    @ManyToOne
+    private User modificationUser;
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -53,10 +67,7 @@ public class Ticket implements Serializable {
     @Column(name = "INSERTION_DATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date insertionDate;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "USER_ID")
-    private int userId;
+    
     @OneToMany(mappedBy = "ticket")
     private Collection<HistoryOperation> historyOperationCollection;
     @JoinColumn(name = "STATUS", referencedColumnName = "ID")
@@ -72,11 +83,11 @@ public class Ticket implements Serializable {
         this.id = id;
     }
 
-    public Ticket(Integer id, int securityCode, Date insertionDate, int userId) {
+    public Ticket(Integer id, int securityCode, Date insertionDate, User user) {
         this.id = id;
         this.securityCode = securityCode;
         this.insertionDate = insertionDate;
-        this.userId = userId;
+        this.userId = user;
     }
 
     public Integer getId() {
@@ -103,11 +114,11 @@ public class Ticket implements Serializable {
         this.insertionDate = insertionDate;
     }
 
-    public int getUserId() {
+    public User getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(User userId) {
         this.userId = userId;
     }
 
@@ -160,6 +171,30 @@ public class Ticket implements Serializable {
     @Override
     public String toString() {
         return "com.exception.magicsnumbersws.entities.Ticket[ id=" + id + " ]";
+    }
+
+    public Date getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    public Date getModificationDate() {
+        return modificationDate;
+    }
+
+    public void setModificationDate(Date modificationDate) {
+        this.modificationDate = modificationDate;
+    }
+
+    public User getModificationUser() {
+        return modificationUser;
+    }
+
+    public void setModificationUser(User modificationUser) {
+        this.modificationUser = modificationUser;
     }
     
 }

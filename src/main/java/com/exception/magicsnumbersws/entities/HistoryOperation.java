@@ -37,15 +37,19 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "HistoryOperation.findByInsertionDate", query = "SELECT h FROM HistoryOperation h WHERE h.insertionDate = :insertionDate")})
 public class HistoryOperation implements Serializable {
     private static final long serialVersionUID = 1L;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "ID_AFECTED")
+    private int idAfected;
+    @JoinColumn(name = "USER_ID", referencedColumnName = "ID")
+    @ManyToOne(optional = false)
+    private User userId;    
     @Id
     @Basic(optional = false)
     @NotNull
     @Column(name = "ID")
     private Integer id;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "USER_ID")
-    private int userId;
+    
     @Basic(optional = false)
     @NotNull
     @Column(name = "OPERATION")
@@ -71,7 +75,7 @@ public class HistoryOperation implements Serializable {
         this.id = id;
     }
 
-    public HistoryOperation(Integer id, int userId, int operation, String afectedTableName, Date insertionDate) {
+    public HistoryOperation(Integer id, User userId, int operation, String afectedTableName, Date insertionDate) {
         this.id = id;
         this.userId = userId;
         this.operation = operation;
@@ -87,11 +91,11 @@ public class HistoryOperation implements Serializable {
         this.id = id;
     }
 
-    public int getUserId() {
+    public User getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(User userId) {
         this.userId = userId;
     }
 
@@ -150,6 +154,14 @@ public class HistoryOperation implements Serializable {
     @Override
     public String toString() {
         return "com.exception.magicsnumbersws.entities.HistoryOperation[ id=" + id + " ]";
+    }
+
+    public int getIdAfected() {
+        return idAfected;
+    }
+
+    public void setIdAfected(int idAfected) {
+        this.idAfected = idAfected;
     }
     
 }

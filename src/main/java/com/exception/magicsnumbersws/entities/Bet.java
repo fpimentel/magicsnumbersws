@@ -7,6 +7,7 @@ package com.exception.magicsnumbersws.entities;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Collection;
+import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -21,7 +22,10 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -42,17 +46,29 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Bet.findByNumberQtyToPlay", query = "SELECT b FROM Bet b WHERE b.numberQtyToPlay = :numberQtyToPlay"),
     @NamedQuery(name = "Bet.findByNumberOfWayToWin", query = "SELECT b FROM Bet b WHERE b.numberOfWayToWin = :numberOfWayToWin")})
 public class Bet implements Serializable {
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 100)
+    @Column(name = "NAME")
+    private String name;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "CREATION_DATE")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date creationDate;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "bet1")
+    private Collection<BetBankingBetLimit> betBankingBetLimitCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "bet1")
+    private Collection<WayTOWinBet> wayTOWinBetCollection;
+    @JoinColumn(name = "CREATION_USER", referencedColumnName = "ID")
+    @ManyToOne(optional = false)
+    private User creationUser;
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
     @NotNull
     @Column(name = "ID")
     private Integer id;
-    @Basic(optional = false)
-    @NotNull
-    @Lob
-    @Column(name = "NAME")
-    private byte[] name;
     @Basic(optional = false)
     @NotNull
     @Column(name = "LOTTERY_NUMBER_QTY")
@@ -106,7 +122,7 @@ public class Bet implements Serializable {
         this.id = id;
     }
 
-    public Bet(Integer id, byte[] name, int lotteryNumberQty, int numbersQty, BigDecimal minimumBetAmount, int unitMultiplier, int numberQtyToPlay, int numberOfWayToWin) {
+    public Bet(Integer id, String name, int lotteryNumberQty, int numbersQty, BigDecimal minimumBetAmount, int unitMultiplier, int numberQtyToPlay, int numberOfWayToWin) {
         this.id = id;
         this.name = name;
         this.lotteryNumberQty = lotteryNumberQty;
@@ -123,14 +139,6 @@ public class Bet implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public byte[] getName() {
-        return name;
-    }
-
-    public void setName(byte[] name) {
-        this.name = name;
     }
 
     public int getLotteryNumberQty() {
@@ -256,6 +264,48 @@ public class Bet implements Serializable {
     @Override
     public String toString() {
         return "com.exception.magicsnumbersws.entities.Bet[ id=" + id + " ]";
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Date getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    @XmlTransient
+    public Collection<BetBankingBetLimit> getBetBankingBetLimitCollection() {
+        return betBankingBetLimitCollection;
+    }
+
+    public void setBetBankingBetLimitCollection(Collection<BetBankingBetLimit> betBankingBetLimitCollection) {
+        this.betBankingBetLimitCollection = betBankingBetLimitCollection;
+    }
+
+    @XmlTransient
+    public Collection<WayTOWinBet> getWayTOWinBetCollection() {
+        return wayTOWinBetCollection;
+    }
+
+    public void setWayTOWinBetCollection(Collection<WayTOWinBet> wayTOWinBetCollection) {
+        this.wayTOWinBetCollection = wayTOWinBetCollection;
+    }
+
+    public User getCreationUser() {
+        return creationUser;
+    }
+
+    public void setCreationUser(User creationUser) {
+        this.creationUser = creationUser;
     }
     
 }

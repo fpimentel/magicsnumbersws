@@ -5,7 +5,9 @@
 package com.exception.magicsnumbersws.entities;
 
 import java.io.Serializable;
+import java.util.Collection;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -13,10 +15,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -35,6 +39,46 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "User.findByPassword", query = "SELECT u FROM User u WHERE u.password = :password")})
 
 public class User implements Serializable {
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "CONSORTIUM")
+    private Consortium consortium;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "creationUser")
+    private Collection<BetBankingsUser> betBankingsUserCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user1")
+    private Collection<BetBankingsUser> betBankingsUserCollection1;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user1")
+    private Collection<UserProfile> userProfileCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "creationUser")
+    private Collection<UserProfile> userProfileCollection1;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId")
+    private Collection<HistoryOperation> historyOperationCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "creationUser")
+    private Collection<BetBankingBetLimit> betBankingBetLimitCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "creationUser")
+    private Collection<Consortium> consortiumCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId")
+    private Collection<Ticket> ticketCollection;
+    @OneToMany(mappedBy = "modificationUser")
+    private Collection<Ticket> ticketCollection1;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "creationUser")
+    private Collection<Profile> profileCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user1")
+    private Collection<UserProfile> userProfileCollection2;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "creationUser")
+    private Collection<UserProfile> userProfileCollection3;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user1")
+    private Collection<UserConsortium> userConsortiumCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "creationUser")
+    private Collection<UserConsortium> userConsortiumCollection1;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "creationUser")
+    private Collection<Bet> betCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userCreation")
+    private Collection<Lottery> lotteryCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "creationUser")
+    private Collection<BetBanking> betBankingCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId")
+    private Collection<WinningNumber> winningNumberCollection;
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -70,9 +114,6 @@ public class User implements Serializable {
     @JoinColumn(name = "PROFILE", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private Profile profile;
-    @JoinColumn(name = "CONSORTIUM", referencedColumnName = "ID")
-    @ManyToOne(optional = false)
-    private Consortium consortium;
 
     public User() {
     }
@@ -184,6 +225,168 @@ public class User implements Serializable {
     @Override
     public String toString() {
         return "com.exception.magicsnumbersws.entities.User[ id=" + id + " ]";
+    }
+
+    @XmlTransient
+    public Collection<BetBankingsUser> getBetBankingsUserCollection() {
+        return betBankingsUserCollection;
+    }
+
+    public void setBetBankingsUserCollection(Collection<BetBankingsUser> betBankingsUserCollection) {
+        this.betBankingsUserCollection = betBankingsUserCollection;
+    }
+
+    @XmlTransient
+    public Collection<BetBankingsUser> getBetBankingsUserCollection1() {
+        return betBankingsUserCollection1;
+    }
+
+    public void setBetBankingsUserCollection1(Collection<BetBankingsUser> betBankingsUserCollection1) {
+        this.betBankingsUserCollection1 = betBankingsUserCollection1;
+    }
+
+    @XmlTransient
+    public Collection<UserProfile> getUserProfileCollection() {
+        return userProfileCollection;
+    }
+
+    public void setUserProfileCollection(Collection<UserProfile> userProfileCollection) {
+        this.userProfileCollection = userProfileCollection;
+    }
+
+    @XmlTransient
+    public Collection<UserProfile> getUserProfileCollection1() {
+        return userProfileCollection1;
+    }
+
+    public void setUserProfileCollection1(Collection<UserProfile> userProfileCollection1) {
+        this.userProfileCollection1 = userProfileCollection1;
+    }
+
+    @XmlTransient
+    public Collection<HistoryOperation> getHistoryOperationCollection() {
+        return historyOperationCollection;
+    }
+
+    public void setHistoryOperationCollection(Collection<HistoryOperation> historyOperationCollection) {
+        this.historyOperationCollection = historyOperationCollection;
+    }
+
+    @XmlTransient
+    public Collection<BetBankingBetLimit> getBetBankingBetLimitCollection() {
+        return betBankingBetLimitCollection;
+    }
+
+    public void setBetBankingBetLimitCollection(Collection<BetBankingBetLimit> betBankingBetLimitCollection) {
+        this.betBankingBetLimitCollection = betBankingBetLimitCollection;
+    }
+
+    @XmlTransient
+    public Collection<Consortium> getConsortiumCollection() {
+        return consortiumCollection;
+    }
+
+    public void setConsortiumCollection(Collection<Consortium> consortiumCollection) {
+        this.consortiumCollection = consortiumCollection;
+    }
+
+    @XmlTransient
+    public Collection<Ticket> getTicketCollection() {
+        return ticketCollection;
+    }
+
+    public void setTicketCollection(Collection<Ticket> ticketCollection) {
+        this.ticketCollection = ticketCollection;
+    }
+
+    @XmlTransient
+    public Collection<Ticket> getTicketCollection1() {
+        return ticketCollection1;
+    }
+
+    public void setTicketCollection1(Collection<Ticket> ticketCollection1) {
+        this.ticketCollection1 = ticketCollection1;
+    }
+
+    @XmlTransient
+    public Collection<Profile> getProfileCollection() {
+        return profileCollection;
+    }
+
+    public void setProfileCollection(Collection<Profile> profileCollection) {
+        this.profileCollection = profileCollection;
+    }
+
+    @XmlTransient
+    public Collection<UserProfile> getUserProfileCollection2() {
+        return userProfileCollection2;
+    }
+
+    public void setUserProfileCollection2(Collection<UserProfile> userProfileCollection2) {
+        this.userProfileCollection2 = userProfileCollection2;
+    }
+
+    @XmlTransient
+    public Collection<UserProfile> getUserProfileCollection3() {
+        return userProfileCollection3;
+    }
+
+    public void setUserProfileCollection3(Collection<UserProfile> userProfileCollection3) {
+        this.userProfileCollection3 = userProfileCollection3;
+    }
+
+    @XmlTransient
+    public Collection<UserConsortium> getUserConsortiumCollection() {
+        return userConsortiumCollection;
+    }
+
+    public void setUserConsortiumCollection(Collection<UserConsortium> userConsortiumCollection) {
+        this.userConsortiumCollection = userConsortiumCollection;
+    }
+
+    @XmlTransient
+    public Collection<UserConsortium> getUserConsortiumCollection1() {
+        return userConsortiumCollection1;
+    }
+
+    public void setUserConsortiumCollection1(Collection<UserConsortium> userConsortiumCollection1) {
+        this.userConsortiumCollection1 = userConsortiumCollection1;
+    }
+
+    @XmlTransient
+    public Collection<Bet> getBetCollection() {
+        return betCollection;
+    }
+
+    public void setBetCollection(Collection<Bet> betCollection) {
+        this.betCollection = betCollection;
+    }
+
+    @XmlTransient
+    public Collection<Lottery> getLotteryCollection() {
+        return lotteryCollection;
+    }
+
+    public void setLotteryCollection(Collection<Lottery> lotteryCollection) {
+        this.lotteryCollection = lotteryCollection;
+    }
+
+    @XmlTransient
+    public Collection<BetBanking> getBetBankingCollection() {
+        return betBankingCollection;
+    }
+
+    public void setBetBankingCollection(Collection<BetBanking> betBankingCollection) {
+        this.betBankingCollection = betBankingCollection;
+    }
+
+    @XmlTransient
+    public Collection<WinningNumber> getWinningNumberCollection() {
+        return winningNumberCollection;
+    }
+
+    public void setWinningNumberCollection(Collection<WinningNumber> winningNumberCollection) {
+        this.winningNumberCollection = winningNumberCollection;
     }
     
 }

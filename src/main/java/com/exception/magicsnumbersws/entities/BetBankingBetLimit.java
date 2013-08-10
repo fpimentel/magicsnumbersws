@@ -6,8 +6,10 @@ package com.exception.magicsnumbersws.entities;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -15,6 +17,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -31,6 +35,18 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "BetBankingBetLimit.findByBet", query = "SELECT b FROM BetBankingBetLimit b WHERE b.bet = :bet"),
     @NamedQuery(name = "BetBankingBetLimit.findByAmountLimit", query = "SELECT b FROM BetBankingBetLimit b WHERE b.amountLimit = :amountLimit")})
 public class BetBankingBetLimit implements Serializable {
+    
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "CREATION_DATE")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date creationDate;
+    @JoinColumn(name = "CREATION_USER", referencedColumnName = "ID")
+    @ManyToOne(optional = false)
+    private User creationUser;
+    @JoinColumn(name = "BET", referencedColumnName = "ID")
+    @ManyToOne(optional = false)
+    private Bet bet1;
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -118,6 +134,38 @@ public class BetBankingBetLimit implements Serializable {
     @Override
     public String toString() {
         return "com.exception.magicsnumbersws.entities.BetBankingBetLimit[ id=" + id + " ]";
+    }
+
+    public com.exception.magicsnumbersws.entities.BetBankingBetLimitPK getBetBankingBetLimitPK() {
+        return betBankingBetLimitPK;
+    }
+
+    public void setBetBankingBetLimitPK(com.exception.magicsnumbersws.entities.BetBankingBetLimitPK betBankingBetLimitPK) {
+        this.betBankingBetLimitPK = betBankingBetLimitPK;
+    }
+
+    public Date getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    public User getCreationUser() {
+        return creationUser;
+    }
+
+    public void setCreationUser(User creationUser) {
+        this.creationUser = creationUser;
+    }
+
+    public Bet getBet1() {
+        return bet1;
+    }
+
+    public void setBet1(Bet bet1) {
+        this.bet1 = bet1;
     }
     
 }

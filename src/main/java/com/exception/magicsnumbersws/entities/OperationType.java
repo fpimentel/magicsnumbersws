@@ -17,6 +17,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -31,17 +32,17 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "OperationType.findAll", query = "SELECT o FROM OperationType o"),
     @NamedQuery(name = "OperationType.findById", query = "SELECT o FROM OperationType o WHERE o.id = :id")})
 public class OperationType implements Serializable {
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 100)
+    @Column(name = "NAME")
+    private String name;
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
     @NotNull
     @Column(name = "ID")
     private Integer id;
-    @Basic(optional = false)
-    @NotNull
-    @Lob
-    @Column(name = "NAME")
-    private byte[] name;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "operationType")
     private Collection<Operation> operationCollection;
 
@@ -52,7 +53,7 @@ public class OperationType implements Serializable {
         this.id = id;
     }
 
-    public OperationType(Integer id, byte[] name) {
+    public OperationType(Integer id, String name) {
         this.id = id;
         this.name = name;
     }
@@ -63,14 +64,6 @@ public class OperationType implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public byte[] getName() {
-        return name;
-    }
-
-    public void setName(byte[] name) {
-        this.name = name;
     }
 
     @XmlTransient
@@ -105,6 +98,14 @@ public class OperationType implements Serializable {
     @Override
     public String toString() {
         return "com.exception.magicsnumbersws.entities.OperationType[ id=" + id + " ]";
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
     
 }

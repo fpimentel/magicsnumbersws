@@ -26,6 +26,12 @@
     <class>com.exception.magicsnumbersws.entities.BetBanking</class>
     <class>com.exception.magicsnumbersws.entities.StatusType</class>
     <class>com.exception.magicsnumbersws.entities.User</class>
+    <class>com.exception.magicsnumbersws.entities.UserConsortium</class>
+    <class>com.exception.magicsnumbersws.entities.WayTOWinBet</class>
+    <class>com.exception.magicsnumbersws.entities.UserProfile_1</class>
+    <class>com.exception.magicsnumbersws.entities.UserProfile</class>
+    <class>com.exception.magicsnumbersws.entities.BetBankingsUser</class>
+    <class>com.exception.magicsnumbersws.entities.WaysTOWinLottery</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="hibernate.connection.username" value="sa"/>

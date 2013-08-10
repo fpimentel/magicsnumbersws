@@ -5,6 +5,7 @@
 package com.exception.magicsnumbersws.entities;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -36,6 +37,21 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "BlockingNumber.findByAmountLimit", query = "SELECT b FROM BlockingNumber b WHERE b.amountLimit = :amountLimit"),
     @NamedQuery(name = "BlockingNumber.findByInsertionDate", query = "SELECT b FROM BlockingNumber b WHERE b.insertionDate = :insertionDate")})
 public class BlockingNumber implements Serializable {
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 100)
+    @Column(name = "NUMBERS")
+    private String numbers;
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "AMOUNT_LIMIT")
+    private BigDecimal amountLimit;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "INSERTION_DATE")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date insertionDate;
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -54,21 +70,6 @@ public class BlockingNumber implements Serializable {
     @NotNull
     @Column(name = "BET_DAY")
     private int betDay;
-    @Basic(optional = false)
-    @NotNull
-    @Lob
-    @Column(name = "NUMBERS")
-    private byte[] numbers;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "AMOUNT_LIMIT")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date amountLimit;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 10)
-    @Column(name = "INSERTION_DATE")
-    private String insertionDate;
 
     public BlockingNumber() {
     }
@@ -77,7 +78,7 @@ public class BlockingNumber implements Serializable {
         this.id = id;
     }
 
-    public BlockingNumber(Integer id, int userId, int lottery, int betDay, byte[] numbers, Date amountLimit, String insertionDate) {
+    public BlockingNumber(Integer id, int userId, int lottery, int betDay, String numbers, BigDecimal amountLimit, Date insertionDate) {
         this.id = id;
         this.userId = userId;
         this.lottery = lottery;
@@ -119,27 +120,19 @@ public class BlockingNumber implements Serializable {
         this.betDay = betDay;
     }
 
-    public byte[] getNumbers() {
-        return numbers;
-    }
-
-    public void setNumbers(byte[] numbers) {
-        this.numbers = numbers;
-    }
-
-    public Date getAmountLimit() {
+    public BigDecimal getAmountLimit() {
         return amountLimit;
     }
 
-    public void setAmountLimit(Date amountLimit) {
+    public void setAmountLimit(BigDecimal amountLimit) {
         this.amountLimit = amountLimit;
     }
 
-    public String getInsertionDate() {
+    public Date getInsertionDate() {
         return insertionDate;
     }
 
-    public void setInsertionDate(String insertionDate) {
+    public void setInsertionDate(Date insertionDate) {
         this.insertionDate = insertionDate;
     }
 
@@ -167,5 +160,12 @@ public class BlockingNumber implements Serializable {
     public String toString() {
         return "com.exception.magicsnumbersws.entities.BlockingNumber[ id=" + id + " ]";
     }
-    
+
+    public String getNumbers() {
+        return numbers;
+    }
+
+    public void setNumbers(String numbers) {
+        this.numbers = numbers;
+    }   
 }

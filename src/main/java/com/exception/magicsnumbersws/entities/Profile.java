@@ -6,6 +6,7 @@ package com.exception.magicsnumbersws.entities;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -18,7 +19,10 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -36,9 +40,24 @@ import javax.xml.bind.annotation.XmlTransient;
 public class Profile implements Serializable {
     @Basic(optional = false)
     @NotNull
-    @Lob
+    @Size(min = 1, max = 100)
     @Column(name = "NAME")
-    private byte[] name;
+    private String name;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "CREATION_DATE")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date creationDate;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "profile1")
+    private Collection<UserProfile> userProfileCollection;
+    @JoinColumn(name = "CREATION_USER", referencedColumnName = "ID")
+    @ManyToOne(optional = false)
+    private User creationUser;
+    @JoinColumn(name = "SYSTEM_OPTION", referencedColumnName = "ID")
+    @ManyToOne(optional = false)
+    private SystemOption systemOption;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "profile1")
+    private Collection<UserProfile> userProfileCollection1;
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -62,7 +81,7 @@ public class Profile implements Serializable {
         this.id = id;
     }
 
-    public Profile(Integer id, byte[] name, int initialOption) {
+    public Profile(Integer id, String name, int initialOption) {
         this.id = id;
         this.name = name;
         this.initialOption = initialOption;
@@ -126,12 +145,54 @@ public class Profile implements Serializable {
         return "com.exception.magicsnumbersws.entities.Profile[ id=" + id + " ]";
     }
 
-    public byte[] getName() {
+    public String getName() {
         return name;
     }
 
-    public void setName(byte[] name) {
+    public void setName(String name) {
         this.name = name;
+    }
+
+    public Date getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    @XmlTransient
+    public Collection<UserProfile> getUserProfileCollection() {
+        return userProfileCollection;
+    }
+
+    public void setUserProfileCollection(Collection<UserProfile> userProfileCollection) {
+        this.userProfileCollection = userProfileCollection;
+    }
+
+    public User getCreationUser() {
+        return creationUser;
+    }
+
+    public void setCreationUser(User creationUser) {
+        this.creationUser = creationUser;
+    }
+
+    public SystemOption getSystemOption() {
+        return systemOption;
+    }
+
+    public void setSystemOption(SystemOption systemOption) {
+        this.systemOption = systemOption;
+    }
+
+    @XmlTransient
+    public Collection<UserProfile> getUserProfileCollection1() {
+        return userProfileCollection1;
+    }
+
+    public void setUserProfileCollection1(Collection<UserProfile> userProfileCollection1) {
+        this.userProfileCollection1 = userProfileCollection1;
     }
     
 }

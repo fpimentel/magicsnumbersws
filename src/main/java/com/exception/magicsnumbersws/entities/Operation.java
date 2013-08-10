@@ -17,6 +17,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -30,17 +31,17 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Operation.findAll", query = "SELECT o FROM Operation o"),
     @NamedQuery(name = "Operation.findById", query = "SELECT o FROM Operation o WHERE o.id = :id")})
 public class Operation implements Serializable {
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 100)
+    @Column(name = "NAME")
+    private String name;
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
     @NotNull
     @Column(name = "ID")
     private Integer id;
-    @Basic(optional = false)
-    @NotNull
-    @Lob
-    @Column(name = "NAME")
-    private byte[] name;
     @JoinColumn(name = "STATUS", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private Status status;
@@ -55,7 +56,7 @@ public class Operation implements Serializable {
         this.id = id;
     }
 
-    public Operation(Integer id, byte[] name) {
+    public Operation(Integer id, String name) {
         this.id = id;
         this.name = name;
     }
@@ -66,14 +67,6 @@ public class Operation implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public byte[] getName() {
-        return name;
-    }
-
-    public void setName(byte[] name) {
-        this.name = name;
     }
 
     public Status getStatus() {
@@ -115,6 +108,14 @@ public class Operation implements Serializable {
     @Override
     public String toString() {
         return "com.exception.magicsnumbersws.entities.Operation[ id=" + id + " ]";
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
 }

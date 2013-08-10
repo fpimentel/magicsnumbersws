@@ -38,6 +38,8 @@ public class Status implements Serializable {
     @Lob
     @Column(name = "NAME")
     private byte[] name;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "status")
+    private Collection<Lottery> lotteryCollection;
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -231,6 +233,15 @@ public class Status implements Serializable {
     @Override
     public String toString() {
         return "com.exception.magicsnumbersws.entities.Status[ id=" + id + " ]";
+    }
+
+    @XmlTransient
+    public Collection<Lottery> getLotteryCollection() {
+        return lotteryCollection;
+    }
+
+    public void setLotteryCollection(Collection<Lottery> lotteryCollection) {
+        this.lotteryCollection = lotteryCollection;
     }
 
     public byte[] getName() {

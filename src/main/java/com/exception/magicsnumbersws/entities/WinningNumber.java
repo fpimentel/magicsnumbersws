@@ -31,6 +31,14 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "WinningNumber.findByNumbers", query = "SELECT w FROM WinningNumber w WHERE w.numbers = :numbers"),
     @NamedQuery(name = "WinningNumber.findByUserId", query = "SELECT w FROM WinningNumber w WHERE w.userId = :userId")})
 public class WinningNumber implements Serializable {
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 10)
+    @Column(name = "CREATION_DATE")
+    private String creationDate;
+    @JoinColumn(name = "USER_ID", referencedColumnName = "ID")
+    @ManyToOne(optional = false)
+    private User userId;
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -42,10 +50,6 @@ public class WinningNumber implements Serializable {
     @Size(min = 1, max = 100)
     @Column(name = "NUMBERS")
     private String numbers;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "USER_ID")
-    private int userId;
     @JoinColumn(name = "LOTTERY", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private Lottery lottery;
@@ -60,10 +64,10 @@ public class WinningNumber implements Serializable {
         this.id = id;
     }
 
-    public WinningNumber(Integer id, String numbers, int userId) {
+    public WinningNumber(Integer id, String numbers, User user) {
         this.id = id;
         this.numbers = numbers;
-        this.userId = userId;
+        this.userId = user;
     }
 
     public Integer getId() {
@@ -82,11 +86,11 @@ public class WinningNumber implements Serializable {
         this.numbers = numbers;
     }
 
-    public int getUserId() {
+    public User getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(User userId) {
         this.userId = userId;
     }
 
@@ -130,5 +134,13 @@ public class WinningNumber implements Serializable {
     public String toString() {
         return "com.exception.magicsnumbersws.entities.WinningNumber[ id=" + id + " ]";
     }
+
+    public String getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(String creationDate) {
+        this.creationDate = creationDate;
+    }    
     
 }

@@ -41,6 +41,13 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Consortium.findByCreationDate", query = "SELECT c FROM Consortium c WHERE c.creationDate = :creationDate"),
     @NamedQuery(name = "Consortium.findByModificationDate", query = "SELECT c FROM Consortium c WHERE c.modificationDate = :modificationDate")})
 public class Consortium implements Serializable {
+    @JoinColumn(name = "CREATION_USER", referencedColumnName = "ID")
+    @ManyToOne(optional = false)
+    private User creationUser;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "consortium1")
+    private Collection<UserConsortium> userConsortiumCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "consortium")
+    private Collection<BetBanking> betBankingCollection;
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -175,6 +182,32 @@ public class Consortium implements Serializable {
     @Override
     public String toString() {
         return "com.exception.magicsnumbersws.entities.Consortium[ id=" + id + " ]";
+    }
+
+    public User getCreationUser() {
+        return creationUser;
+    }
+
+    public void setCreationUser(User creationUser) {
+        this.creationUser = creationUser;
+    }
+
+    @XmlTransient
+    public Collection<UserConsortium> getUserConsortiumCollection() {
+        return userConsortiumCollection;
+    }
+
+    public void setUserConsortiumCollection(Collection<UserConsortium> userConsortiumCollection) {
+        this.userConsortiumCollection = userConsortiumCollection;
+    }
+
+    @XmlTransient
+    public Collection<BetBanking> getBetBankingCollection() {
+        return betBankingCollection;
+    }
+
+    public void setBetBankingCollection(Collection<BetBanking> betBankingCollection) {
+        this.betBankingCollection = betBankingCollection;
     }
     
 }

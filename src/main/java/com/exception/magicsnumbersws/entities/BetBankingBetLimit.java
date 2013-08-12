@@ -136,13 +136,6 @@ public class BetBankingBetLimit implements Serializable {
         return "com.exception.magicsnumbersws.entities.BetBankingBetLimit[ id=" + id + " ]";
     }
 
-    public com.exception.magicsnumbersws.entities.BetBankingBetLimitPK getBetBankingBetLimitPK() {
-        return betBankingBetLimitPK;
-    }
-
-    public void setBetBankingBetLimitPK(com.exception.magicsnumbersws.entities.BetBankingBetLimitPK betBankingBetLimitPK) {
-        this.betBankingBetLimitPK = betBankingBetLimitPK;
-    }
 
     public Date getCreationDate() {
         return creationDate;

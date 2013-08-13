@@ -3,9 +3,8 @@ import com.exception.magicsnumbersws.dao.UserDao;
 import com.exception.magicsnumbersws.entities.User;
 import java.util.ArrayList;
 import java.util.List;
-
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.stereotype.Repository;
 
 /**
@@ -15,8 +14,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class UserDaoImpl implements UserDao{
 
-    //@Autowired
-    //private SessionFactory sessionFactory;
+    @Autowired
+    private SessionFactory sessionFactory;
     
     @Override
     public void add(User user) {
@@ -33,8 +32,7 @@ public class UserDaoImpl implements UserDao{
 
     @Override
     public User findById(int id) {
-        //return (User)sessionFactory.getCurrentSession().get(User.class, id);
-        return new User();
+        return (User)sessionFactory.getCurrentSession().get(User.class, id);        
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.exception.magicsnumbersws.endpoints.security;
 
 
 import com.exception.magicsnumbersws.entities.User;
+import com.exception.magicsnumbersws.service.impl.UserServiceImpl;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -60,6 +61,8 @@ public class SecurityEndPoint {
   @Path("/getUsersJSON")
   @Produces(MediaType.APPLICATION_JSON)
   public List<User> getUsersJSON(){
-      return new ArrayList<User>(users.values());
+     // return new ArrayList<User>(users.values());
+      UserServiceImpl user = new UserServiceImpl();
+      return user.findAll();
   }  
 }

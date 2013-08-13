@@ -36,6 +36,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "BetBankingBetLimit.findByAmountLimit", query = "SELECT b FROM BetBankingBetLimit b WHERE b.amountLimit = :amountLimit")})
 public class BetBankingBetLimit implements Serializable {
     
+    private static final long serialVersionUID = 1L;
     @Basic(optional = false)
     @NotNull
     @Column(name = "CREATION_DATE")
@@ -45,18 +46,13 @@ public class BetBankingBetLimit implements Serializable {
     @ManyToOne(optional = false)
     private User creationUser;
     @JoinColumn(name = "BET", referencedColumnName = "ID")
-    @ManyToOne(optional = false)
-    private Bet bet1;
-    private static final long serialVersionUID = 1L;
+    @ManyToOne(optional = false)        
+    private Bet bet;    
     @Id
     @Basic(optional = false)
     @NotNull
     @Column(name = "ID")
-    private Integer id;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "BET")
-    private int bet;
+    private Integer id;    
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Basic(optional = false)
     @NotNull
@@ -73,7 +69,7 @@ public class BetBankingBetLimit implements Serializable {
         this.id = id;
     }
 
-    public BetBankingBetLimit(Integer id, int bet, BigDecimal amountLimit) {
+    public BetBankingBetLimit(Integer id, Bet bet, BigDecimal amountLimit) {
         this.id = id;
         this.bet = bet;
         this.amountLimit = amountLimit;
@@ -87,11 +83,11 @@ public class BetBankingBetLimit implements Serializable {
         this.id = id;
     }
 
-    public int getBet() {
+    public Bet getBet() {
         return bet;
     }
 
-    public void setBet(int bet) {
+    public void setBet(Bet bet) {
         this.bet = bet;
     }
 
@@ -151,14 +147,6 @@ public class BetBankingBetLimit implements Serializable {
 
     public void setCreationUser(User creationUser) {
         this.creationUser = creationUser;
-    }
-
-    public Bet getBet1() {
-        return bet1;
-    }
-
-    public void setBet1(Bet bet1) {
-        this.bet1 = bet1;
-    }
+    }      
     
 }

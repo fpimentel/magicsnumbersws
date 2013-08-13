@@ -46,6 +46,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Bet.findByNumberQtyToPlay", query = "SELECT b FROM Bet b WHERE b.numberQtyToPlay = :numberQtyToPlay"),
     @NamedQuery(name = "Bet.findByNumberOfWayToWin", query = "SELECT b FROM Bet b WHERE b.numberOfWayToWin = :numberOfWayToWin")})
 public class Bet implements Serializable {
+    private static final long serialVersionUID = 1L;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 100)
@@ -56,14 +57,13 @@ public class Bet implements Serializable {
     @Column(name = "CREATION_DATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date creationDate;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "bet1")
+    @OneToMany(cascade = CascadeType.ALL)
     private Collection<BetBankingBetLimit> betBankingBetLimitCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "bet1")
+    @OneToMany(cascade = CascadeType.ALL)
     private Collection<WayTOWinBet> wayTOWinBetCollection;
     @JoinColumn(name = "CREATION_USER", referencedColumnName = "ID")
     @ManyToOne(optional = false)
-    private User creationUser;
-    private static final long serialVersionUID = 1L;
+    private User creationUser;    
     @Id
     @Basic(optional = false)
     @NotNull

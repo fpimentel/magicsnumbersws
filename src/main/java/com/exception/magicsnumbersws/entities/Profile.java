@@ -13,7 +13,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -38,6 +37,12 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Profile.findById", query = "SELECT p FROM Profile p WHERE p.id = :id"),
     @NamedQuery(name = "Profile.findByInitialOption", query = "SELECT p FROM Profile p WHERE p.initialOption = :initialOption")})
 public class Profile implements Serializable {
+    @Id
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "ID")
+    private Integer id;
+    private static final long serialVersionUID = 1L;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 100)
@@ -47,23 +52,13 @@ public class Profile implements Serializable {
     @NotNull
     @Column(name = "CREATION_DATE")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date creationDate;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "profile1")
-    private Collection<UserProfile> userProfileCollection;
+    private Date creationDate;    
     @JoinColumn(name = "CREATION_USER", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private User creationUser;
     @JoinColumn(name = "SYSTEM_OPTION", referencedColumnName = "ID")
     @ManyToOne(optional = false)
-    private SystemOption systemOption;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "profile1")
-    private Collection<UserProfile> userProfileCollection1;
-    private static final long serialVersionUID = 1L;
-    @Id
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "ID")
-    private Integer id;
+    private SystemOption systemOption;            
     @Basic(optional = false)
     @NotNull
     @Column(name = "INITIAL_OPTION")
@@ -161,15 +156,6 @@ public class Profile implements Serializable {
         this.creationDate = creationDate;
     }
 
-    @XmlTransient
-    public Collection<UserProfile> getUserProfileCollection() {
-        return userProfileCollection;
-    }
-
-    public void setUserProfileCollection(Collection<UserProfile> userProfileCollection) {
-        this.userProfileCollection = userProfileCollection;
-    }
-
     public User getCreationUser() {
         return creationUser;
     }
@@ -184,15 +170,5 @@ public class Profile implements Serializable {
 
     public void setSystemOption(SystemOption systemOption) {
         this.systemOption = systemOption;
-    }
-
-    @XmlTransient
-    public Collection<UserProfile> getUserProfileCollection1() {
-        return userProfileCollection1;
-    }
-
-    public void setUserProfileCollection1(Collection<UserProfile> userProfileCollection1) {
-        this.userProfileCollection1 = userProfileCollection1;
-    }
-    
+    }    
 }

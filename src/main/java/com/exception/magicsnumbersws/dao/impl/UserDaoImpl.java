@@ -3,7 +3,7 @@ import com.exception.magicsnumbersws.dao.UserDao;
 import com.exception.magicsnumbersws.entities.User;
 import java.util.ArrayList;
 import java.util.List;
-import org.hibernate.SessionFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Repository;
@@ -15,29 +15,32 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class UserDaoImpl implements UserDao{
 
-    @Autowired
-    private SessionFactory sessionFactory;
+    //@Autowired
+    //private SessionFactory sessionFactory;
     
     @Override
     public void add(User user) {
-        sessionFactory.getCurrentSession().save(user);
+       // sessionFactory.getCurrentSession().save(user);
     }
     @Override
     public void update(User user) {
-        sessionFactory.getCurrentSession().update(user);
+      //  sessionFactory.getCurrentSession().update(user);
     }
     @Override
     public void delete(int userId) {
-        sessionFactory.getCurrentSession().delete(findById(userId));
+        //sessionFactory.getCurrentSession().delete(findById(userId));
     }
 
     @Override
     public User findById(int id) {
-        return (User)sessionFactory.getCurrentSession().get(User.class, id);
+        //return (User)sessionFactory.getCurrentSession().get(User.class, id);
+        return new User();
     }
 
     @Override
     public List<User> findAll() {
-        return sessionFactory.getCurrentSession().getNamedQuery("User.findAll").list();
+        //return sessionFactory.getCurrentSession().getNamedQuery("User.findAll").list();
+        return new ArrayList<User>();
     }    
+   
 }

@@ -105,7 +105,7 @@ public class UserProfile implements Serializable {
         return profile;
     }
 
-    public void setProfile1(Profile profile) {
+    public void setProfile(Profile profile) {
         this.profile = profile;
     }
 

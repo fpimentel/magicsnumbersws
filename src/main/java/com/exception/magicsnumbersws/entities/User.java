@@ -45,12 +45,7 @@ public class User implements Serializable {
     private Consortium consortium;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "creationUser")
     private Collection<BetBankingsUser> betBankingsUserCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user1")
-    private Collection<BetBankingsUser> betBankingsUserCollection1;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user1")
-    private Collection<UserProfile> userProfileCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "creationUser")
-    private Collection<UserProfile> userProfileCollection1;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId")
     private Collection<HistoryOperation> historyOperationCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "creationUser")
@@ -62,12 +57,8 @@ public class User implements Serializable {
     @OneToMany(mappedBy = "modificationUser")
     private Collection<Ticket> ticketCollection1;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "creationUser")
-    private Collection<Profile> profileCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user1")
-    private Collection<UserProfile> userProfileCollection2;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "creationUser")
-    private Collection<UserProfile> userProfileCollection3;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user1")
+    private Collection<Profile> profileCollection;    
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "creationUser")    
     private Collection<UserConsortium> userConsortiumCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "creationUser")
     private Collection<UserConsortium> userConsortiumCollection1;
@@ -236,32 +227,6 @@ public class User implements Serializable {
         this.betBankingsUserCollection = betBankingsUserCollection;
     }
 
-    @XmlTransient
-    public Collection<BetBankingsUser> getBetBankingsUserCollection1() {
-        return betBankingsUserCollection1;
-    }
-
-    public void setBetBankingsUserCollection1(Collection<BetBankingsUser> betBankingsUserCollection1) {
-        this.betBankingsUserCollection1 = betBankingsUserCollection1;
-    }
-
-    @XmlTransient
-    public Collection<UserProfile> getUserProfileCollection() {
-        return userProfileCollection;
-    }
-
-    public void setUserProfileCollection(Collection<UserProfile> userProfileCollection) {
-        this.userProfileCollection = userProfileCollection;
-    }
-
-    @XmlTransient
-    public Collection<UserProfile> getUserProfileCollection1() {
-        return userProfileCollection1;
-    }
-
-    public void setUserProfileCollection1(Collection<UserProfile> userProfileCollection1) {
-        this.userProfileCollection1 = userProfileCollection1;
-    }
 
     @XmlTransient
     public Collection<HistoryOperation> getHistoryOperationCollection() {
@@ -316,24 +281,7 @@ public class User implements Serializable {
     public void setProfileCollection(Collection<Profile> profileCollection) {
         this.profileCollection = profileCollection;
     }
-
-    @XmlTransient
-    public Collection<UserProfile> getUserProfileCollection2() {
-        return userProfileCollection2;
-    }
-
-    public void setUserProfileCollection2(Collection<UserProfile> userProfileCollection2) {
-        this.userProfileCollection2 = userProfileCollection2;
-    }
-
-    @XmlTransient
-    public Collection<UserProfile> getUserProfileCollection3() {
-        return userProfileCollection3;
-    }
-
-    public void setUserProfileCollection3(Collection<UserProfile> userProfileCollection3) {
-        this.userProfileCollection3 = userProfileCollection3;
-    }
+   
 
     @XmlTransient
     public Collection<UserConsortium> getUserConsortiumCollection() {

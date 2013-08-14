@@ -16,6 +16,13 @@ public class UserDaoImpl implements UserDao{
 
     @Autowired
     private SessionFactory sessionFactory;
+
+    public UserDaoImpl() {
+    }
+
+    public UserDaoImpl(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
     
     @Override
     public void add(User user) {
@@ -37,8 +44,14 @@ public class UserDaoImpl implements UserDao{
 
     @Override
     public List<User> findAll() {
-        //return sessionFactory.getCurrentSession().getNamedQuery("User.findAll").list();
-        return new ArrayList<User>();
+        return sessionFactory.getCurrentSession().getNamedQuery("User.findAll").list();        
     }    
-   
+    
+    public SessionFactory getSessionFactory() {
+        return sessionFactory;
+    }
+
+    public void setSessionFactory(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
 }

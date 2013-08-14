@@ -17,32 +17,47 @@ import org.springframework.transaction.annotation.Transactional;
  * @author fpimentel
  */
 @Service
+@Transactional
 public class UserServiceImpl implements UserService{
 
     @Autowired
-    private UserDao userDao;
+    private UserDao userDao;    
+
+    public UserServiceImpl() {
+    }
+
+    public UserServiceImpl(UserDao userDao) {
+        this.userDao = userDao;
+    }
+
+    public UserDao getUserDao() {
+        return userDao;
+    }
+
+    public void setUserDao(UserDao userDao) {
+        this.userDao = userDao;
+    }
     
-    @Transactional
     public void add(User user) {
         userDao.add(user);
     }
 
-    @Transactional
+    
     public void update(User user) {
         userDao.update(user);
     }
 
-    @Transactional
+    
     public void delete(int userId) {
         userDao.delete(userId);
     }
 
-    @Transactional
+    
     public User findById(int id) {
         return userDao.findById(id);
     }
 
-    @Transactional
+    
     public List<User> findAll() {
        return userDao.findAll();
     }

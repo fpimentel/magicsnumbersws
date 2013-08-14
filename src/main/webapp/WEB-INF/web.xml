@@ -6,7 +6,7 @@
          version="3.0"> 
 
     <display-name>MagicsNumbersWS</display-name>
-    
+   <!-- 
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>                        
     </listener>
@@ -14,9 +14,13 @@
     <listener>
         <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
     </listener>
-    
+    -->
     <listener>
         <listener-class>org.jboss.resteasy.plugins.server.servlet.ResteasyBootstrap</listener-class>
+    </listener>
+    
+    <listener>
+        <listener-class>org.jboss.resteasy.plugins.spring.SpringContextLoaderListener</listener-class>
     </listener>
        
     <servlet>
@@ -31,14 +35,14 @@
        
     <context-param>
         <param-name>contextConfigLocation</param-name>
-        <param-value>classpath:application-context.xml</param-value>
+        <param-value>classpath:application-context.xml</param-value>        
     </context-param>
-       
+    <!--   
     <context-param>
         <param-name>resteasy.scan</param-name>
         <param-value>true</param-value>
     </context-param>
-    
+    -->
     <context-param>
         <param-name>resteasy.servlet.mapping.prefix</param-name>
         <param-value>/</param-value>

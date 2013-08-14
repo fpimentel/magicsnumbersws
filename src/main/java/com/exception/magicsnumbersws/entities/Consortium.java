@@ -7,6 +7,7 @@ package com.exception.magicsnumbersws.entities;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -44,10 +45,13 @@ public class Consortium implements Serializable {
     @JoinColumn(name = "CREATION_USER", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private User creationUser;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "consortium1")
-    private Collection<UserConsortium> userConsortiumCollection;
+    
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "consortium")
+    private List<UserConsortium> userConsortiums;
+  
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "consortium")
     private Collection<BetBanking> betBankingCollection;
+    
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -193,12 +197,12 @@ public class Consortium implements Serializable {
     }
 
     @XmlTransient
-    public Collection<UserConsortium> getUserConsortiumCollection() {
-        return userConsortiumCollection;
+    public List<UserConsortium> getUserConsortiums() {
+        return userConsortiums;
     }
 
-    public void setUserConsortiumCollection(Collection<UserConsortium> userConsortiumCollection) {
-        this.userConsortiumCollection = userConsortiumCollection;
+    public void setUserConsortiums(List<UserConsortium> userConsortiums) {
+        this.userConsortiums = userConsortiums;
     }
 
     @XmlTransient

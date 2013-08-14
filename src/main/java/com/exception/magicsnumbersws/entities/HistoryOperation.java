@@ -41,7 +41,7 @@ public class HistoryOperation implements Serializable {
     @NotNull
     @Column(name = "ID_AFECTED")
     private int idAfected;
-    @JoinColumn(name = "USER_ID", referencedColumnName = "ID")
+    @JoinColumn(name = "USER", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private User userId;    
     @Id

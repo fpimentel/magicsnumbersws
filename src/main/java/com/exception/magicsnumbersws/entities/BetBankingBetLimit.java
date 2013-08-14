@@ -42,7 +42,7 @@ public class BetBankingBetLimit implements Serializable {
     @Column(name = "CREATION_DATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date creationDate;
-    @JoinColumn(name = "CREATION_USER", referencedColumnName = "ID")
+    @JoinColumn(name = "USER", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private User creationUser;
     @JoinColumn(name = "BET", referencedColumnName = "ID")

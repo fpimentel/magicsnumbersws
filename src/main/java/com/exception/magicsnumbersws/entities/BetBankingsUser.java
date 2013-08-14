@@ -46,7 +46,7 @@ public class BetBankingsUser implements Serializable {
     private User creationUser;
     @JoinColumn(name = "USER", referencedColumnName = "ID", insertable = false, updatable = false)
     @ManyToOne(optional = false)
-    private User user1;
+    private User user;
     @JoinColumn(name = "BETBANKING", referencedColumnName = "ID", insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private BetBanking betBanking;
@@ -91,12 +91,12 @@ public class BetBankingsUser implements Serializable {
         this.creationUser = creationUser;
     }
 
-    public User getUser1() {
-        return user1;
+    public User getUser() {
+        return user;
     }
 
-    public void setUser1(User user1) {
-        this.user1 = user1;
+    public void setUser(User user1) {
+        this.user = user1;
     }
 
     public BetBanking getBetBanking() {

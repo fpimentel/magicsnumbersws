@@ -4,20 +4,8 @@
  */
 package com.exception.magicsnumbersws.entities;
 
-import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -25,91 +13,68 @@ import javax.xml.bind.annotation.XmlTransient;
  *
  * @author fpimentel
  */
-@XmlRootElement
-
-@Entity
-@Table(name = "USERS")
-public class User implements Serializable {
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "CONSORTIUM")
+@XmlRootElement(name="user2")
+public class User2 {
+    
     private Consortium consortium;
     
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    
     private List<BetBankingsUser> betBankingsUsers;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId")
+    
     private List<HistoryOperation> historyOperations;
     
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "creationUser")
+    
     private List<BetBankingBetLimit> betBankingBetLimits;
     
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "creationUser")
+    
     private List<Consortium> consortiumsCreated;
   
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId")
+    
     private List<Ticket> ticketsCreated;
     
-    @OneToMany(mappedBy = "modificationUser")
+    
     private Collection<Ticket> ticketCollection1;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "creationUser")
+    
     private Collection<Profile> profileCollection;    
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "creationUser")    
+    
     private Collection<UserConsortium> userConsortiumCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "creationUser")
+    
     private Collection<UserConsortium> userConsortiumCollection1;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "creationUser")
+    
     private Collection<Bet> betCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userCreation")
+    
     private Collection<Lottery> lotteryCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "creationUser")
+    
     private Collection<BetBanking> betBankingCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId")
+    
     private Collection<WinningNumber> winningNumberCollection;
     private static final long serialVersionUID = 1L;
-    @Id
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "ID")
+    
     private Integer id;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 50)
-    @Column(name = "FIRT_NAME")
+    
     private String firtName;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 50)
-    @Column(name = "LAST_NAME")
+    
     private String lastName;
-    @Size(max = 50)
-    @Column(name = "CONTACT_NUMBER")
+    
     private String contactNumber;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 20)
-    @Column(name = "USER_NAME")
+    
     private String userName;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 30)
-    @Column(name = "PASSWORD")
+    
     private String password;
-    @JoinColumn(name = "STATUS", referencedColumnName = "ID")
-    @ManyToOne(optional = false)
+    
     private Status status;
-    @JoinColumn(name = "PROFILE", referencedColumnName = "ID")
-    @ManyToOne(optional = false)
+    
     private Profile profile;
 
-    public User() {
+    public User2() {
     }
 
-    public User(Integer id) {
+    public User2(Integer id) {
         this.id = id;
     }
 
-    public User(Integer id, String firtName, String lastName, String userName, String password) {
+    public User2(Integer id, String firtName, String lastName, String userName, String password) {
         this.id = id;
         this.firtName = firtName;
         this.lastName = lastName;
@@ -202,9 +167,7 @@ public class User implements Serializable {
             return false;
         }
         User other = (User) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
-        }
+        
         return true;
     }
 
@@ -331,5 +294,5 @@ public class User implements Serializable {
     public void setWinningNumberCollection(Collection<WinningNumber> winningNumberCollection) {
         this.winningNumberCollection = winningNumberCollection;
     }
-    
+
 }

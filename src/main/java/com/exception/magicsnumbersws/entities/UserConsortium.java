@@ -43,13 +43,13 @@ public class UserConsortium implements Serializable {
     private Date creationDate;
     @JoinColumn(name = "USER", referencedColumnName = "ID", insertable = false, updatable = false)
     @ManyToOne(optional = false)
-    private User user1;
+    private User user;
     @JoinColumn(name = "CREATION_USER", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private User creationUser;
     @JoinColumn(name = "CONSORTIUM", referencedColumnName = "ID", insertable = false, updatable = false)
     @ManyToOne(optional = false)
-    private Consortium consortium1;
+    private Consortium consortium;
 
     public UserConsortium() {
     }
@@ -83,12 +83,12 @@ public class UserConsortium implements Serializable {
         this.creationDate = creationDate;
     }
 
-    public User getUser1() {
-        return user1;
+    public User getUser() {
+        return user;
     }
 
-    public void setUser1(User user1) {
-        this.user1 = user1;
+    public void setUser1(User user) {
+        this.user = user;
     }
 
     public User getCreationUser() {
@@ -99,12 +99,12 @@ public class UserConsortium implements Serializable {
         this.creationUser = creationUser;
     }
 
-    public Consortium getConsortium1() {
-        return consortium1;
+    public Consortium getConsortium() {
+        return consortium;
     }
 
-    public void setConsortium1(Consortium consortium1) {
-        this.consortium1 = consortium1;
+    public void setConsortium(Consortium consortium) {
+        this.consortium = consortium;
     }
 
     @Override

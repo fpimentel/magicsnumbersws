@@ -3,6 +3,7 @@ import com.exception.magicsnumbersws.dao.UserDao;
 import com.exception.magicsnumbersws.entities.User;
 import java.util.ArrayList;
 import java.util.List;
+import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -44,8 +45,8 @@ public class UserDaoImpl implements UserDao{
 
     @Override
     public List<User> findAll() {
-        return sessionFactory.getCurrentSession().getNamedQuery("User.findAll").list();        
-    }    
+       return (List<User>)sessionFactory.getCurrentSession().createQuery("Select firtName from User").list();         
+    }
     
     public SessionFactory getSessionFactory() {
         return sessionFactory;

@@ -2,6 +2,7 @@ package com.exception.magicsnumbersws.endpoints.security;
 
 
 import com.exception.magicsnumbersws.entities.User;
+import com.exception.magicsnumbersws.entities.User2;
 import com.exception.magicsnumbersws.service.UserService;
 import com.exception.magicsnumbersws.service.impl.UserServiceImpl;
 import java.sql.Connection;
@@ -67,30 +68,25 @@ public class SecurityEndPoint {
   @Path("/getAllUsersXML")
   @Produces(MediaType.APPLICATION_XML)
   public List<User> getAllUsersXML(){
-      return new ArrayList<User>(users.values());
+      return userService.findAll();
   }
   
   @GET
   @Path("/getUsersJSON")
   @Produces(MediaType.APPLICATION_JSON)
-  public List<User> getUsersJSON() {
-      Connection con;
-      try{
-           con= DriverManager.getConnection("jdbc:sqlserver://localhost;database=magicsnumbersdb", "sa", "logicsoft");                                                                   
-      }
-      catch(Exception ex){
-          System.out.println(ex.getMessage());
-      }
-      
+  public List<User> getUsersJSON() {            
       return userService.findAll();
-     // test();
-      //return new ArrayList<User>(users.values());
-      //return userService.findAll();
   }  
-    private void test(){
-         ApplicationContext ctx = new ClassPathXmlApplicationContext("application-context.xml");
-         UserService user = (UserService)ctx.getBean("userService");
-    }
+
+  @GET
+  @Path("/test")
+  @Produces(MediaType.APPLICATION_JSON)
+  public User2 getTestJSON() {            
+      User2 user= new User2();
+      user.setFirtName("Fausto");
+      return user;
+  }
+  
   public UserService getUserService() {
       return userService;
   }

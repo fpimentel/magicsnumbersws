@@ -13,7 +13,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -31,13 +30,17 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author fpimentel
  */
 @Entity
-@Table(name = "BETBANKING")
+@Table(name = "BET_BANKING")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "BetBanking.findAll", query = "SELECT b FROM BetBanking b"),
-    @NamedQuery(name = "BetBanking.findById", query = "SELECT b FROM BetBanking b WHERE b.id = :id"),
-    @NamedQuery(name = "BetBanking.findByAddress", query = "SELECT b FROM BetBanking b WHERE b.address = :address")})
+    @NamedQuery(name = "BetBanking.findAll", query = "SELECT b FROM BetBanking b")})
 public class BetBanking implements Serializable {
+    private static final long serialVersionUID = 1L;
+    @Id
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "ID")
+    private Integer id;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 100)
@@ -45,33 +48,31 @@ public class BetBanking implements Serializable {
     private String name;
     @Basic(optional = false)
     @NotNull
+    @Size(min = 1, max = 200)
+    @Column(name = "ADDRESS")
+    private String address;
+    @Basic(optional = false)
+    @NotNull
     @Column(name = "CREATION_DATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date creationDate;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "betBanking")
-    private Collection<BetBankingsUser> betBankingsUserCollection;
-    @JoinColumn(name = "CREATION_USER", referencedColumnName = "ID")
-    @ManyToOne(optional = false)
-    private User creationUser;
-    @JoinColumn(name = "CONSORTIUM", referencedColumnName = "ID")
-    @ManyToOne(optional = false)
-    private Consortium consortium;
-    private static final long serialVersionUID = 1L;
-    @Id
     @Basic(optional = false)
     @NotNull
-    @Column(name = "ID")
-    private Integer id;
-    @Size(max = 200)
-    @Column(name = "ADDRESS")
-    private String address;
+    @Size(min = 1, max = 50)
+    @Column(name = "CREATION_USER")
+    private String creationUser;
+    @JoinColumn(name = "STATUS_ID", referencedColumnName = "ID")
+    @ManyToOne(optional = false)
+    private Status statusId;
+    @JoinColumn(name = "CONSORTIUM_ID", referencedColumnName = "ID")
+    @ManyToOne(optional = false)
+    private Consortium consortiumId;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "betBanking")
+    private Collection<BetBankingBetLimit> betBankingBetLimitCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "betBanking")
     private Collection<BetBankingLottery> betBankingLotteryCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "betbanking")
-    private Collection<BetBankingBetLimit> betBankingBetLimitCollection;
-    @JoinColumn(name = "STATUS", referencedColumnName = "ID")
-    @ManyToOne(optional = false)
-    private Status status;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "betBanking")
+    private Collection<BetBankingUser> betBankingUserCollection;
 
     public BetBanking() {
     }
@@ -80,9 +81,12 @@ public class BetBanking implements Serializable {
         this.id = id;
     }
 
-    public BetBanking(Integer id, String name) {
+    public BetBanking(Integer id, String name, String address, Date creationDate, String creationUser) {
         this.id = id;
         this.name = name;
+        this.address = address;
+        this.creationDate = creationDate;
+        this.creationUser = creationUser;
     }
 
     public Integer getId() {
@@ -93,12 +97,61 @@ public class BetBanking implements Serializable {
         this.id = id;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public String getAddress() {
         return address;
     }
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public Date getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    public String getCreationUser() {
+        return creationUser;
+    }
+
+    public void setCreationUser(String creationUser) {
+        this.creationUser = creationUser;
+    }
+
+    public Status getStatusId() {
+        return statusId;
+    }
+
+    public void setStatusId(Status statusId) {
+        this.statusId = statusId;
+    }
+
+    public Consortium getConsortiumId() {
+        return consortiumId;
+    }
+
+    public void setConsortiumId(Consortium consortiumId) {
+        this.consortiumId = consortiumId;
+    }
+
+    @XmlTransient
+    public Collection<BetBankingBetLimit> getBetBankingBetLimitCollection() {
+        return betBankingBetLimitCollection;
+    }
+
+    public void setBetBankingBetLimitCollection(Collection<BetBankingBetLimit> betBankingBetLimitCollection) {
+        this.betBankingBetLimitCollection = betBankingBetLimitCollection;
     }
 
     @XmlTransient
@@ -111,20 +164,12 @@ public class BetBanking implements Serializable {
     }
 
     @XmlTransient
-    public Collection<BetBankingBetLimit> getBetBankingBetLimitCollection() {
-        return betBankingBetLimitCollection;
+    public Collection<BetBankingUser> getBetBankingUserCollection() {
+        return betBankingUserCollection;
     }
 
-    public void setBetBankingBetLimitCollection(Collection<BetBankingBetLimit> betBankingBetLimitCollection) {
-        this.betBankingBetLimitCollection = betBankingBetLimitCollection;
-    }
-
-    public Status getStatus() {
-        return status;
-    }
-
-    public void setStatus(Status status) {
-        this.status = status;
+    public void setBetBankingUserCollection(Collection<BetBankingUser> betBankingUserCollection) {
+        this.betBankingUserCollection = betBankingUserCollection;
     }
 
     @Override
@@ -150,47 +195,6 @@ public class BetBanking implements Serializable {
     @Override
     public String toString() {
         return "com.exception.magicsnumbersws.entities.BetBanking[ id=" + id + " ]";
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Date getCreationDate() {
-        return creationDate;
-    }
-
-    public void setCreationDate(Date creationDate) {
-        this.creationDate = creationDate;
-    }
-
-    @XmlTransient
-    public Collection<BetBankingsUser> getBetBankingsUserCollection() {
-        return betBankingsUserCollection;
-    }
-
-    public void setBetBankingsUserCollection(Collection<BetBankingsUser> betBankingsUserCollection) {
-        this.betBankingsUserCollection = betBankingsUserCollection;
-    }
-
-    public User getCreationUser() {
-        return creationUser;
-    }
-
-    public void setCreationUser(User creationUser) {
-        this.creationUser = creationUser;
-    }
-
-    public Consortium getConsortium() {
-        return consortium;
-    }
-
-    public void setConsortium(Consortium consortium) {
-        this.consortium = consortium;
     }
     
 }

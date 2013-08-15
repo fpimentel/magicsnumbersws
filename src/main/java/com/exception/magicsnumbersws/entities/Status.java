@@ -12,13 +12,13 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -30,49 +30,28 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "STATUS")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Status.findAll", query = "SELECT s FROM Status s"),
-    @NamedQuery(name = "Status.findById", query = "SELECT s FROM Status s WHERE s.id = :id")})
+    @NamedQuery(name = "Status.findAll", query = "SELECT s FROM Status s")})
 public class Status implements Serializable {
-    @Basic(optional = false)
-    @NotNull
-    @Lob
-    @Column(name = "NAME")
-    private byte[] name;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "status")
-    private Collection<Lottery> lotteryCollection;
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
     @NotNull
     @Column(name = "ID")
     private Integer id;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "status")
-    private Collection<Bet> betCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "status")
-    private Collection<Operation> operationCollection;
-    @JoinColumn(name = "STATUS_TYPE", referencedColumnName = "ID")
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 100)
+    @Column(name = "NAME")
+    private String name;
+    @JoinColumn(name = "STATUS_TYPE_ID", referencedColumnName = "ID")
     @ManyToOne(optional = false)
-    private StatusType statusType;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "status")
-    private Collection<WayToWin> wayToWinCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "status")
-    private Collection<OptionCategory> optionCategoryCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "status")
-    private Collection<User> userCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "status")
-    private Collection<BetType> betTypeCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "status")
-    private Collection<Consortium> consortiumCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "status")
+    private StatusType statusTypeId;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "statusId")
     private Collection<BetBanking> betBankingCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "status")
-    private Collection<Ticket> ticketCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "status")
-    private Collection<TicketDetail> ticketDetailCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "status")
-    private Collection<BetTypes> betTypesCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "status")
-    private Collection<Profile> profileCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "statusId")
+    private Collection<Bet> betCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "statusId")
+    private Collection<OptionsCategory> optionsCategoryCollection;
 
     public Status() {
     }
@@ -81,7 +60,7 @@ public class Status implements Serializable {
         this.id = id;
     }
 
-    public Status(Integer id, byte[] name) {
+    public Status(Integer id, String name) {
         this.id = id;
         this.name = name;
     }
@@ -94,75 +73,20 @@ public class Status implements Serializable {
         this.id = id;
     }
 
-    @XmlTransient
-    public Collection<Bet> getBetCollection() {
-        return betCollection;
+    public String getName() {
+        return name;
     }
 
-    public void setBetCollection(Collection<Bet> betCollection) {
-        this.betCollection = betCollection;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    @XmlTransient
-    public Collection<Operation> getOperationCollection() {
-        return operationCollection;
+    public StatusType getStatusTypeId() {
+        return statusTypeId;
     }
 
-    public void setOperationCollection(Collection<Operation> operationCollection) {
-        this.operationCollection = operationCollection;
-    }
-
-    public StatusType getStatusType() {
-        return statusType;
-    }
-
-    public void setStatusType(StatusType statusType) {
-        this.statusType = statusType;
-    }
-
-    @XmlTransient
-    public Collection<WayToWin> getWayToWinCollection() {
-        return wayToWinCollection;
-    }
-
-    public void setWayToWinCollection(Collection<WayToWin> wayToWinCollection) {
-        this.wayToWinCollection = wayToWinCollection;
-    }
-
-    @XmlTransient
-    public Collection<OptionCategory> getOptionCategoryCollection() {
-        return optionCategoryCollection;
-    }
-
-    public void setOptionCategoryCollection(Collection<OptionCategory> optionCategoryCollection) {
-        this.optionCategoryCollection = optionCategoryCollection;
-    }
-
-    @XmlTransient
-    public Collection<User> getUserCollection() {
-        return userCollection;
-    }
-
-    public void setUserCollection(Collection<User> userCollection) {
-        this.userCollection = userCollection;
-    }
-
-    @XmlTransient
-    public Collection<BetType> getBetTypeCollection() {
-        return betTypeCollection;
-    }
-
-    public void setBetTypeCollection(Collection<BetType> betTypeCollection) {
-        this.betTypeCollection = betTypeCollection;
-    }
-
-    @XmlTransient
-    public Collection<Consortium> getConsortiumCollection() {
-        return consortiumCollection;
-    }
-
-    public void setConsortiumCollection(Collection<Consortium> consortiumCollection) {
-        this.consortiumCollection = consortiumCollection;
+    public void setStatusTypeId(StatusType statusTypeId) {
+        this.statusTypeId = statusTypeId;
     }
 
     @XmlTransient
@@ -175,39 +99,21 @@ public class Status implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Ticket> getTicketCollection() {
-        return ticketCollection;
+    public Collection<Bet> getBetCollection() {
+        return betCollection;
     }
 
-    public void setTicketCollection(Collection<Ticket> ticketCollection) {
-        this.ticketCollection = ticketCollection;
-    }
-
-    @XmlTransient
-    public Collection<TicketDetail> getTicketDetailCollection() {
-        return ticketDetailCollection;
-    }
-
-    public void setTicketDetailCollection(Collection<TicketDetail> ticketDetailCollection) {
-        this.ticketDetailCollection = ticketDetailCollection;
+    public void setBetCollection(Collection<Bet> betCollection) {
+        this.betCollection = betCollection;
     }
 
     @XmlTransient
-    public Collection<BetTypes> getBetTypesCollection() {
-        return betTypesCollection;
+    public Collection<OptionsCategory> getOptionsCategoryCollection() {
+        return optionsCategoryCollection;
     }
 
-    public void setBetTypesCollection(Collection<BetTypes> betTypesCollection) {
-        this.betTypesCollection = betTypesCollection;
-    }
-
-    @XmlTransient
-    public Collection<Profile> getProfileCollection() {
-        return profileCollection;
-    }
-
-    public void setProfileCollection(Collection<Profile> profileCollection) {
-        this.profileCollection = profileCollection;
+    public void setOptionsCategoryCollection(Collection<OptionsCategory> optionsCategoryCollection) {
+        this.optionsCategoryCollection = optionsCategoryCollection;
     }
 
     @Override
@@ -233,23 +139,6 @@ public class Status implements Serializable {
     @Override
     public String toString() {
         return "com.exception.magicsnumbersws.entities.Status[ id=" + id + " ]";
-    }
-
-    @XmlTransient
-    public Collection<Lottery> getLotteryCollection() {
-        return lotteryCollection;
-    }
-
-    public void setLotteryCollection(Collection<Lottery> lotteryCollection) {
-        this.lotteryCollection = lotteryCollection;
-    }
-
-    public byte[] getName() {
-        return name;
-    }
-
-    public void setName(byte[] name) {
-        this.name = name;
     }
     
 }

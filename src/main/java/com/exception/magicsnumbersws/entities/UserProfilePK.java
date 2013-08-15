@@ -18,43 +18,42 @@ import javax.validation.constraints.NotNull;
 public class UserProfilePK implements Serializable {
     @Basic(optional = false)
     @NotNull
-    @Column(name = "USER")
-    private int user;
+    @Column(name = "USER_ID")
+    private int userId;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "PROFILE")
-    private int profile;
-
+    @Column(name = "PROFILE_ID")
+    private int profileId;
 
     public UserProfilePK() {
     }
 
-    public UserProfilePK(int user, int profile) {
-        this.user = user;
-        this.profile = profile;
+    public UserProfilePK(int userId, int profileId) {
+        this.userId = userId;
+        this.profileId = profileId;
     }
 
-    public int getUser() {
-        return user;
+    public int getUserId() {
+        return userId;
     }
 
-    public void setUser(int user) {
-        this.user = user;
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
-    public int getProfile() {
-        return profile;
+    public int getProfileId() {
+        return profileId;
     }
 
-    public void setProfile(int profile) {
-        this.profile = profile;
+    public void setProfileId(int profileId) {
+        this.profileId = profileId;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (int) user;
-        hash += (int) profile;
+        hash += (int) userId;
+        hash += (int) profileId;
         return hash;
     }
 
@@ -65,10 +64,10 @@ public class UserProfilePK implements Serializable {
             return false;
         }
         UserProfilePK other = (UserProfilePK) object;
-        if (this.user != other.user) {
+        if (this.userId != other.userId) {
             return false;
         }
-        if (this.profile != other.profile) {
+        if (this.profileId != other.profileId) {
             return false;
         }
         return true;
@@ -76,7 +75,7 @@ public class UserProfilePK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.exception.magicsnumbersws.entities.UserProfilePK[ user=" + user + ", profile=" + profile + " ]";
+        return "com.exception.magicsnumbersws.entities.UserProfilePK[ userId=" + userId + ", profileId=" + profileId + " ]";
     }
     
 }

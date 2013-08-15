@@ -27,12 +27,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "TICKET_DETAILS")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TicketDetail.findAll", query = "SELECT t FROM TicketDetail t"),
-    @NamedQuery(name = "TicketDetail.findById", query = "SELECT t FROM TicketDetail t WHERE t.id = :id"),
-    @NamedQuery(name = "TicketDetail.findByLottery", query = "SELECT t FROM TicketDetail t WHERE t.lottery = :lottery"),
-    @NamedQuery(name = "TicketDetail.findByBet", query = "SELECT t FROM TicketDetail t WHERE t.bet = :bet"),
-    @NamedQuery(name = "TicketDetail.findByNumbersPlayed", query = "SELECT t FROM TicketDetail t WHERE t.numbersPlayed = :numbersPlayed"),
-    @NamedQuery(name = "TicketDetail.findByAmountToWin", query = "SELECT t FROM TicketDetail t WHERE t.amountToWin = :amountToWin")})
+    @NamedQuery(name = "TicketDetail.findAll", query = "SELECT t FROM TicketDetail t")})
 public class TicketDetail implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -42,15 +37,7 @@ public class TicketDetail implements Serializable {
     private Integer id;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "LOTTERY")
-    private int lottery;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "BET")
-    private int bet;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 50)
+    @Size(min = 1, max = 100)
     @Column(name = "NUMBERS_PLAYED")
     private String numbersPlayed;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
@@ -58,12 +45,19 @@ public class TicketDetail implements Serializable {
     @NotNull
     @Column(name = "AMOUNT_TO_WIN")
     private BigDecimal amountToWin;
-    @JoinColumn(name = "TICKET", referencedColumnName = "ID")
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "STATUS_ID")
+    private int statusId;
+    @JoinColumn(name = "TICKET_ID", referencedColumnName = "ID")
     @ManyToOne(optional = false)
-    private Ticket ticket;
-    @JoinColumn(name = "STATUS", referencedColumnName = "ID")
+    private Ticket ticketId;
+    @JoinColumn(name = "LOTTERY_ID", referencedColumnName = "ID")
     @ManyToOne(optional = false)
-    private Status status;
+    private Lottery lotteryId;
+    @JoinColumn(name = "BET_ID", referencedColumnName = "ID")
+    @ManyToOne(optional = false)
+    private Bet betId;
 
     public TicketDetail() {
     }
@@ -72,12 +66,11 @@ public class TicketDetail implements Serializable {
         this.id = id;
     }
 
-    public TicketDetail(Integer id, int lottery, int bet, String numbersPlayed, BigDecimal amountToWin) {
+    public TicketDetail(Integer id, String numbersPlayed, BigDecimal amountToWin, int statusId) {
         this.id = id;
-        this.lottery = lottery;
-        this.bet = bet;
         this.numbersPlayed = numbersPlayed;
         this.amountToWin = amountToWin;
+        this.statusId = statusId;
     }
 
     public Integer getId() {
@@ -86,22 +79,6 @@ public class TicketDetail implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public int getLottery() {
-        return lottery;
-    }
-
-    public void setLottery(int lottery) {
-        this.lottery = lottery;
-    }
-
-    public int getBet() {
-        return bet;
-    }
-
-    public void setBet(int bet) {
-        this.bet = bet;
     }
 
     public String getNumbersPlayed() {
@@ -120,20 +97,36 @@ public class TicketDetail implements Serializable {
         this.amountToWin = amountToWin;
     }
 
-    public Ticket getTicket() {
-        return ticket;
+    public int getStatusId() {
+        return statusId;
     }
 
-    public void setTicket(Ticket ticket) {
-        this.ticket = ticket;
+    public void setStatusId(int statusId) {
+        this.statusId = statusId;
     }
 
-    public Status getStatus() {
-        return status;
+    public Ticket getTicketId() {
+        return ticketId;
     }
 
-    public void setStatus(Status status) {
-        this.status = status;
+    public void setTicketId(Ticket ticketId) {
+        this.ticketId = ticketId;
+    }
+
+    public Lottery getLotteryId() {
+        return lotteryId;
+    }
+
+    public void setLotteryId(Lottery lotteryId) {
+        this.lotteryId = lotteryId;
+    }
+
+    public Bet getBetId() {
+        return betId;
+    }
+
+    public void setBetId(Bet betId) {
+        this.betId = betId;
     }
 
     @Override

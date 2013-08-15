@@ -23,22 +23,11 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author fpimentel
  */
 @Entity
-@Table(name = "WINNINGNUMBERS")
+@Table(name = "WINNING_NUMBERS")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "WinningNumber.findAll", query = "SELECT w FROM WinningNumber w"),
-    @NamedQuery(name = "WinningNumber.findById", query = "SELECT w FROM WinningNumber w WHERE w.id = :id"),
-    @NamedQuery(name = "WinningNumber.findByNumbers", query = "SELECT w FROM WinningNumber w WHERE w.numbers = :numbers"),
-    @NamedQuery(name = "WinningNumber.findByUserId", query = "SELECT w FROM WinningNumber w WHERE w.userId = :userId")})
+    @NamedQuery(name = "WinningNumber.findAll", query = "SELECT w FROM WinningNumber w")})
 public class WinningNumber implements Serializable {
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 10)
-    @Column(name = "CREATION_DATE")
-    private String creationDate;
-    @JoinColumn(name = "USER_ID", referencedColumnName = "ID")
-    @ManyToOne(optional = false)
-    private User userId;
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -50,12 +39,22 @@ public class WinningNumber implements Serializable {
     @Size(min = 1, max = 100)
     @Column(name = "NUMBERS")
     private String numbers;
-    @JoinColumn(name = "LOTTERY", referencedColumnName = "ID")
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 50)
+    @Column(name = "CREATION_USER")
+    private String creationUser;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 10)
+    @Column(name = "CREATION_DATE")
+    private String creationDate;
+    @JoinColumn(name = "LOTTERY_ID", referencedColumnName = "ID")
     @ManyToOne(optional = false)
-    private Lottery lottery;
-    @JoinColumn(name = "BET", referencedColumnName = "ID")
+    private Lottery lotteryId;
+    @JoinColumn(name = "BET_ID", referencedColumnName = "ID")
     @ManyToOne(optional = false)
-    private Bet bet;
+    private Bet betId;
 
     public WinningNumber() {
     }
@@ -64,10 +63,11 @@ public class WinningNumber implements Serializable {
         this.id = id;
     }
 
-    public WinningNumber(Integer id, String numbers, User user) {
+    public WinningNumber(Integer id, String numbers, String creationUser, String creationDate) {
         this.id = id;
         this.numbers = numbers;
-        this.userId = user;
+        this.creationUser = creationUser;
+        this.creationDate = creationDate;
     }
 
     public Integer getId() {
@@ -86,28 +86,36 @@ public class WinningNumber implements Serializable {
         this.numbers = numbers;
     }
 
-    public User getUserId() {
-        return userId;
+    public String getCreationUser() {
+        return creationUser;
     }
 
-    public void setUserId(User userId) {
-        this.userId = userId;
+    public void setCreationUser(String creationUser) {
+        this.creationUser = creationUser;
     }
 
-    public Lottery getLottery() {
-        return lottery;
+    public String getCreationDate() {
+        return creationDate;
     }
 
-    public void setLottery(Lottery lottery) {
-        this.lottery = lottery;
+    public void setCreationDate(String creationDate) {
+        this.creationDate = creationDate;
     }
 
-    public Bet getBet() {
-        return bet;
+    public Lottery getLotteryId() {
+        return lotteryId;
     }
 
-    public void setBet(Bet bet) {
-        this.bet = bet;
+    public void setLotteryId(Lottery lotteryId) {
+        this.lotteryId = lotteryId;
+    }
+
+    public Bet getBetId() {
+        return betId;
+    }
+
+    public void setBetId(Bet betId) {
+        this.betId = betId;
     }
 
     @Override
@@ -134,13 +142,5 @@ public class WinningNumber implements Serializable {
     public String toString() {
         return "com.exception.magicsnumbersws.entities.WinningNumber[ id=" + id + " ]";
     }
-
-    public String getCreationDate() {
-        return creationDate;
-    }
-
-    public void setCreationDate(String creationDate) {
-        this.creationDate = creationDate;
-    }    
     
 }

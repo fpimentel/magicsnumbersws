@@ -61,6 +61,13 @@ public class SecurityEndPoint {
   public List<User> getAllUsersXML(){
       return userService.findAll();
   }
+ 
+   @GET
+  @Path("/user")
+  @Produces(MediaType.APPLICATION_JSON)
+  public List<User> getAllUsers() {            
+      return userService.findAll();
+  }  
   
   @GET
   @Path("/user/{userName,pass}")

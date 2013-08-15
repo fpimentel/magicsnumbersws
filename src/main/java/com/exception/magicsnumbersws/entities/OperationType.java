@@ -11,7 +11,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.Lob;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -29,21 +28,20 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "OPERATION_TYPES")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "OperationType.findAll", query = "SELECT o FROM OperationType o"),
-    @NamedQuery(name = "OperationType.findById", query = "SELECT o FROM OperationType o WHERE o.id = :id")})
+    @NamedQuery(name = "OperationType.findAll", query = "SELECT o FROM OperationType o")})
 public class OperationType implements Serializable {
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 100)
-    @Column(name = "NAME")
-    private String name;
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
     @NotNull
     @Column(name = "ID")
     private Integer id;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "operationType")
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 100)
+    @Column(name = "NAME")
+    private String name;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "operationTypeId")
     private Collection<Operation> operationCollection;
 
     public OperationType() {
@@ -64,6 +62,14 @@ public class OperationType implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     @XmlTransient
@@ -98,14 +104,6 @@ public class OperationType implements Serializable {
     @Override
     public String toString() {
         return "com.exception.magicsnumbersws.entities.OperationType[ id=" + id + " ]";
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
     
 }

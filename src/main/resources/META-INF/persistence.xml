@@ -32,6 +32,39 @@
     <class>com.exception.magicsnumbersws.entities.UserProfile</class>
     <class>com.exception.magicsnumbersws.entities.BetBankingsUser</class>
     <class>com.exception.magicsnumbersws.entities.WaysTOWinLottery</class>
+    <class>com.exception.magicsnumbersws.entities.WayToWinLottery</class>
+    <class>com.exception.magicsnumbersws.entities.Winningnumber</class>
+    <class>com.exception.magicsnumbersws.entities.BetType_1</class>
+    <class>com.exception.magicsnumbersws.entities.WayToWinBet</class>
+    <class>com.exception.magicsnumbersws.entities.BetBankingUser</class>
+    <class>com.exception.magicsnumbersws.dao.BetBankingUser</class>
+    <class>com.exception.magicsnumbersws.dao.Ticket</class>
+    <class>com.exception.magicsnumbersws.dao.StatusType</class>
+    <class>com.exception.magicsnumbersws.dao.BetBankingBetLimit</class>
+    <class>com.exception.magicsnumbersws.dao.User</class>
+    <class>com.exception.magicsnumbersws.dao.Profile</class>
+    <class>com.exception.magicsnumbersws.dao.WayToWinLottery</class>
+    <class>com.exception.magicsnumbersws.dao.Bet</class>
+    <class>com.exception.magicsnumbersws.dao.UserProfile</class>
+    <class>com.exception.magicsnumbersws.dao.BetBankingLottery</class>
+    <class>com.exception.magicsnumbersws.dao.WayToWinBet</class>
+    <class>com.exception.magicsnumbersws.dao.Sysdiagrams</class>
+    <class>com.exception.magicsnumbersws.dao.WinningNumber</class>
+    <class>com.exception.magicsnumbersws.dao.HistoryOperation</class>
+    <class>com.exception.magicsnumbersws.dao.Operation</class>
+    <class>com.exception.magicsnumbersws.dao.OperationType</class>
+    <class>com.exception.magicsnumbersws.dao.BetBanking</class>
+    <class>com.exception.magicsnumbersws.dao.UserConsortium</class>
+    <class>com.exception.magicsnumbersws.dao.WayToWin</class>
+    <class>com.exception.magicsnumbersws.dao.BlockingNumber</class>
+    <class>com.exception.magicsnumbersws.dao.SystemOption</class>
+    <class>com.exception.magicsnumbersws.dao.TicketDetail</class>
+    <class>com.exception.magicsnumbersws.dao.Lottery</class>
+    <class>com.exception.magicsnumbersws.dao.BetType</class>
+    <class>com.exception.magicsnumbersws.dao.OptionCategory</class>
+    <class>com.exception.magicsnumbersws.dao.Status</class>
+    <class>com.exception.magicsnumbersws.dao.Consortium</class>
+    <class>com.exception.magicsnumbersws.entities.OptionsCategory</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="hibernate.connection.username" value="sa"/>

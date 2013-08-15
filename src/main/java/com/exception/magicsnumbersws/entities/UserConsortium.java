@@ -18,6 +18,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -28,26 +29,25 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "USERS_CONSORTIUMS")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "UserConsortium.findAll", query = "SELECT u FROM UserConsortium u"),
-    @NamedQuery(name = "UserConsortium.findByUser", query = "SELECT u FROM UserConsortium u WHERE u.userConsortiumPK.user = :user"),
-    @NamedQuery(name = "UserConsortium.findByConsortium", query = "SELECT u FROM UserConsortium u WHERE u.userConsortiumPK.consortium = :consortium"),
-    @NamedQuery(name = "UserConsortium.findByCreationDate", query = "SELECT u FROM UserConsortium u WHERE u.creationDate = :creationDate")})
+    @NamedQuery(name = "UserConsortium.findAll", query = "SELECT u FROM UserConsortium u")})
 public class UserConsortium implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected UserConsortiumPK userConsortiumPK;
     @Basic(optional = false)
     @NotNull
+    @Size(min = 1, max = 50)
+    @Column(name = "CREATION_USER")
+    private String creationUser;
+    @Basic(optional = false)
+    @NotNull
     @Column(name = "CREATION_DATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date creationDate;
-    @JoinColumn(name = "USER", referencedColumnName = "ID", insertable = false, updatable = false)
+    @JoinColumn(name = "USER_ID", referencedColumnName = "ID", insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private User user;
-    @JoinColumn(name = "CREATION_USER", referencedColumnName = "ID")
-    @ManyToOne(optional = false)
-    private User creationUser;
-    @JoinColumn(name = "CONSORTIUM", referencedColumnName = "ID", insertable = false, updatable = false)
+    @JoinColumn(name = "CONSORTIUM_ID", referencedColumnName = "ID", insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Consortium consortium;
 
@@ -58,13 +58,14 @@ public class UserConsortium implements Serializable {
         this.userConsortiumPK = userConsortiumPK;
     }
 
-    public UserConsortium(UserConsortiumPK userConsortiumPK, Date creationDate) {
+    public UserConsortium(UserConsortiumPK userConsortiumPK, String creationUser, Date creationDate) {
         this.userConsortiumPK = userConsortiumPK;
+        this.creationUser = creationUser;
         this.creationDate = creationDate;
     }
 
-    public UserConsortium(int user, int consortium) {
-        this.userConsortiumPK = new UserConsortiumPK(user, consortium);
+    public UserConsortium(int userId, int consortiumId) {
+        this.userConsortiumPK = new UserConsortiumPK(userId, consortiumId);
     }
 
     public UserConsortiumPK getUserConsortiumPK() {
@@ -73,6 +74,14 @@ public class UserConsortium implements Serializable {
 
     public void setUserConsortiumPK(UserConsortiumPK userConsortiumPK) {
         this.userConsortiumPK = userConsortiumPK;
+    }
+
+    public String getCreationUser() {
+        return creationUser;
+    }
+
+    public void setCreationUser(String creationUser) {
+        this.creationUser = creationUser;
     }
 
     public Date getCreationDate() {
@@ -87,16 +96,8 @@ public class UserConsortium implements Serializable {
         return user;
     }
 
-    public void setUser1(User user) {
+    public void setUser(User user) {
         this.user = user;
-    }
-
-    public User getCreationUser() {
-        return creationUser;
-    }
-
-    public void setCreationUser(User creationUser) {
-        this.creationUser = creationUser;
     }
 
     public Consortium getConsortium() {

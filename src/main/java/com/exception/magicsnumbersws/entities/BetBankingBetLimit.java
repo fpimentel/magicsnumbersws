@@ -11,7 +11,6 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -20,6 +19,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -27,68 +27,60 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author fpimentel
  */
 @Entity
-@Table(name = "BETBANKING_BETLIMIT")
+@Table(name = "BET_BANKING_BET_LIMIT")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "BetBankingBetLimit.findAll", query = "SELECT b FROM BetBankingBetLimit b"),
-    @NamedQuery(name = "BetBankingBetLimit.findById", query = "SELECT b FROM BetBankingBetLimit b WHERE b.id = :id"),
-    @NamedQuery(name = "BetBankingBetLimit.findByBet", query = "SELECT b FROM BetBankingBetLimit b WHERE b.bet = :bet"),
-    @NamedQuery(name = "BetBankingBetLimit.findByAmountLimit", query = "SELECT b FROM BetBankingBetLimit b WHERE b.amountLimit = :amountLimit")})
+    @NamedQuery(name = "BetBankingBetLimit.findAll", query = "SELECT b FROM BetBankingBetLimit b")})
 public class BetBankingBetLimit implements Serializable {
-    
     private static final long serialVersionUID = 1L;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "CREATION_DATE")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date creationDate;
-    @JoinColumn(name = "USER", referencedColumnName = "ID")
-    @ManyToOne(optional = false)
-    private User creationUser;
-    @JoinColumn(name = "BET", referencedColumnName = "ID")
-    @ManyToOne(optional = false)        
-    private Bet bet;    
-    @Id
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "ID")
-    private Integer id;    
+    @EmbeddedId
+    protected BetBankingBetLimitPK betBankingBetLimitPK;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Basic(optional = false)
     @NotNull
     @Column(name = "AMOUNT_LIMIT")
     private BigDecimal amountLimit;
-    @JoinColumn(name = "BETBANKING", referencedColumnName = "ID")
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 50)
+    @Column(name = "CREATION_USER")
+    private String creationUser;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "CREATION_DATE")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date creationDate;
+    @JoinColumn(name = "BETBANKING_ID", referencedColumnName = "ID", insertable = false, updatable = false)
     @ManyToOne(optional = false)
-    private BetBanking betbanking;
+    private BetBanking betBanking;
+    @JoinColumn(name = "BET_ID", referencedColumnName = "ID", insertable = false, updatable = false)
+    @ManyToOne(optional = false)
+    private Bet bet;
 
     public BetBankingBetLimit() {
     }
 
-    public BetBankingBetLimit(Integer id) {
-        this.id = id;
+    public BetBankingBetLimit(BetBankingBetLimitPK betBankingBetLimitPK) {
+        this.betBankingBetLimitPK = betBankingBetLimitPK;
     }
 
-    public BetBankingBetLimit(Integer id, Bet bet, BigDecimal amountLimit) {
-        this.id = id;
-        this.bet = bet;
+    public BetBankingBetLimit(BetBankingBetLimitPK betBankingBetLimitPK, BigDecimal amountLimit, String creationUser, Date creationDate) {
+        this.betBankingBetLimitPK = betBankingBetLimitPK;
         this.amountLimit = amountLimit;
+        this.creationUser = creationUser;
+        this.creationDate = creationDate;
     }
 
-    public Integer getId() {
-        return id;
+    public BetBankingBetLimit(int betId, int betbankingId) {
+        this.betBankingBetLimitPK = new BetBankingBetLimitPK(betId, betbankingId);
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public BetBankingBetLimitPK getBetBankingBetLimitPK() {
+        return betBankingBetLimitPK;
     }
 
-    public Bet getBet() {
-        return bet;
-    }
-
-    public void setBet(Bet bet) {
-        this.bet = bet;
+    public void setBetBankingBetLimitPK(BetBankingBetLimitPK betBankingBetLimitPK) {
+        this.betBankingBetLimitPK = betBankingBetLimitPK;
     }
 
     public BigDecimal getAmountLimit() {
@@ -99,18 +91,42 @@ public class BetBankingBetLimit implements Serializable {
         this.amountLimit = amountLimit;
     }
 
-    public BetBanking getBetbanking() {
-        return betbanking;
+    public String getCreationUser() {
+        return creationUser;
     }
 
-    public void setBetbanking(BetBanking betbanking) {
-        this.betbanking = betbanking;
+    public void setCreationUser(String creationUser) {
+        this.creationUser = creationUser;
+    }
+
+    public Date getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    public BetBanking getBetBanking() {
+        return betBanking;
+    }
+
+    public void setBetBanking(BetBanking betBanking) {
+        this.betBanking = betBanking;
+    }
+
+    public Bet getBet() {
+        return bet;
+    }
+
+    public void setBet(Bet bet) {
+        this.bet = bet;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        hash += (betBankingBetLimitPK != null ? betBankingBetLimitPK.hashCode() : 0);
         return hash;
     }
 
@@ -121,7 +137,7 @@ public class BetBankingBetLimit implements Serializable {
             return false;
         }
         BetBankingBetLimit other = (BetBankingBetLimit) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if ((this.betBankingBetLimitPK == null && other.betBankingBetLimitPK != null) || (this.betBankingBetLimitPK != null && !this.betBankingBetLimitPK.equals(other.betBankingBetLimitPK))) {
             return false;
         }
         return true;
@@ -129,24 +145,7 @@ public class BetBankingBetLimit implements Serializable {
 
     @Override
     public String toString() {
-        return "com.exception.magicsnumbersws.entities.BetBankingBetLimit[ id=" + id + " ]";
+        return "com.exception.magicsnumbersws.entities.BetBankingBetLimit[ betBankingBetLimitPK=" + betBankingBetLimitPK + " ]";
     }
-
-
-    public Date getCreationDate() {
-        return creationDate;
-    }
-
-    public void setCreationDate(Date creationDate) {
-        this.creationDate = creationDate;
-    }
-
-    public User getCreationUser() {
-        return creationUser;
-    }
-
-    public void setCreationUser(User creationUser) {
-        this.creationUser = creationUser;
-    }      
     
 }

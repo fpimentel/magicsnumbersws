@@ -18,40 +18,38 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
  * @author fpimentel
  */
-
 @Entity
 @Table(name = "USERS_PROFILES")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "UserProfile.findAll", query = "SELECT u FROM UserProfile u"),
-    @NamedQuery(name = "UserProfile.findByUser", query = "SELECT u FROM UserProfile u WHERE u.userProfilePK.user = :user"),
-    @NamedQuery(name = "UserProfile.findByProfile", query = "SELECT u FROM UserProfile u WHERE u.userProfilePK.profile = :profile"),
-    @NamedQuery(name = "UserProfile.findByCreationDate", query = "SELECT u FROM UserProfile u WHERE u.creationDate = :creationDate")})
+    @NamedQuery(name = "UserProfile.findAll", query = "SELECT u FROM UserProfile u")})
 public class UserProfile implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected UserProfilePK userProfilePK;
     @Basic(optional = false)
     @NotNull
+    @Size(min = 1, max = 50)
+    @Column(name = "CREATION_USER")
+    private String creationUser;
+    @Basic(optional = false)
+    @NotNull
     @Column(name = "CREATION_DATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date creationDate;
-    @JoinColumn(name = "USER", referencedColumnName = "ID", insertable = false, updatable = false)
+    @JoinColumn(name = "USER_ID", referencedColumnName = "ID", insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private User user;
-    @JoinColumn(name = "CREATION_USER", referencedColumnName = "ID")
+    @JoinColumn(name = "PROFILE_ID", referencedColumnName = "ID", insertable = false, updatable = false)
     @ManyToOne(optional = false)
-    private User creationUser;
-    @JoinColumn(name = "PROFILE", referencedColumnName = "ID", insertable = false, updatable = false)
-    @ManyToOne(optional = false)
-    private Profile profile;    
-  
+    private Profile profile;
 
     public UserProfile() {
     }
@@ -60,13 +58,14 @@ public class UserProfile implements Serializable {
         this.userProfilePK = userProfilePK;
     }
 
-    public UserProfile(UserProfilePK userProfilePK, Date creationDate) {
+    public UserProfile(UserProfilePK userProfilePK, String creationUser, Date creationDate) {
         this.userProfilePK = userProfilePK;
+        this.creationUser = creationUser;
         this.creationDate = creationDate;
     }
 
-    public UserProfile(int user, int profile) {
-        this.userProfilePK = new UserProfilePK(user, profile);
+    public UserProfile(int userId, int profileId) {
+        this.userProfilePK = new UserProfilePK(userId, profileId);
     }
 
     public UserProfilePK getUserProfilePK() {
@@ -75,6 +74,14 @@ public class UserProfile implements Serializable {
 
     public void setUserProfilePK(UserProfilePK userProfilePK) {
         this.userProfilePK = userProfilePK;
+    }
+
+    public String getCreationUser() {
+        return creationUser;
+    }
+
+    public void setCreationUser(String creationUser) {
+        this.creationUser = creationUser;
     }
 
     public Date getCreationDate() {
@@ -91,14 +98,6 @@ public class UserProfile implements Serializable {
 
     public void setUser(User user) {
         this.user = user;
-    }
-
-    public User getCreationUser() {
-        return creationUser;
-    }
-
-    public void setCreationUser(User creationUser) {
-        this.creationUser = creationUser;
     }
 
     public Profile getProfile() {
@@ -132,5 +131,6 @@ public class UserProfile implements Serializable {
     @Override
     public String toString() {
         return "com.exception.magicsnumbersws.entities.UserProfile[ userProfilePK=" + userProfilePK + " ]";
-    }    
+    }
+    
 }

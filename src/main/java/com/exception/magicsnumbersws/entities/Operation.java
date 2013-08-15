@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.exception.magicsnumbersws.entities;
 
 import java.io.Serializable;
@@ -11,7 +10,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -28,26 +26,26 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "OPERATIONS")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Operation.findAll", query = "SELECT o FROM Operation o"),
-    @NamedQuery(name = "Operation.findById", query = "SELECT o FROM Operation o WHERE o.id = :id")})
+    @NamedQuery(name = "Operation.findAll", query = "SELECT o FROM Operation o")})
 public class Operation implements Serializable {
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 100)
-    @Column(name = "NAME")
-    private String name;
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
     @NotNull
     @Column(name = "ID")
     private Integer id;
-    @JoinColumn(name = "STATUS", referencedColumnName = "ID")
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 100)
+    @Column(name = "NAME")
+    private String name;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "STATUS_ID")
+    private int statusId;
+    @JoinColumn(name = "OPERATION_TYPE_ID", referencedColumnName = "ID")
     @ManyToOne(optional = false)
-    private Status status;
-    @JoinColumn(name = "OPERATION_TYPE", referencedColumnName = "ID")
-    @ManyToOne(optional = false)
-    private OperationType operationType;
+    private OperationType operationTypeId;
 
     public Operation() {
     }
@@ -56,9 +54,10 @@ public class Operation implements Serializable {
         this.id = id;
     }
 
-    public Operation(Integer id, String name) {
+    public Operation(Integer id, String name, int statusId) {
         this.id = id;
         this.name = name;
+        this.statusId = statusId;
     }
 
     public Integer getId() {
@@ -69,20 +68,28 @@ public class Operation implements Serializable {
         this.id = id;
     }
 
-    public Status getStatus() {
-        return status;
+    public String getName() {
+        return name;
     }
 
-    public void setStatus(Status status) {
-        this.status = status;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public OperationType getOperationType() {
-        return operationType;
+    public int getStatusId() {
+        return statusId;
     }
 
-    public void setOperationType(OperationType operationType) {
-        this.operationType = operationType;
+    public void setStatusId(int statusId) {
+        this.statusId = statusId;
+    }
+
+    public OperationType getOperationTypeId() {
+        return operationTypeId;
+    }
+
+    public void setOperationTypeId(OperationType operationTypeId) {
+        this.operationTypeId = operationTypeId;
     }
 
     @Override
@@ -109,13 +116,5 @@ public class Operation implements Serializable {
     public String toString() {
         return "com.exception.magicsnumbersws.entities.Operation[ id=" + id + " ]";
     }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
+    
 }

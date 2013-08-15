@@ -12,9 +12,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -32,23 +29,8 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "WAYS_TO_WIN")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "WayToWin.findAll", query = "SELECT w FROM WayToWin w"),
-    @NamedQuery(name = "WayToWin.findById", query = "SELECT w FROM WayToWin w WHERE w.id = :id"),
-    @NamedQuery(name = "WayToWin.findByDisplayName", query = "SELECT w FROM WayToWin w WHERE w.displayName = :displayName"),
-    @NamedQuery(name = "WayToWin.findByDescription", query = "SELECT w FROM WayToWin w WHERE w.description = :description"),
-    @NamedQuery(name = "WayToWin.findByWinningPositions", query = "SELECT w FROM WayToWin w WHERE w.winningPositions = :winningPositions"),
-    @NamedQuery(name = "WayToWin.findByIsCombined", query = "SELECT w FROM WayToWin w WHERE w.isCombined = :isCombined"),
-    @NamedQuery(name = "WayToWin.findByPayableAmount", query = "SELECT w FROM WayToWin w WHERE w.payableAmount = :payableAmount"),
-    @NamedQuery(name = "WayToWin.findByQtyUHaveToHit", query = "SELECT w FROM WayToWin w WHERE w.qtyUHaveToHit = :qtyUHaveToHit"),
-    @NamedQuery(name = "WayToWin.findByLotteryNumberBallPos", query = "SELECT w FROM WayToWin w WHERE w.lotteryNumberBallPos = :lotteryNumberBallPos"),
-    @NamedQuery(name = "WayToWin.findByBetRelatedPos", query = "SELECT w FROM WayToWin w WHERE w.betRelatedPos = :betRelatedPos"),
-    @NamedQuery(name = "WayToWin.findByAmountToWin", query = "SELECT w FROM WayToWin w WHERE w.amountToWin = :amountToWin"),
-    @NamedQuery(name = "WayToWin.findByRoloverAmount", query = "SELECT w FROM WayToWin w WHERE w.roloverAmount = :roloverAmount")})
+    @NamedQuery(name = "WayToWin.findAll", query = "SELECT w FROM WayToWin w")})
 public class WayToWin implements Serializable {
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "wayToWin1")
-    private Collection<WayTOWinBet> wayTOWinBetCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "wayToWin1")
-    private Collection<WaysTOWinLottery> waysTOWinLotteryCollection;
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -81,27 +63,20 @@ public class WayToWin implements Serializable {
     @NotNull
     @Column(name = "QTY_U_HAVE_TO_HIT")
     private int qtyUHaveToHit;
-    @Column(name = "LOTTERY_NUMBER_BALL_POS")
-    private Integer lotteryNumberBallPos;
-    @Column(name = "BET_RELATED_POS")
-    private Integer betRelatedPos;
     @Basic(optional = false)
     @NotNull
     @Column(name = "AMOUNT_TO_WIN")
     private BigDecimal amountToWin;
     @Column(name = "ROLOVER_AMOUNT")
     private Boolean roloverAmount;
-    @ManyToMany(mappedBy = "wayToWinCollection")
-    private Collection<Bet> betCollection;
-    @JoinColumn(name = "STATUS", referencedColumnName = "ID")
-    @ManyToOne(optional = false)
-    private Status status;
-    @JoinColumn(name = "LOTTERY_RELATED", referencedColumnName = "ID")
-    @ManyToOne
-    private Lottery lotteryRelated;
-    @JoinColumn(name = "BET_RELATED", referencedColumnName = "ID")
-    @ManyToOne
-    private Bet betRelated;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "STATUS_ID")
+    private int statusId;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "wayToWinId")
+    private Collection<WayToWinBet> wayToWinBetCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "wayToWinId")
+    private Collection<WayToWinLottery> wayToWinLotteryCollection;
 
     public WayToWin() {
     }
@@ -110,7 +85,7 @@ public class WayToWin implements Serializable {
         this.id = id;
     }
 
-    public WayToWin(Integer id, String displayName, String winningPositions, boolean isCombined, BigDecimal payableAmount, int qtyUHaveToHit, BigDecimal amountToWin) {
+    public WayToWin(Integer id, String displayName, String winningPositions, boolean isCombined, BigDecimal payableAmount, int qtyUHaveToHit, BigDecimal amountToWin, int statusId) {
         this.id = id;
         this.displayName = displayName;
         this.winningPositions = winningPositions;
@@ -118,6 +93,7 @@ public class WayToWin implements Serializable {
         this.payableAmount = payableAmount;
         this.qtyUHaveToHit = qtyUHaveToHit;
         this.amountToWin = amountToWin;
+        this.statusId = statusId;
     }
 
     public Integer getId() {
@@ -176,22 +152,6 @@ public class WayToWin implements Serializable {
         this.qtyUHaveToHit = qtyUHaveToHit;
     }
 
-    public Integer getLotteryNumberBallPos() {
-        return lotteryNumberBallPos;
-    }
-
-    public void setLotteryNumberBallPos(Integer lotteryNumberBallPos) {
-        this.lotteryNumberBallPos = lotteryNumberBallPos;
-    }
-
-    public Integer getBetRelatedPos() {
-        return betRelatedPos;
-    }
-
-    public void setBetRelatedPos(Integer betRelatedPos) {
-        this.betRelatedPos = betRelatedPos;
-    }
-
     public BigDecimal getAmountToWin() {
         return amountToWin;
     }
@@ -208,37 +168,30 @@ public class WayToWin implements Serializable {
         this.roloverAmount = roloverAmount;
     }
 
+    public int getStatusId() {
+        return statusId;
+    }
+
+    public void setStatusId(int statusId) {
+        this.statusId = statusId;
+    }
+
     @XmlTransient
-    public Collection<Bet> getBetCollection() {
-        return betCollection;
+    public Collection<WayToWinBet> getWayToWinBetCollection() {
+        return wayToWinBetCollection;
     }
 
-    public void setBetCollection(Collection<Bet> betCollection) {
-        this.betCollection = betCollection;
+    public void setWayToWinBetCollection(Collection<WayToWinBet> wayToWinBetCollection) {
+        this.wayToWinBetCollection = wayToWinBetCollection;
     }
 
-    public Status getStatus() {
-        return status;
+    @XmlTransient
+    public Collection<WayToWinLottery> getWayToWinLotteryCollection() {
+        return wayToWinLotteryCollection;
     }
 
-    public void setStatus(Status status) {
-        this.status = status;
-    }
-
-    public Lottery getLotteryRelated() {
-        return lotteryRelated;
-    }
-
-    public void setLotteryRelated(Lottery lotteryRelated) {
-        this.lotteryRelated = lotteryRelated;
-    }
-
-    public Bet getBetRelated() {
-        return betRelated;
-    }
-
-    public void setBetRelated(Bet betRelated) {
-        this.betRelated = betRelated;
+    public void setWayToWinLotteryCollection(Collection<WayToWinLottery> wayToWinLotteryCollection) {
+        this.wayToWinLotteryCollection = wayToWinLotteryCollection;
     }
 
     @Override
@@ -264,24 +217,6 @@ public class WayToWin implements Serializable {
     @Override
     public String toString() {
         return "com.exception.magicsnumbersws.entities.WayToWin[ id=" + id + " ]";
-    }
-
-    @XmlTransient
-    public Collection<WayTOWinBet> getWayTOWinBetCollection() {
-        return wayTOWinBetCollection;
-    }
-
-    public void setWayTOWinBetCollection(Collection<WayTOWinBet> wayTOWinBetCollection) {
-        this.wayTOWinBetCollection = wayTOWinBetCollection;
-    }
-
-    @XmlTransient
-    public Collection<WaysTOWinLottery> getWaysTOWinLotteryCollection() {
-        return waysTOWinLotteryCollection;
-    }
-
-    public void setWaysTOWinLotteryCollection(Collection<WaysTOWinLottery> waysTOWinLotteryCollection) {
-        this.waysTOWinLotteryCollection = waysTOWinLotteryCollection;
     }
     
 }

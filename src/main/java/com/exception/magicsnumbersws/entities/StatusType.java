@@ -28,9 +28,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "STATUS_TYPES")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "StatusType.findAll", query = "SELECT s FROM StatusType s"),
-    @NamedQuery(name = "StatusType.findById", query = "SELECT s FROM StatusType s WHERE s.id = :id"),
-    @NamedQuery(name = "StatusType.findByName", query = "SELECT s FROM StatusType s WHERE s.name = :name")})
+    @NamedQuery(name = "StatusType.findAll", query = "SELECT s FROM StatusType s")})
 public class StatusType implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -43,7 +41,7 @@ public class StatusType implements Serializable {
     @Size(min = 1, max = 50)
     @Column(name = "NAME")
     private String name;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "statusType")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "statusTypeId")
     private Collection<Status> statusCollection;
 
     public StatusType() {

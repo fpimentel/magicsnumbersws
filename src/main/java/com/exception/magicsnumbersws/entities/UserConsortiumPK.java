@@ -18,42 +18,42 @@ import javax.validation.constraints.NotNull;
 public class UserConsortiumPK implements Serializable {
     @Basic(optional = false)
     @NotNull
-    @Column(name = "USER")
-    private int user;
+    @Column(name = "USER_ID")
+    private int userId;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "CONSORTIUM")
-    private int consortium;
+    @Column(name = "CONSORTIUM_ID")
+    private int consortiumId;
 
     public UserConsortiumPK() {
     }
 
-    public UserConsortiumPK(int user, int consortium) {
-        this.user = user;
-        this.consortium = consortium;
+    public UserConsortiumPK(int userId, int consortiumId) {
+        this.userId = userId;
+        this.consortiumId = consortiumId;
     }
 
-    public int getUser() {
-        return user;
+    public int getUserId() {
+        return userId;
     }
 
-    public void setUser(int user) {
-        this.user = user;
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
-    public int getConsortium() {
-        return consortium;
+    public int getConsortiumId() {
+        return consortiumId;
     }
 
-    public void setConsortium(int consortium) {
-        this.consortium = consortium;
+    public void setConsortiumId(int consortiumId) {
+        this.consortiumId = consortiumId;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (int) user;
-        hash += (int) consortium;
+        hash += (int) userId;
+        hash += (int) consortiumId;
         return hash;
     }
 
@@ -64,10 +64,10 @@ public class UserConsortiumPK implements Serializable {
             return false;
         }
         UserConsortiumPK other = (UserConsortiumPK) object;
-        if (this.user != other.user) {
+        if (this.userId != other.userId) {
             return false;
         }
-        if (this.consortium != other.consortium) {
+        if (this.consortiumId != other.consortiumId) {
             return false;
         }
         return true;
@@ -75,7 +75,7 @@ public class UserConsortiumPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.exception.magicsnumbersws.entities.UserConsortiumPK[ user=" + user + ", consortium=" + consortium + " ]";
+        return "com.exception.magicsnumbersws.entities.UserConsortiumPK[ userId=" + userId + ", consortiumId=" + consortiumId + " ]";
     }
     
 }

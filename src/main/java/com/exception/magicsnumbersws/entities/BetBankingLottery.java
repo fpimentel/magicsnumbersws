@@ -19,17 +19,15 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author fpimentel
  */
 @Entity
-@Table(name = "BETBANKING_LOTTERY")
+@Table(name = "BETS_BANKINGS_LOTTERIES")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "BetBankingLottery.findAll", query = "SELECT b FROM BetBankingLottery b"),
-    @NamedQuery(name = "BetBankingLottery.findByLottery", query = "SELECT b FROM BetBankingLottery b WHERE b.betBankingLotteryPK.lottery = :lottery"),
-    @NamedQuery(name = "BetBankingLottery.findByBetbanking", query = "SELECT b FROM BetBankingLottery b WHERE b.betBankingLotteryPK.betbanking = :betbanking")})
+    @NamedQuery(name = "BetBankingLottery.findAll", query = "SELECT b FROM BetBankingLottery b")})
 public class BetBankingLottery implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected BetBankingLotteryPK betBankingLotteryPK;
-    @JoinColumn(name = "BETBANKING", referencedColumnName = "ID", insertable = false, updatable = false)
+    @JoinColumn(name = "BETBANKING_ID", referencedColumnName = "ID", insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private BetBanking betBanking;
 
@@ -40,8 +38,8 @@ public class BetBankingLottery implements Serializable {
         this.betBankingLotteryPK = betBankingLotteryPK;
     }
 
-    public BetBankingLottery(int lottery, int betbanking) {
-        this.betBankingLotteryPK = new BetBankingLotteryPK(lottery, betbanking);
+    public BetBankingLottery(int lotteryId, int betbankingId) {
+        this.betBankingLotteryPK = new BetBankingLotteryPK(lotteryId, betbankingId);
     }
 
     public BetBankingLotteryPK getBetBankingLotteryPK() {

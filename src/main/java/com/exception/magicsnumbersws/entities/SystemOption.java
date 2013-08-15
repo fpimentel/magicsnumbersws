@@ -11,8 +11,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -30,14 +28,8 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "SYSTEM_OPTIONS")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "SystemOption.findAll", query = "SELECT s FROM SystemOption s"),
-    @NamedQuery(name = "SystemOption.findById", query = "SELECT s FROM SystemOption s WHERE s.id = :id"),
-    @NamedQuery(name = "SystemOption.findByName", query = "SELECT s FROM SystemOption s WHERE s.name = :name"),
-    @NamedQuery(name = "SystemOption.findByDescription", query = "SELECT s FROM SystemOption s WHERE s.description = :description"),
-    @NamedQuery(name = "SystemOption.findByStatus", query = "SELECT s FROM SystemOption s WHERE s.status = :status")})
+    @NamedQuery(name = "SystemOption.findAll", query = "SELECT s FROM SystemOption s")})
 public class SystemOption implements Serializable {
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "systemOption")
-    private Collection<Profile> profileCollection;
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -54,11 +46,14 @@ public class SystemOption implements Serializable {
     private String description;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "STATUS")
-    private int status;
-    @JoinColumn(name = "OPTION_CATEGORY", referencedColumnName = "ID")
-    @ManyToOne(optional = false)
-    private OptionCategory optionCategory;
+    @Column(name = "OPTION_CATEGORY")
+    private int optionCategory;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "STATUS_ID")
+    private int statusId;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "systemOptionId")
+    private Collection<Profile> profileCollection;
 
     public SystemOption() {
     }
@@ -67,10 +62,11 @@ public class SystemOption implements Serializable {
         this.id = id;
     }
 
-    public SystemOption(Integer id, String name, int status) {
+    public SystemOption(Integer id, String name, int optionCategory, int statusId) {
         this.id = id;
         this.name = name;
-        this.status = status;
+        this.optionCategory = optionCategory;
+        this.statusId = statusId;
     }
 
     public Integer getId() {
@@ -97,20 +93,29 @@ public class SystemOption implements Serializable {
         this.description = description;
     }
 
-    public int getStatus() {
-        return status;
-    }
-
-    public void setStatus(int status) {
-        this.status = status;
-    }
-
-    public OptionCategory getOptionCategory() {
+    public int getOptionCategory() {
         return optionCategory;
     }
 
-    public void setOptionCategory(OptionCategory optionCategory) {
+    public void setOptionCategory(int optionCategory) {
         this.optionCategory = optionCategory;
+    }
+
+    public int getStatusId() {
+        return statusId;
+    }
+
+    public void setStatusId(int statusId) {
+        this.statusId = statusId;
+    }
+
+    @XmlTransient
+    public Collection<Profile> getProfileCollection() {
+        return profileCollection;
+    }
+
+    public void setProfileCollection(Collection<Profile> profileCollection) {
+        this.profileCollection = profileCollection;
     }
 
     @Override
@@ -136,15 +141,6 @@ public class SystemOption implements Serializable {
     @Override
     public String toString() {
         return "com.exception.magicsnumbersws.entities.SystemOption[ id=" + id + " ]";
-    }
-
-    @XmlTransient
-    public Collection<Profile> getProfileCollection() {
-        return profileCollection;
-    }
-
-    public void setProfileCollection(Collection<Profile> profileCollection) {
-        this.profileCollection = profileCollection;
     }
     
 }

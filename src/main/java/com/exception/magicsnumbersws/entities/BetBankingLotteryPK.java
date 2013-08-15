@@ -18,42 +18,42 @@ import javax.validation.constraints.NotNull;
 public class BetBankingLotteryPK implements Serializable {
     @Basic(optional = false)
     @NotNull
-    @Column(name = "LOTTERY")
-    private int lottery;
+    @Column(name = "LOTTERY_ID")
+    private int lotteryId;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "BETBANKING")
-    private int betbanking;
+    @Column(name = "BETBANKING_ID")
+    private int betbankingId;
 
     public BetBankingLotteryPK() {
     }
 
-    public BetBankingLotteryPK(int lottery, int betbanking) {
-        this.lottery = lottery;
-        this.betbanking = betbanking;
+    public BetBankingLotteryPK(int lotteryId, int betbankingId) {
+        this.lotteryId = lotteryId;
+        this.betbankingId = betbankingId;
     }
 
-    public int getLottery() {
-        return lottery;
+    public int getLotteryId() {
+        return lotteryId;
     }
 
-    public void setLottery(int lottery) {
-        this.lottery = lottery;
+    public void setLotteryId(int lotteryId) {
+        this.lotteryId = lotteryId;
     }
 
-    public int getBetbanking() {
-        return betbanking;
+    public int getBetbankingId() {
+        return betbankingId;
     }
 
-    public void setBetbanking(int betbanking) {
-        this.betbanking = betbanking;
+    public void setBetbankingId(int betbankingId) {
+        this.betbankingId = betbankingId;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (int) lottery;
-        hash += (int) betbanking;
+        hash += (int) lotteryId;
+        hash += (int) betbankingId;
         return hash;
     }
 
@@ -64,10 +64,10 @@ public class BetBankingLotteryPK implements Serializable {
             return false;
         }
         BetBankingLotteryPK other = (BetBankingLotteryPK) object;
-        if (this.lottery != other.lottery) {
+        if (this.lotteryId != other.lotteryId) {
             return false;
         }
-        if (this.betbanking != other.betbanking) {
+        if (this.betbankingId != other.betbankingId) {
             return false;
         }
         return true;
@@ -75,7 +75,7 @@ public class BetBankingLotteryPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.exception.magicsnumbersws.entities.BetBankingLotteryPK[ lottery=" + lottery + ", betbanking=" + betbanking + " ]";
+        return "com.exception.magicsnumbersws.entities.BetBankingLotteryPK[ lotteryId=" + lotteryId + ", betbankingId=" + betbankingId + " ]";
     }
     
 }

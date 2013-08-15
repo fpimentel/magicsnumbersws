@@ -11,7 +11,6 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.Lob;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -29,14 +28,27 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "BLOCKING_NUMBERS")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "BlockingNumber.findAll", query = "SELECT b FROM BlockingNumber b"),
-    @NamedQuery(name = "BlockingNumber.findById", query = "SELECT b FROM BlockingNumber b WHERE b.id = :id"),
-    @NamedQuery(name = "BlockingNumber.findByUserId", query = "SELECT b FROM BlockingNumber b WHERE b.userId = :userId"),
-    @NamedQuery(name = "BlockingNumber.findByLottery", query = "SELECT b FROM BlockingNumber b WHERE b.lottery = :lottery"),
-    @NamedQuery(name = "BlockingNumber.findByBetDay", query = "SELECT b FROM BlockingNumber b WHERE b.betDay = :betDay"),
-    @NamedQuery(name = "BlockingNumber.findByAmountLimit", query = "SELECT b FROM BlockingNumber b WHERE b.amountLimit = :amountLimit"),
-    @NamedQuery(name = "BlockingNumber.findByInsertionDate", query = "SELECT b FROM BlockingNumber b WHERE b.insertionDate = :insertionDate")})
+    @NamedQuery(name = "BlockingNumber.findAll", query = "SELECT b FROM BlockingNumber b")})
 public class BlockingNumber implements Serializable {
+    private static final long serialVersionUID = 1L;
+    @Id
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "ID")
+    private Integer id;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 50)
+    @Column(name = "CREATION_USER")
+    private String creationUser;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "LOTTERY_ID")
+    private int lotteryId;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "BET_DAY")
+    private int betDay;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 100)
@@ -52,24 +64,6 @@ public class BlockingNumber implements Serializable {
     @Column(name = "INSERTION_DATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date insertionDate;
-    private static final long serialVersionUID = 1L;
-    @Id
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "ID")
-    private Integer id;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "USER_ID")
-    private int userId;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "LOTTERY")
-    private int lottery;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "BET_DAY")
-    private int betDay;
 
     public BlockingNumber() {
     }
@@ -78,10 +72,10 @@ public class BlockingNumber implements Serializable {
         this.id = id;
     }
 
-    public BlockingNumber(Integer id, int userId, int lottery, int betDay, String numbers, BigDecimal amountLimit, Date insertionDate) {
+    public BlockingNumber(Integer id, String creationUser, int lotteryId, int betDay, String numbers, BigDecimal amountLimit, Date insertionDate) {
         this.id = id;
-        this.userId = userId;
-        this.lottery = lottery;
+        this.creationUser = creationUser;
+        this.lotteryId = lotteryId;
         this.betDay = betDay;
         this.numbers = numbers;
         this.amountLimit = amountLimit;
@@ -96,20 +90,20 @@ public class BlockingNumber implements Serializable {
         this.id = id;
     }
 
-    public int getUserId() {
-        return userId;
+    public String getCreationUser() {
+        return creationUser;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setCreationUser(String creationUser) {
+        this.creationUser = creationUser;
     }
 
-    public int getLottery() {
-        return lottery;
+    public int getLotteryId() {
+        return lotteryId;
     }
 
-    public void setLottery(int lottery) {
-        this.lottery = lottery;
+    public void setLotteryId(int lotteryId) {
+        this.lotteryId = lotteryId;
     }
 
     public int getBetDay() {
@@ -118,6 +112,14 @@ public class BlockingNumber implements Serializable {
 
     public void setBetDay(int betDay) {
         this.betDay = betDay;
+    }
+
+    public String getNumbers() {
+        return numbers;
+    }
+
+    public void setNumbers(String numbers) {
+        this.numbers = numbers;
     }
 
     public BigDecimal getAmountLimit() {
@@ -160,12 +162,5 @@ public class BlockingNumber implements Serializable {
     public String toString() {
         return "com.exception.magicsnumbersws.entities.BlockingNumber[ id=" + id + " ]";
     }
-
-    public String getNumbers() {
-        return numbers;
-    }
-
-    public void setNumbers(String numbers) {
-        this.numbers = numbers;
-    }   
+    
 }

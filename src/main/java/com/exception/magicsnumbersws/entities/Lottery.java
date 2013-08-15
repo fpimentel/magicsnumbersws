@@ -12,9 +12,8 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -34,24 +33,8 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "LOTTERIES")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Lottery.findAll", query = "SELECT l FROM Lottery l"),
-    @NamedQuery(name = "Lottery.findById", query = "SELECT l FROM Lottery l WHERE l.id = :id"),
-    @NamedQuery(name = "Lottery.findByName", query = "SELECT l FROM Lottery l WHERE l.name = :name"),
-    @NamedQuery(name = "Lottery.findByStatus", query = "SELECT l FROM Lottery l WHERE l.status = :status")})
+    @NamedQuery(name = "Lottery.findAll", query = "SELECT l FROM Lottery l")})
 public class Lottery implements Serializable {
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "CREATION_DATE")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date creationDate;
-    @JoinColumn(name = "USER_CREATION", referencedColumnName = "ID")
-    @ManyToOne(optional = false)
-    private User userCreation;
-    @JoinColumn(name = "STATUS", referencedColumnName = "ID")
-    @ManyToOne(optional = false)
-    private Status status;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "lottery1")
-    private Collection<WaysTOWinLottery> waysTOWinLotteryCollection;
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -62,13 +45,29 @@ public class Lottery implements Serializable {
     @NotNull
     @Size(min = 1, max = 100)
     @Column(name = "NAME")
-    private String name;    
+    private String name;
+    @Basic(optional = false)
+    @NotNull
+    @Lob
+    @Column(name = "USER_CREATION")
+    private byte[] userCreation;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "CREATION_DATE")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date creationDate;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "STATUS_ID")
+    private int statusId;
     @ManyToMany(mappedBy = "lotteryCollection")
     private Collection<Bet> betCollection;
-    @OneToMany(mappedBy = "lotteryRelated")
-    private Collection<WayToWin> wayToWinCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "lottery")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "lotteryId")
     private Collection<WinningNumber> winningNumberCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "lotteryId")
+    private Collection<TicketDetail> ticketDetailCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "lotteryId")
+    private Collection<WayToWinLottery> wayToWinLotteryCollection;
 
     public Lottery() {
     }
@@ -77,10 +76,12 @@ public class Lottery implements Serializable {
         this.id = id;
     }
 
-    public Lottery(Integer id, String name, Status status) {
+    public Lottery(Integer id, String name, byte[] userCreation, Date creationDate, int statusId) {
         this.id = id;
         this.name = name;
-        this.status = status;
+        this.userCreation = userCreation;
+        this.creationDate = creationDate;
+        this.statusId = statusId;
     }
 
     public Integer getId() {
@@ -99,12 +100,28 @@ public class Lottery implements Serializable {
         this.name = name;
     }
 
-    public Status getStatus() {
-        return status;
+    public byte[] getUserCreation() {
+        return userCreation;
     }
 
-    public void setStatus(Status status) {
-        this.status = status;
+    public void setUserCreation(byte[] userCreation) {
+        this.userCreation = userCreation;
+    }
+
+    public Date getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    public int getStatusId() {
+        return statusId;
+    }
+
+    public void setStatusId(int statusId) {
+        this.statusId = statusId;
     }
 
     @XmlTransient
@@ -117,21 +134,30 @@ public class Lottery implements Serializable {
     }
 
     @XmlTransient
-    public Collection<WayToWin> getWayToWinCollection() {
-        return wayToWinCollection;
-    }
-
-    public void setWayToWinCollection(Collection<WayToWin> wayToWinCollection) {
-        this.wayToWinCollection = wayToWinCollection;
-    }
-
-    @XmlTransient
     public Collection<WinningNumber> getWinningNumberCollection() {
         return winningNumberCollection;
     }
 
     public void setWinningNumberCollection(Collection<WinningNumber> winningNumberCollection) {
         this.winningNumberCollection = winningNumberCollection;
+    }
+
+    @XmlTransient
+    public Collection<TicketDetail> getTicketDetailCollection() {
+        return ticketDetailCollection;
+    }
+
+    public void setTicketDetailCollection(Collection<TicketDetail> ticketDetailCollection) {
+        this.ticketDetailCollection = ticketDetailCollection;
+    }
+
+    @XmlTransient
+    public Collection<WayToWinLottery> getWayToWinLotteryCollection() {
+        return wayToWinLotteryCollection;
+    }
+
+    public void setWayToWinLotteryCollection(Collection<WayToWinLottery> wayToWinLotteryCollection) {
+        this.wayToWinLotteryCollection = wayToWinLotteryCollection;
     }
 
     @Override
@@ -157,31 +183,6 @@ public class Lottery implements Serializable {
     @Override
     public String toString() {
         return "com.exception.magicsnumbersws.entities.Lottery[ id=" + id + " ]";
-    }
-
-    public Date getCreationDate() {
-        return creationDate;
-    }
-
-    public void setCreationDate(Date creationDate) {
-        this.creationDate = creationDate;
-    }
-
-    public User getUserCreation() {
-        return userCreation;
-    }
-
-    public void setUserCreation(User userCreation) {
-        this.userCreation = userCreation;
-    }
-
-    @XmlTransient
-    public Collection<WaysTOWinLottery> getWaysTOWinLotteryCollection() {
-        return waysTOWinLotteryCollection;
-    }
-
-    public void setWaysTOWinLotteryCollection(Collection<WaysTOWinLottery> waysTOWinLotteryCollection) {
-        this.waysTOWinLotteryCollection = waysTOWinLotteryCollection;
     }
     
 }

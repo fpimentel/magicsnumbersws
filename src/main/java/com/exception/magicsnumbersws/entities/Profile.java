@@ -7,12 +7,17 @@ package com.exception.magicsnumbersws.entities;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -22,6 +27,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -32,43 +38,49 @@ import javax.xml.bind.annotation.XmlTransient;
 @Entity
 @Table(name = "PROFILES")
 @XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Profile.findAll", query = "SELECT p FROM Profile p"),
-    @NamedQuery(name = "Profile.findById", query = "SELECT p FROM Profile p WHERE p.id = :id"),
-    @NamedQuery(name = "Profile.findByInitialOption", query = "SELECT p FROM Profile p WHERE p.initialOption = :initialOption")})
 public class Profile implements Serializable {
+    private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
     @NotNull
-    @Column(name = "ID")
+    @Column(name = "ID")    
     private Integer id;
-    private static final long serialVersionUID = 1L;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 100)
-    @Column(name = "NAME")
+    @Size(min = 1, max = 80)
+    @Column(name = "NAME")   
     private String name;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "CREATION_DATE")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date creationDate;    
-    @JoinColumn(name = "CREATION_USER", referencedColumnName = "ID")
-    @ManyToOne(optional = false)
-    private User creationUser;
-    @JoinColumn(name = "SYSTEM_OPTION", referencedColumnName = "ID")
-    @ManyToOne(optional = false)
-    private SystemOption systemOption;            
+    @Size(min = 1, max = 250)
+    @Column(name = "DESCRIPTION")    
+    private String description;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "INITIAL_OPTION")
-    private int initialOption;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "profile")
-    private Collection<User> userCollection;
-    @JoinColumn(name = "STATUS", referencedColumnName = "ID")
-    @ManyToOne(optional = false)
-    private Status status;
-
+    @Size(min = 1, max = 50)
+    @Column(name = "CREATION_USER")    
+    private String creationUser;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "CREATION_DATE")
+    @Temporal(TemporalType.TIMESTAMP)    
+    private Date creationDate;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "STATUS_ID")    
+    private int statusId;
+    @JoinColumn(name = "SYSTEM_OPTION_ID", referencedColumnName = "ID")
+    @ManyToOne(optional = false)    
+    private SystemOption systemOptionId;
+    //@OneToMany(cascade = CascadeType.ALL, mappedBy = "profile")
+    //@XmlTransient
+    //private Collection<UserProfile> userProfileCollection;
+    
+    
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(name = "USERS_PROFILES", joinColumns = { @JoinColumn(name = "PROFILE_ID") }, inverseJoinColumns = { @JoinColumn(name = "USER_ID") })
+    private Set<User> users = new HashSet<User>(0);
+    
     public Profile() {
     }
 
@@ -76,10 +88,13 @@ public class Profile implements Serializable {
         this.id = id;
     }
 
-    public Profile(Integer id, String name, int initialOption) {
+    public Profile(Integer id, String name, String description, String creationUser, Date creationDate, int statusId) {
         this.id = id;
         this.name = name;
-        this.initialOption = initialOption;
+        this.description = description;
+        this.creationUser = creationUser;
+        this.creationDate = creationDate;
+        this.statusId = statusId;
     }
 
     public Integer getId() {
@@ -90,30 +105,70 @@ public class Profile implements Serializable {
         this.id = id;
     }
 
-    public int getInitialOption() {
-        return initialOption;
+    public String getName() {
+        return name;
     }
 
-    public void setInitialOption(int initialOption) {
-        this.initialOption = initialOption;
+    public void setName(String name) {
+        this.name = name;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getCreationUser() {
+        return creationUser;
+    }
+
+    public void setCreationUser(String creationUser) {
+        this.creationUser = creationUser;
+    }
+
+    public Date getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    public int getStatusId() {
+        return statusId;
+    }
+
+    public void setStatusId(int statusId) {
+        this.statusId = statusId;
+    }
+
+    public SystemOption getSystemOptionId() {
+        return systemOptionId;
+    }
+
+    public void setSystemOptionId(SystemOption systemOptionId) {
+        this.systemOptionId = systemOptionId;
+    }
     @XmlTransient
-    public Collection<User> getUserCollection() {
-        return userCollection;
+    public Set<User> getUsers() {
+        return users;
     }
 
-    public void setUserCollection(Collection<User> userCollection) {
-        this.userCollection = userCollection;
+    public void setUsers(Set<User> users) {
+        this.users = users;
+    }
+    
+    /*@XmlTransient
+    public Collection<UserProfile> getUserProfileCollection() {
+        return userProfileCollection;
     }
 
-    public Status getStatus() {
-        return status;
-    }
-
-    public void setStatus(Status status) {
-        this.status = status;
-    }
+    public void setUserProfileCollection(Collection<UserProfile> userProfileCollection) {
+        this.userProfileCollection = userProfileCollection;
+    }*/
 
     @Override
     public int hashCode() {
@@ -139,36 +194,5 @@ public class Profile implements Serializable {
     public String toString() {
         return "com.exception.magicsnumbersws.entities.Profile[ id=" + id + " ]";
     }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Date getCreationDate() {
-        return creationDate;
-    }
-
-    public void setCreationDate(Date creationDate) {
-        this.creationDate = creationDate;
-    }
-
-    public User getCreationUser() {
-        return creationUser;
-    }
-
-    public void setCreationUser(User creationUser) {
-        this.creationUser = creationUser;
-    }
-
-    public SystemOption getSystemOption() {
-        return systemOption;
-    }
-
-    public void setSystemOption(SystemOption systemOption) {
-        this.systemOption = systemOption;
-    }    
+    
 }

@@ -7,14 +7,12 @@ package com.exception.magicsnumbersws.entities;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.Lob;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -34,24 +32,8 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "CONSORTIUMS")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Consortium.findAll", query = "SELECT c FROM Consortium c"),
-    @NamedQuery(name = "Consortium.findById", query = "SELECT c FROM Consortium c WHERE c.id = :id"),
-    @NamedQuery(name = "Consortium.findByName", query = "SELECT c FROM Consortium c WHERE c.name = :name"),
-    @NamedQuery(name = "Consortium.findByDescription", query = "SELECT c FROM Consortium c WHERE c.description = :description"),
-    @NamedQuery(name = "Consortium.findByUserCreation", query = "SELECT c FROM Consortium c WHERE c.userCreation = :userCreation"),
-    @NamedQuery(name = "Consortium.findByCreationDate", query = "SELECT c FROM Consortium c WHERE c.creationDate = :creationDate"),
-    @NamedQuery(name = "Consortium.findByModificationDate", query = "SELECT c FROM Consortium c WHERE c.modificationDate = :modificationDate")})
+    @NamedQuery(name = "Consortium.findAll", query = "SELECT c FROM Consortium c")})
 public class Consortium implements Serializable {
-    @JoinColumn(name = "CREATION_USER", referencedColumnName = "ID")
-    @ManyToOne(optional = false)
-    private User creationUser;
-    
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "consortium")
-    private List<UserConsortium> userConsortiums;
-  
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "consortium")
-    private Collection<BetBanking> betBankingCollection;
-    
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -63,11 +45,16 @@ public class Consortium implements Serializable {
     @Size(min = 1, max = 50)
     @Column(name = "NAME")
     private String name;
-    @Size(max = 10)
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 100)
     @Column(name = "DESCRIPTION")
     private String description;
-    @Column(name = "USER_CREATION")
-    private Integer userCreation;
+    @Basic(optional = false)
+    @NotNull
+    @Lob
+    @Column(name = "CREATION_USER")
+    private byte[] creationUser;
     @Basic(optional = false)
     @NotNull
     @Column(name = "CREATION_DATE")
@@ -75,14 +62,12 @@ public class Consortium implements Serializable {
     private Date creationDate;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "MODIFICATION_DATE")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date modificationDate;
+    @Column(name = "STATUS_ID")
+    private int statusId;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "consortiumId")
+    private Collection<BetBanking> betBankingCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "consortium")
-    private Collection<User> userCollection;
-    @JoinColumn(name = "STATUS", referencedColumnName = "ID")
-    @ManyToOne(optional = false)
-    private Status status;
+    private Collection<UserConsortium> userConsortiumCollection;
 
     public Consortium() {
     }
@@ -91,11 +76,13 @@ public class Consortium implements Serializable {
         this.id = id;
     }
 
-    public Consortium(Integer id, String name, Date creationDate, Date modificationDate) {
+    public Consortium(Integer id, String name, String description, byte[] creationUser, Date creationDate, int statusId) {
         this.id = id;
         this.name = name;
+        this.description = description;
+        this.creationUser = creationUser;
         this.creationDate = creationDate;
-        this.modificationDate = modificationDate;
+        this.statusId = statusId;
     }
 
     public Integer getId() {
@@ -122,12 +109,12 @@ public class Consortium implements Serializable {
         this.description = description;
     }
 
-    public Integer getUserCreation() {
-        return userCreation;
+    public byte[] getCreationUser() {
+        return creationUser;
     }
 
-    public void setUserCreation(Integer userCreation) {
-        this.userCreation = userCreation;
+    public void setCreationUser(byte[] creationUser) {
+        this.creationUser = creationUser;
     }
 
     public Date getCreationDate() {
@@ -138,29 +125,30 @@ public class Consortium implements Serializable {
         this.creationDate = creationDate;
     }
 
-    public Date getModificationDate() {
-        return modificationDate;
+    public int getStatusId() {
+        return statusId;
     }
 
-    public void setModificationDate(Date modificationDate) {
-        this.modificationDate = modificationDate;
+    public void setStatusId(int statusId) {
+        this.statusId = statusId;
     }
 
     @XmlTransient
-    public Collection<User> getUserCollection() {
-        return userCollection;
+    public Collection<BetBanking> getBetBankingCollection() {
+        return betBankingCollection;
     }
 
-    public void setUserCollection(Collection<User> userCollection) {
-        this.userCollection = userCollection;
+    public void setBetBankingCollection(Collection<BetBanking> betBankingCollection) {
+        this.betBankingCollection = betBankingCollection;
     }
 
-    public Status getStatus() {
-        return status;
+    @XmlTransient
+    public Collection<UserConsortium> getUserConsortiumCollection() {
+        return userConsortiumCollection;
     }
 
-    public void setStatus(Status status) {
-        this.status = status;
+    public void setUserConsortiumCollection(Collection<UserConsortium> userConsortiumCollection) {
+        this.userConsortiumCollection = userConsortiumCollection;
     }
 
     @Override
@@ -186,32 +174,6 @@ public class Consortium implements Serializable {
     @Override
     public String toString() {
         return "com.exception.magicsnumbersws.entities.Consortium[ id=" + id + " ]";
-    }
-
-    public User getCreationUser() {
-        return creationUser;
-    }
-
-    public void setCreationUser(User creationUser) {
-        this.creationUser = creationUser;
-    }
-
-    @XmlTransient
-    public List<UserConsortium> getUserConsortiums() {
-        return userConsortiums;
-    }
-
-    public void setUserConsortiums(List<UserConsortium> userConsortiums) {
-        this.userConsortiums = userConsortiums;
-    }
-
-    @XmlTransient
-    public Collection<BetBanking> getBetBankingCollection() {
-        return betBankingCollection;
-    }
-
-    public void setBetBankingCollection(Collection<BetBanking> betBankingCollection) {
-        this.betBankingCollection = betBankingCollection;
     }
     
 }

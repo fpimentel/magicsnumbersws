@@ -10,8 +10,7 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.Lob;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -29,44 +28,35 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "HISTORY_OPERATIONS")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "HistoryOperation.findAll", query = "SELECT h FROM HistoryOperation h"),
-    @NamedQuery(name = "HistoryOperation.findById", query = "SELECT h FROM HistoryOperation h WHERE h.id = :id"),
-    @NamedQuery(name = "HistoryOperation.findByUserId", query = "SELECT h FROM HistoryOperation h WHERE h.userId = :userId"),
-    @NamedQuery(name = "HistoryOperation.findByOperation", query = "SELECT h FROM HistoryOperation h WHERE h.operation = :operation"),
-    @NamedQuery(name = "HistoryOperation.findByAfectedTableName", query = "SELECT h FROM HistoryOperation h WHERE h.afectedTableName = :afectedTableName"),
-    @NamedQuery(name = "HistoryOperation.findByInsertionDate", query = "SELECT h FROM HistoryOperation h WHERE h.insertionDate = :insertionDate")})
+    @NamedQuery(name = "HistoryOperation.findAll", query = "SELECT h FROM HistoryOperation h")})
 public class HistoryOperation implements Serializable {
     private static final long serialVersionUID = 1L;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "ID_AFECTED")
-    private int idAfected;
-    @JoinColumn(name = "USER", referencedColumnName = "ID")
-    @ManyToOne(optional = false)
-    private User userId;    
     @Id
     @Basic(optional = false)
     @NotNull
     @Column(name = "ID")
     private Integer id;
-    
     @Basic(optional = false)
     @NotNull
-    @Column(name = "OPERATION")
-    private int operation;
+    @Lob
+    @Column(name = "CREATION_USER")
+    private byte[] creationUser;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 70)
+    @Column(name = "OPERATION_ID")
+    private int operationId;
+    @Size(max = 70)
     @Column(name = "AFECTED_TABLE_NAME")
     private String afectedTableName;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "ID_AFECTED")
+    private int idAfected;
     @Basic(optional = false)
     @NotNull
     @Column(name = "INSERTION_DATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date insertionDate;
-    @JoinColumn(name = "TICKET", referencedColumnName = "ID")
-    @ManyToOne
-    private Ticket ticket;
 
     public HistoryOperation() {
     }
@@ -75,11 +65,11 @@ public class HistoryOperation implements Serializable {
         this.id = id;
     }
 
-    public HistoryOperation(Integer id, User userId, int operation, String afectedTableName, Date insertionDate) {
+    public HistoryOperation(Integer id, byte[] creationUser, int operationId, int idAfected, Date insertionDate) {
         this.id = id;
-        this.userId = userId;
-        this.operation = operation;
-        this.afectedTableName = afectedTableName;
+        this.creationUser = creationUser;
+        this.operationId = operationId;
+        this.idAfected = idAfected;
         this.insertionDate = insertionDate;
     }
 
@@ -91,20 +81,20 @@ public class HistoryOperation implements Serializable {
         this.id = id;
     }
 
-    public User getUserId() {
-        return userId;
+    public byte[] getCreationUser() {
+        return creationUser;
     }
 
-    public void setUserId(User userId) {
-        this.userId = userId;
+    public void setCreationUser(byte[] creationUser) {
+        this.creationUser = creationUser;
     }
 
-    public int getOperation() {
-        return operation;
+    public int getOperationId() {
+        return operationId;
     }
 
-    public void setOperation(int operation) {
-        this.operation = operation;
+    public void setOperationId(int operationId) {
+        this.operationId = operationId;
     }
 
     public String getAfectedTableName() {
@@ -115,20 +105,20 @@ public class HistoryOperation implements Serializable {
         this.afectedTableName = afectedTableName;
     }
 
+    public int getIdAfected() {
+        return idAfected;
+    }
+
+    public void setIdAfected(int idAfected) {
+        this.idAfected = idAfected;
+    }
+
     public Date getInsertionDate() {
         return insertionDate;
     }
 
     public void setInsertionDate(Date insertionDate) {
         this.insertionDate = insertionDate;
-    }
-
-    public Ticket getTicket() {
-        return ticket;
-    }
-
-    public void setTicket(Ticket ticket) {
-        this.ticket = ticket;
     }
 
     @Override
@@ -154,14 +144,6 @@ public class HistoryOperation implements Serializable {
     @Override
     public String toString() {
         return "com.exception.magicsnumbersws.entities.HistoryOperation[ id=" + id + " ]";
-    }
-
-    public int getIdAfected() {
-        return idAfected;
-    }
-
-    public void setIdAfected(int idAfected) {
-        this.idAfected = idAfected;
     }
     
 }

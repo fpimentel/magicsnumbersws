@@ -21,6 +21,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -32,26 +33,8 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "TICKETS")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Ticket.findAll", query = "SELECT t FROM Ticket t"),
-    @NamedQuery(name = "Ticket.findById", query = "SELECT t FROM Ticket t WHERE t.id = :id"),
-    @NamedQuery(name = "Ticket.findBySecurityCode", query = "SELECT t FROM Ticket t WHERE t.securityCode = :securityCode"),
-    @NamedQuery(name = "Ticket.findByInsertionDate", query = "SELECT t FROM Ticket t WHERE t.insertionDate = :insertionDate"),
-    @NamedQuery(name = "Ticket.findByUserId", query = "SELECT t FROM Ticket t WHERE t.userId = :userId")})
+    @NamedQuery(name = "Ticket.findAll", query = "SELECT t FROM Ticket t")})
 public class Ticket implements Serializable {
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "CREATION_DATE")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date creationDate;
-    @Column(name = "MODIFICATION_DATE")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date modificationDate;
-    @JoinColumn(name = "USER_ID", referencedColumnName = "ID")
-    @ManyToOne(optional = false)
-    private User userId;
-    @JoinColumn(name = "MODIFICATION_USER", referencedColumnName = "ID")
-    @ManyToOne
-    private User modificationUser;
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -64,16 +47,23 @@ public class Ticket implements Serializable {
     private int securityCode;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "INSERTION_DATE")
+    @Column(name = "CREATION_DATE")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date insertionDate;
-    
-    @OneToMany(mappedBy = "ticket")
-    private Collection<HistoryOperation> historyOperationCollection;
-    @JoinColumn(name = "STATUS", referencedColumnName = "ID")
+    private Date creationDate;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "STATUS_ID")
+    private int statusId;
+    @Column(name = "MODIFICATION_DATE")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date modificationDate;
+    @Size(max = 50)
+    @Column(name = "MODIFICATION_USER")
+    private String modificationUser;
+    @JoinColumn(name = "USER_ID", referencedColumnName = "ID")
     @ManyToOne(optional = false)
-    private Status status;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "ticket")
+    private User userId;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "ticketId")
     private Collection<TicketDetail> ticketDetailCollection;
 
     public Ticket() {
@@ -83,11 +73,11 @@ public class Ticket implements Serializable {
         this.id = id;
     }
 
-    public Ticket(Integer id, int securityCode, Date insertionDate, User user) {
+    public Ticket(Integer id, int securityCode, Date creationDate, int statusId) {
         this.id = id;
         this.securityCode = securityCode;
-        this.insertionDate = insertionDate;
-        this.userId = user;
+        this.creationDate = creationDate;
+        this.statusId = statusId;
     }
 
     public Integer getId() {
@@ -106,12 +96,36 @@ public class Ticket implements Serializable {
         this.securityCode = securityCode;
     }
 
-    public Date getInsertionDate() {
-        return insertionDate;
+    public Date getCreationDate() {
+        return creationDate;
     }
 
-    public void setInsertionDate(Date insertionDate) {
-        this.insertionDate = insertionDate;
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    public int getStatusId() {
+        return statusId;
+    }
+
+    public void setStatusId(int statusId) {
+        this.statusId = statusId;
+    }
+
+    public Date getModificationDate() {
+        return modificationDate;
+    }
+
+    public void setModificationDate(Date modificationDate) {
+        this.modificationDate = modificationDate;
+    }
+
+    public String getModificationUser() {
+        return modificationUser;
+    }
+
+    public void setModificationUser(String modificationUser) {
+        this.modificationUser = modificationUser;
     }
 
     public User getUserId() {
@@ -120,23 +134,6 @@ public class Ticket implements Serializable {
 
     public void setUserId(User userId) {
         this.userId = userId;
-    }
-
-    @XmlTransient
-    public Collection<HistoryOperation> getHistoryOperationCollection() {
-        return historyOperationCollection;
-    }
-
-    public void setHistoryOperationCollection(Collection<HistoryOperation> historyOperationCollection) {
-        this.historyOperationCollection = historyOperationCollection;
-    }
-
-    public Status getStatus() {
-        return status;
-    }
-
-    public void setStatus(Status status) {
-        this.status = status;
     }
 
     @XmlTransient
@@ -171,30 +168,6 @@ public class Ticket implements Serializable {
     @Override
     public String toString() {
         return "com.exception.magicsnumbersws.entities.Ticket[ id=" + id + " ]";
-    }
-
-    public Date getCreationDate() {
-        return creationDate;
-    }
-
-    public void setCreationDate(Date creationDate) {
-        this.creationDate = creationDate;
-    }
-
-    public Date getModificationDate() {
-        return modificationDate;
-    }
-
-    public void setModificationDate(Date modificationDate) {
-        this.modificationDate = modificationDate;
-    }
-
-    public User getModificationUser() {
-        return modificationUser;
-    }
-
-    public void setModificationUser(User modificationUser) {
-        this.modificationUser = modificationUser;
     }
     
 }

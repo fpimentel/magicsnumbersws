@@ -18,5 +18,6 @@ public interface UserService {
     public void delete(int userId);
     public User findById(int id);
     public List<User> findAll();
+    public User getUserByCredentials(String userName, String pass);
     
 }

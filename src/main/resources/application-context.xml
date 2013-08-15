@@ -4,11 +4,14 @@
        xmlns:aop="http://www.springframework.org/schema/aop"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:oxm="http://www.springframework.org/schema/oxm"
 
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
           http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd
           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
-          http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd">
+          http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd
+          http://www.springframework.org/schema/oxm 
+          http://www.springframework.org/schema/oxm/spring-oxm-3.0.xsd">
     
     
     <!--DATASOURCE-->
@@ -19,26 +22,27 @@
         <property name="username" value="magicsnumbersuser"/>
         <property name="password" value="mag1cp@ssw0r"/>
     </bean>
-     <!-- Basic DataSource Configuration 
-    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">               
-        <property name="driverClass" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>
-        <property name="user" value="magicsnumbersuser"/>
-        <property name="password" value="mag1cp@ssw0r"/>        
-        <property name="jdbcUrl" value="jdbc:sqlserver://localhost\logicsoft:1433;databaseName=magicsnumbersdb"/>        
-        <property name="properties">
-        <props>
-            <prop key="c3p0.minPoolSize">0</prop>
-            <prop key="hc3p0.maxPoolSize">1000</prop>
-            <prop key="hc3p0.timeout">3000</prop>
-            <prop key="c3p0.acquire_increment">10</prop>
-            <prop key="c3p0.max_statement">50</prop>
-            <prop key="hibernate.c3p0.idle_test_period">60</prop>
-            <prop key="c3p0.preferredTestQuery">SELECT 1;</prop>
-            <prop key="hibernate.c3p0.testConnectionOnCheckout">false</prop>        
-        </props>    
-        </property>                                      
-    </bean>     
-       -->
+    
+    <!-- Basic DataSource Configuration 
+ <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">               
+     <property name="driverClass" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>
+     <property name="user" value="magicsnumbersuser"/>
+     <property name="password" value="mag1cp@ssw0r"/>        
+     <property name="jdbcUrl" value="jdbc:sqlserver://localhost\logicsoft:1433;databaseName=magicsnumbersdb"/>        
+     <property name="properties">
+     <props>
+         <prop key="c3p0.minPoolSize">0</prop>
+         <prop key="hc3p0.maxPoolSize">1000</prop>
+         <prop key="hc3p0.timeout">3000</prop>
+         <prop key="c3p0.acquire_increment">10</prop>
+         <prop key="c3p0.max_statement">50</prop>
+         <prop key="hibernate.c3p0.idle_test_period">60</prop>
+         <prop key="c3p0.preferredTestQuery">SELECT 1;</prop>
+         <prop key="hibernate.c3p0.testConnectionOnCheckout">false</prop>        
+     </props>    
+     </property>                                      
+ </bean>     
+    -->
      
     <!--SESSIONFACTORY-->    
     <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">                                    
@@ -53,6 +57,76 @@
             </props>
         </property>
     </bean>
+    <!--
+    <bean id="xmlConverter"
+          class="org.springframework.http.converter.xml.MarshallingHttpMessageConverter">
+        <constructor-arg>
+            <oxm:jaxb2-marshaller id="jaxb2Marshaller">
+               
+               
+                <oxm:class-to-be-bound name="com.exception.magicsnumbersws.entities.User2"/>
+            </oxm:jaxb2-marshaller>
+        </constructor-arg>
+        <property name="supportedMediaTypes">
+            <list>
+                <bean class="org.springframework.http.MediaType">
+                    <constructor-arg index="0" value="application"/>
+                    <constructor-arg index="1" value="json"/>
+                    <constructor-arg index="2" value="UTF-8"/>
+                </bean>
+            </list>
+        </property>
+    </bean>
+    
+    <bean id="jaxbAnnotationInspector"
+          class="org.codehaus.jackson.xc.JaxbAnnotationIntrospector"/>
+    
+    <bean id="jacksonObjectMapper" class="org.codehaus.jackson.map.ObjectMapper">
+        <property name="annotationIntrospector" ref="jaxbAnnotationInspector"/>
+    </bean>
+    
+    <bean id="jsonConverter"
+          class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">
+        <property name="objectMapper" ref="jacksonObjectMapper"/>        
+        <property name="supportedMediaTypes">
+            <list>
+                <bean class="org.springframework.http.MediaType">
+                    <constructor-arg index="0" value="application"/>
+                    <constructor-arg index="1" value="json"/>
+                    <constructor-arg index="2" value="UTF-8"/>
+                </bean>
+            </list>
+        </property>
+    </bean>
+    -->
+    <!--
+    <bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
+        <property name="order" value="1"/>
+        <property name="mediaTypes">
+            <map>
+                <entry key="xml" value="application/xml" />
+                <entry key="json" value="application/json" />
+            </map>
+        </property>
+        <property name="defaultViews">
+            <list>
+                <bean class="org.springframework.web.servlet.view.xml.MarshallingView">
+                    <property name="marshaller">
+                        <oxm:jaxb2-marshaller id="marshaller">
+                            <oxm:class-to-be-bound name="com.shay.dashboard.data.structure.page.PageObject" />
+                            <oxm:class-to-be-bound name="com.shay.dashboard.data.structure.tab.TabObject" />
+                            <oxm:class-to-be-bound name="com.shay.dashboard.data.structure.section.SectionObject" />
+                            <oxm:class-to-be-bound name="com.shay.dashboard.data.structure.element.nonembedded.ElementObject"/>
+                            <oxm:class-to-be-bound name="com.shay.dashboard.data.structure.element.embedded.EmbeddedElementObject"/>
+                            <oxm:class-to-be-bound name="com.shay.dashboard.data.structure.chart.common.ChartManager"/>
+                        </oxm:jaxb2-marshaller>
+                    </property>
+                </bean>
+                <bean class="org.springframework.web.servlet.view.json.MappingJacksonJsonView"/>
+            </list>
+        </property>
+    </bean>
+    -->
     
     <!--TRANSACTION MANAGER-->
     <bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">

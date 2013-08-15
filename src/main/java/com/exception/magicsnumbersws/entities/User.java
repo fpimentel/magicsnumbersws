@@ -26,7 +26,6 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author fpimentel
  */
 @XmlRootElement
-
 @Entity
 @Table(name = "USERS")
 public class User implements Serializable {
@@ -98,7 +97,8 @@ public class User implements Serializable {
     @JoinColumn(name = "STATUS", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private Status status;
-    @JoinColumn(name = "PROFILE", referencedColumnName = "ID")
+    
+    @JoinColumn(name = "PROFILES", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private Profile profile;
 

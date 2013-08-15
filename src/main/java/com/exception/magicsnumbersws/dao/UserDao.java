@@ -17,6 +17,7 @@ public interface UserDao {
     public void update(User user);
     public void delete(int userId);
     public User findById(int id);
-    public List<User> findAll();
+    public List<User> findAll();    
+    public User getUserByCredentials(String userName, String pass);
     
 }

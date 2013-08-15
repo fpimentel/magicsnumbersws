@@ -1,7 +1,4 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package com.exception.magicsnumbersws.service.impl;
 
 import com.exception.magicsnumbersws.dao.UserDao;
@@ -56,10 +53,13 @@ public class UserServiceImpl implements UserService{
     public User findById(int id) {
         return userDao.findById(id);
     }
-
     
     public List<User> findAll() {
        return userDao.findAll();
     }
-    
+
+    @Override
+    public User getUserByCredentials(String userName, String pass) {
+        return userDao.getUserByCredentials(userName, pass);
+    }
 }

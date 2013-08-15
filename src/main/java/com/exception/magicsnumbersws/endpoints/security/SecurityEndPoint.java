@@ -1,14 +1,7 @@
 package com.exception.magicsnumbersws.endpoints.security;
 
-
 import com.exception.magicsnumbersws.entities.User;
-import com.exception.magicsnumbersws.entities.User2;
 import com.exception.magicsnumbersws.service.UserService;
-import com.exception.magicsnumbersws.service.impl.UserServiceImpl;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,8 +12,6 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Component;
 
 /**
@@ -59,7 +50,7 @@ public class SecurityEndPoint {
   
   @GET
   @Path("/getUserByIdJSON/{id}")
-  @Produces(MediaType.APPLICATION_JSON)
+  @Produces(MediaType.APPLICATION_JSON)    
   public User getUserByIdJSON(@PathParam("id") int id){
       return users.get(id);
   }
@@ -72,21 +63,12 @@ public class SecurityEndPoint {
   }
   
   @GET
-  @Path("/getUsersJSON")
+  @Path("/user/{userName,pass}")
   @Produces(MediaType.APPLICATION_JSON)
-  public List<User> getUsersJSON() {            
-      return userService.findAll();
+  public User getUserByCredential(@PathParam("userName") String userName, @PathParam("userName")String pass) {            
+      return userService.getUserByCredentials(userName, pass);
   }  
 
-  @GET
-  @Path("/test")
-  @Produces(MediaType.APPLICATION_JSON)
-  public User2 getTestJSON() {            
-      User2 user= new User2();
-      user.setFirtName("Fausto");
-      return user;
-  }
-  
   public UserService getUserService() {
       return userService;
   }

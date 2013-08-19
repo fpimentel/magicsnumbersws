@@ -37,7 +37,7 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "USERS")
-@XmlRootElement
+@XmlRootElement(name="User")
 public class User implements Serializable {
     
     @Id

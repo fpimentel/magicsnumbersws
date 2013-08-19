@@ -50,10 +50,10 @@ public class UserDaoImpl implements UserDao{
     public List<User> findAll() {        
        return (List<User>)sessionFactory.getCurrentSession().createCriteria(User.class)
                .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)
-               .list();
-               //.createCriteria("userProfiles", JoinType.INNER_JOIN).list();
+               .list();               
     }
 
+    
     public SessionFactory getSessionFactory() {
         return sessionFactory;
     }
@@ -68,5 +68,12 @@ public class UserDaoImpl implements UserDao{
                        .add(Restrictions.eq("userName", userName))
                        .add(Restrictions.eq("password", pass)).list();         
         return user;
+    }
+
+    @Override
+    public User getTestUser() {
+        return (User)sessionFactory.getCurrentSession().createCriteria(User.class)
+               .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)
+               .list().get(0); 
     }
 }

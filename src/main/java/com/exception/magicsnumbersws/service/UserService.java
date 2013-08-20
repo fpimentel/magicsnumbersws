@@ -6,11 +6,13 @@ package com.exception.magicsnumbersws.service;
 
 import com.exception.magicsnumbersws.entities.User;
 import java.util.List;
+import org.springframework.stereotype.Service;
 
 /**
  *
  * @author fpimentel
  */
+@Service
 public interface UserService {
         
     public void add(User user);

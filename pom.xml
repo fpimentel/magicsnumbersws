@@ -12,8 +12,7 @@
 
     <properties>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <sql.jdbc4.local.path>C:/Users/fpimentel/.m2/repository/com/microsoft/sqlserver/sqljdbc4/4.0/sqljdbc4.jar</sql.jdbc4.local.path>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>        
     </properties>    
     
     <repositories>
@@ -27,11 +26,9 @@
     <dependencies>
         
         <dependency>
-            <groupId>com.microsoft.sqlserver</groupId>
+            <groupId>com.exception.microsoft</groupId>
             <artifactId>sqljdbc4</artifactId>
             <version>4.0</version>
-            <scope>system</scope>
-            <systemPath>${sql.jdbc4.local.path}</systemPath>
         </dependency>        
           
         <!--Spring dependency-->
@@ -247,7 +244,12 @@
                             <includes>
                                 <include>**/com/exception/magicsnumbersws/entities/*</include>
                                 <include>**/com/exception/magicsnumbersws/endpoints/*</include>
-                                <include>**/com/exception/magicsnumbersws/endpoints/impl/*</include>
+                                <include>**/com/exception/magicsnumbersws/service/*</include>
+                                <!--<include>**/com/exception/magicsnumbersws/endpoints/impl/*</include>
+                                <include>**/com/exception/magicsnumbersws/service/*</include>      
+                                <include>**/com/exception/magicsnumbersws/service/impl/*</include>
+                                <include>**/com/exception/magicsnumbersws/dao/*</include>
+                                <include>**/com/exception/magicsnumbersws/dao/impl/*</include>-->
                             </includes>
                         </configuration>
                     </execution>

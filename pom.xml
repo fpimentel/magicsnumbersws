@@ -241,10 +241,13 @@
                         </goals>
                         <configuration>
                             <classifier>client</classifier>
-                            <includes>
-                                <include>**/com/exception/magicsnumbersws/entities/*</include>
+                            <includes>                                
+                                <include>**/com/exception/magicsnumbersws/entities/User.class</include>
+                                <include>**/com/exception/magicsnumbersws/entities/Profile.class</include>
+                                <include>**/com/exception/magicsnumbersws/entities/BetBankingUser.class</include>
+                                <include>**/com/exception/magicsnumbersws/entities/UserConsortium.class</include>
                                 <include>**/com/exception/magicsnumbersws/endpoints/*</include>
-                                <include>**/com/exception/magicsnumbersws/service/*</include>
+                                <!--<include>**/com/exception/magicsnumbersws/service/*</include>-->
                                 <!--<include>**/com/exception/magicsnumbersws/endpoints/impl/*</include>
                                 <include>**/com/exception/magicsnumbersws/service/*</include>      
                                 <include>**/com/exception/magicsnumbersws/service/impl/*</include>

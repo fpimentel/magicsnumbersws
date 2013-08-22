@@ -2,12 +2,12 @@ package com.exception.magicsnumbersws.dao.impl;
 import com.exception.magicsnumbersws.dao.UserDao;
 import com.exception.magicsnumbersws.entities.User;
 import java.util.List;
-import javax.xml.bind.annotation.XmlRootElement;
 import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Projections;
+
 import org.hibernate.criterion.Restrictions;
-import org.hibernate.sql.JoinType;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -50,7 +50,8 @@ public class UserDaoImpl implements UserDao{
     public List<User> findAll() {        
        return (List<User>)sessionFactory.getCurrentSession().createCriteria(User.class)
                .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)
-               .list();               
+               .setFetchMode("profiles", FetchMode.JOIN)               
+               .list();                     
     }
 
     

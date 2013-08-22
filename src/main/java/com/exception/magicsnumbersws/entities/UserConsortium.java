@@ -12,8 +12,6 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -28,8 +26,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Entity
 @Table(name = "USERS_CONSORTIUMS")
 @XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "UserConsortium.findAll", query = "SELECT u FROM UserConsortium u")})
 public class UserConsortium implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId

@@ -23,8 +23,7 @@ import org.springframework.stereotype.Component;
  */
 
 
-@Component
-@Path("security")
+
 public class SecurityEndPointImpl implements SecurityEndPoint {
   
   @Autowired  

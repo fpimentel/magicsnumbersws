@@ -27,7 +27,6 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -39,6 +38,11 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "PROFILES")
 @XmlRootElement
 public class Profile implements Serializable {
+    @JoinTable(name = "PROFILES_SYSTEM_OPTIONS", joinColumns = {
+        @JoinColumn(name = "PROFILE_ID", referencedColumnName = "ID")}, inverseJoinColumns = {
+        @JoinColumn(name = "SYSTEM_OPTION_ID", referencedColumnName = "ID")})
+    @ManyToMany
+    private Collection<SystemOption> systemOptionCollection;
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -72,11 +76,11 @@ public class Profile implements Serializable {
     @JoinColumn(name = "SYSTEM_OPTION_ID", referencedColumnName = "ID")
     @ManyToOne(optional = false)    
     private SystemOption systemOptionId;
-    //@OneToMany(cascade = CascadeType.ALL, mappedBy = "profile")
-    //@XmlTransient
-    //private Collection<UserProfile> userProfileCollection;
     
-    
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(name = "PROFILES_SYSTEM_OPTIONS", joinColumns = { @JoinColumn(name = "PROFILE_ID") }, inverseJoinColumns = { @JoinColumn(name = "SYSTEM_OPTION_ID") })
+    private Set<SystemOption> options = new HashSet<SystemOption>(0);
+   
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "USERS_PROFILES", joinColumns = { @JoinColumn(name = "PROFILE_ID") }, inverseJoinColumns = { @JoinColumn(name = "USER_ID") })
     private Set<User> users = new HashSet<User>(0);
@@ -152,6 +156,13 @@ public class Profile implements Serializable {
     public void setSystemOptionId(SystemOption systemOptionId) {
         this.systemOptionId = systemOptionId;
     }
+    public Set<SystemOption> getOptions() {
+        return options;
+    }
+
+    public void setOptions(Set<SystemOption> options) {
+        this.options = options;
+    }
     @XmlTransient
     public Set<User> getUsers() {
         return users;
@@ -160,15 +171,7 @@ public class Profile implements Serializable {
     public void setUsers(Set<User> users) {
         this.users = users;
     }
-    
-    /*@XmlTransient
-    public Collection<UserProfile> getUserProfileCollection() {
-        return userProfileCollection;
-    }
-
-    public void setUserProfileCollection(Collection<UserProfile> userProfileCollection) {
-        this.userProfileCollection = userProfileCollection;
-    }*/
+     
 
     @Override
     public int hashCode() {
@@ -193,6 +196,15 @@ public class Profile implements Serializable {
     @Override
     public String toString() {
         return "com.exception.magicsnumbersws.entities.Profile[ id=" + id + " ]";
+    }
+
+    @XmlTransient
+    public Collection<SystemOption> getSystemOptionCollection() {
+        return systemOptionCollection;
+    }
+
+    public void setSystemOptionCollection(Collection<SystemOption> systemOptionCollection) {
+        this.systemOptionCollection = systemOptionCollection;
     }
     
 }

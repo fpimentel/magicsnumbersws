@@ -12,8 +12,6 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -28,8 +26,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Entity
 @Table(name = "BET_BANKINGS_USERS")
 @XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "BetBankingUser.findAll", query = "SELECT b FROM BetBankingUser b")})
 public class BetBankingUser implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId

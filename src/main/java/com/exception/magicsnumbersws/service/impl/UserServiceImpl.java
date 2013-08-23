@@ -3,6 +3,7 @@ package com.exception.magicsnumbersws.service.impl;
 
 import com.exception.magicsnumbersws.dao.UserDao;
 import com.exception.magicsnumbersws.entities.User;
+import com.exception.magicsnumbersws.exception.SearchAllUserException;
 import com.exception.magicsnumbersws.service.UserService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,17 +55,12 @@ public class UserServiceImpl implements UserService{
         return userDao.findById(id);
     }
     
-    public List<User> findAll() {
+    public List<User> findAll() throws SearchAllUserException{
        return userDao.findAll();
     }
 
     @Override
     public User getUserByCredentials(String userName, String pass) {
         return userDao.getUserByCredentials(userName, pass);
-    }
-
-    @Override
-    public User getTestUser() {
-        return userDao.getTestUser();
     }
 }

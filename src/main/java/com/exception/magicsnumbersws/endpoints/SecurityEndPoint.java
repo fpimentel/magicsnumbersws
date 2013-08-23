@@ -5,6 +5,7 @@
 package com.exception.magicsnumbersws.endpoints;
 
 import com.exception.magicsnumbersws.entities.User;
+import com.exception.magicsnumbersws.exception.SearchAllUserException;
 import java.util.List;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -23,6 +24,6 @@ public interface SecurityEndPoint {
     @GET
     @Path(value = "/user")
     @Produces(value = MediaType.APPLICATION_JSON)            
-    List<User> getAllUsers();
+    List<User> getAllUsers()  throws SearchAllUserException;
     
 }

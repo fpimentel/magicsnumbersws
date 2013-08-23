@@ -2,10 +2,12 @@ package com.exception.magicsnumbersws.endpoints.impl;
 
 import com.exception.magicsnumbersws.endpoints.SecurityEndPoint;
 import com.exception.magicsnumbersws.entities.User;
+import com.exception.magicsnumbersws.exception.SearchAllUserException;
 import com.exception.magicsnumbersws.service.UserService;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -30,53 +32,18 @@ public class SecurityEndPointImpl implements SecurityEndPoint {
   @Autowired  
   private UserService userService;  
     
-  private static Map<Integer,User> users = new HashMap<Integer,User>();  
   private Logger logger = Logger.getLogger(SecurityEndPointImpl.class.getName());
-  
-  static{
-      for( int i = 0 ; i < 20 ; i++){
-          User user = new User();
-          user.setId(i +1 );
-          user.setFirtName("Fausto No. " + (i+1));
-          users.put(i+1, user);
-      }
-  }
-  
-  @GET
-  @Path("/getUserByIdXML/{id}")
-  @Produces(MediaType.APPLICATION_XML)
-  public User getUserByIdXML(@PathParam("id") int id){
-      return users.get(id);
-  }
-  
-  @GET
-  @Path("/getUserByIdJSON/{id}")
-  @Produces(MediaType.APPLICATION_JSON)    
-  public User getUserByIdJSON(@PathParam("id") int id){
-      return users.get(id);
-  }
-  
-  @GET
-  @Path("/getAllUsersXML")
-  @Produces(MediaType.APPLICATION_XML)
-  public List<User> getAllUsersXML(){
-      return userService.findAll();
-  }
- 
+
+   
   @GET
   @Path("/user")
   @Produces(MediaType.APPLICATION_JSON)
     @Override
-  public List<User> getAllUsers() {            
+  public List<User> getAllUsers()  throws SearchAllUserException{
+      logger.log(Level.INFO, "init- getAllUsers");
       return userService.findAll();
-  }  
-  
-  @GET
-  @Path("/userTest")
-  @Produces(MediaType.APPLICATION_JSON)
-  public User getUserTest() {            
-      return userService.getTestUser();
-  } 
+  }    
+
   
   @GET
   @Path("/user/{userName,pass}")

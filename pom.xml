@@ -26,9 +26,9 @@
     <dependencies>
         
         <dependency>
-            <groupId>com.exception.microsoft</groupId>
-            <artifactId>sqljdbc4</artifactId>
-            <version>4.0</version>
+            <groupId>com.exception</groupId>
+            <artifactId>sqljdbc</artifactId>
+            <version>4</version>
         </dependency>        
           
         <!--Spring dependency-->       
@@ -137,13 +137,13 @@
                                 <include>**/com/exception/magicsnumbersws/entities/Profile.class</include>
                                 <include>**/com/exception/magicsnumbersws/entities/BetBankingUser.class</include>
                                 <include>**/com/exception/magicsnumbersws/entities/UserConsortium.class</include>
+                                <include>**/com/exception/magicsnumbersws/entities/SystemOption.class</include>
+                                <include>**/com/exception/magicsnumbersws/entities/SystemOption.class</include>
+                                <include>**/com/exception/magicsnumbersws/entities/OptionsCategory.class</include>
+                                <include>**/com/exception/magicsnumbersws/entities/Ticket.class</include>
+                                <include>**/com/exception/magicsnumbersws/entities/TicketDetail.class</include>
                                 <include>**/com/exception/magicsnumbersws/endpoints/*</include>
-                                <!--<include>**/com/exception/magicsnumbersws/service/*</include>-->
-                                <!--<include>**/com/exception/magicsnumbersws/endpoints/impl/*</include>
-                                <include>**/com/exception/magicsnumbersws/service/*</include>      
-                                <include>**/com/exception/magicsnumbersws/service/impl/*</include>
-                                <include>**/com/exception/magicsnumbersws/dao/*</include>
-                                <include>**/com/exception/magicsnumbersws/dao/impl/*</include>-->
+                                <include>**/com/exception/magicsnumbersws/exception/*</include>                                
                             </includes>
                         </configuration>
                     </execution>

@@ -1,6 +1,7 @@
 package com.exception.magicsnumbersws.dao.impl;
 import com.exception.magicsnumbersws.dao.UserDao;
 import com.exception.magicsnumbersws.entities.User;
+import com.exception.magicsnumbersws.exception.SearchAllUserException;
 import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
@@ -46,13 +47,7 @@ public class UserDaoImpl implements UserDao{
         return (User)sessionFactory.getCurrentSession().get(User.class, id);        
     }
 
-    @Override
-    public List<User> findAll() {        
-       return (List<User>)sessionFactory.getCurrentSession().createCriteria(User.class)
-               .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)
-               .setFetchMode("profiles", FetchMode.JOIN)               
-               .list();                  
-    }
+    
 
     
     public SessionFactory getSessionFactory() {
@@ -69,12 +64,13 @@ public class UserDaoImpl implements UserDao{
                        .add(Restrictions.eq("userName", userName))
                        .add(Restrictions.eq("password", pass)).list();         
         return user;
-    }
+    } 
 
     @Override
-    public User getTestUser() {
-        return (User)sessionFactory.getCurrentSession().createCriteria(User.class)
+    public List<User> findAll() throws SearchAllUserException {
+     return (List<User>)sessionFactory.getCurrentSession().createCriteria(User.class)
                .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)
-               .list().get(0); 
-    }
+               .setFetchMode("profiles", FetchMode.JOIN)               
+               .list(); 
+    } 
 }

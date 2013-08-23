@@ -51,7 +51,7 @@ public class UserDaoImpl implements UserDao{
        return (List<User>)sessionFactory.getCurrentSession().createCriteria(User.class)
                .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)
                .setFetchMode("profiles", FetchMode.JOIN)               
-               .list();                     
+               .list();                  
     }
 
     

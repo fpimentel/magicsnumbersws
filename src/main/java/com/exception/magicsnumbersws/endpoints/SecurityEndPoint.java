@@ -5,9 +5,13 @@
 package com.exception.magicsnumbersws.endpoints;
 
 import com.exception.magicsnumbersws.entities.User;
+import com.exception.magicsnumbersws.exception.SaveUsersDataException;
 import com.exception.magicsnumbersws.exception.SearchAllUserException;
 import java.util.List;
+import java.util.Set;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
@@ -26,4 +30,9 @@ public interface SecurityEndPoint {
     @Produces(value = MediaType.APPLICATION_JSON)            
     List<User> getAllUsers()  throws SearchAllUserException;
     
+    @POST
+    @Path(value = "/user/save")
+    @Consumes("application/json")
+    @Produces(value = MediaType.APPLICATION_JSON)       
+    void saveUsersData(Set<User> users) throws SaveUsersDataException;
 }

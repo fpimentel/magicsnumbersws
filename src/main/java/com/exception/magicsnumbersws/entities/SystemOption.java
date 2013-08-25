@@ -29,6 +29,9 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "SYSTEM_OPTIONS")
 @XmlRootElement
 public class SystemOption implements Serializable {  
+    @Size(max = 150)
+    @Column(name = "OUT_COME")
+    private String outCome;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "systemOption")
     private Collection<CategoryOption> categoryOptionCollection;
     @Basic(optional = false)
@@ -154,6 +157,14 @@ public class SystemOption implements Serializable {
 
     public void setCategoryOptionCollection(Collection<CategoryOption> categoryOptionCollection) {
         this.categoryOptionCollection = categoryOptionCollection;
+    }
+
+    public String getOutCome() {
+        return outCome;
+    }
+
+    public void setOutCome(String outCome) {
+        this.outCome = outCome;
     }
     
 }

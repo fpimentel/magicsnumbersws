@@ -32,6 +32,8 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Status.findAll", query = "SELECT s FROM Status s")})
 public class Status implements Serializable {
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "statusId")
+    private Collection<Category> categoryCollection;
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -50,8 +52,7 @@ public class Status implements Serializable {
     private Collection<BetBanking> betBankingCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "statusId")
     private Collection<Bet> betCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "statusId")
-    private Collection<OptionsCategory> optionsCategoryCollection;
+    
 
     public Status() {
     }
@@ -107,14 +108,6 @@ public class Status implements Serializable {
         this.betCollection = betCollection;
     }
 
-    @XmlTransient
-    public Collection<OptionsCategory> getOptionsCategoryCollection() {
-        return optionsCategoryCollection;
-    }
-
-    public void setOptionsCategoryCollection(Collection<OptionsCategory> optionsCategoryCollection) {
-        this.optionsCategoryCollection = optionsCategoryCollection;
-    }
 
     @Override
     public int hashCode() {
@@ -139,6 +132,15 @@ public class Status implements Serializable {
     @Override
     public String toString() {
         return "com.exception.magicsnumbersws.entities.Status[ id=" + id + " ]";
+    }
+
+    @XmlTransient
+    public Collection<Category> getCategoryCollection() {
+        return categoryCollection;
+    }
+
+    public void setCategoryCollection(Collection<Category> categoryCollection) {
+        this.categoryCollection = categoryCollection;
     }
     
 }

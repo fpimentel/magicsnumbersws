@@ -19,9 +19,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -38,11 +35,6 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "PROFILES")
 @XmlRootElement
 public class Profile implements Serializable {
-    @JoinTable(name = "PROFILES_SYSTEM_OPTIONS", joinColumns = {
-        @JoinColumn(name = "PROFILE_ID", referencedColumnName = "ID")}, inverseJoinColumns = {
-        @JoinColumn(name = "SYSTEM_OPTION_ID", referencedColumnName = "ID")})
-    @ManyToMany
-    private Collection<SystemOption> systemOptionCollection;
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -181,30 +173,16 @@ public class Profile implements Serializable {
     }
 
     @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
+    public boolean equals(Object object) {        
         if (!(object instanceof Profile)) {
             return false;
-        }
-        Profile other = (Profile) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
-        }
+        }        
         return true;
     }
 
     @Override
     public String toString() {
         return "com.exception.magicsnumbersws.entities.Profile[ id=" + id + " ]";
-    }
-
-    @XmlTransient
-    public Collection<SystemOption> getSystemOptionCollection() {
-        return systemOptionCollection;
-    }
-
-    public void setSystemOptionCollection(Collection<SystemOption> systemOptionCollection) {
-        this.systemOptionCollection = systemOptionCollection;
     }
     
 }

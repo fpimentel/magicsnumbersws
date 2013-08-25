@@ -1,24 +1,25 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.exception.magicsnumbersws.entities;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+
 
 /**
  *
@@ -27,9 +28,17 @@ import javax.xml.bind.annotation.XmlTransient;
 @Entity
 @Table(name = "SYSTEM_OPTIONS")
 @XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "SystemOption.findAll", query = "SELECT s FROM SystemOption s")})
-public class SystemOption implements Serializable {
+public class SystemOption implements Serializable {  
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "systemOption")
+    private Collection<CategoryOption> categoryOptionCollection;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 150)
+    @Column(name = "VALUE")
+    private String value;
+    @Size(max = 150)
+    @Column(name = "URL")
+    private String url;
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -41,20 +50,21 @@ public class SystemOption implements Serializable {
     @Size(min = 1, max = 50)
     @Column(name = "NAME")
     private String name;
-    @Size(max = 150)
-    @Column(name = "DESCRIPTION")
-    private String description;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "OPTION_CATEGORY")
-    private int optionCategory;
+   
+
     @Basic(optional = false)
     @NotNull
     @Column(name = "STATUS_ID")
     private int statusId;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "systemOptionId")
-    private Collection<Profile> profileCollection;
-
+    
+    
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "systemOption")
+    private Set<CategoryOption> categoriesOptions = new HashSet<CategoryOption>(0);
+    //@ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    //@JoinTable(name = "CATEGORIES_OPTIONS", joinColumns = { @JoinColumn(name = "OPTION_ID") }, inverseJoinColumns = { @JoinColumn(name = "CATEGORY_ID")})    
+    //private Set<CategoryOption> categoriesOptions = new  HashSet<CategoryOption>(0);        
+    //private Set<Category> categories = new  HashSet<Category>(0);        
+    
     public SystemOption() {
     }
 
@@ -64,8 +74,7 @@ public class SystemOption implements Serializable {
 
     public SystemOption(Integer id, String name, int optionCategory, int statusId) {
         this.id = id;
-        this.name = name;
-        this.optionCategory = optionCategory;
+        this.name = name;        
         this.statusId = statusId;
     }
 
@@ -85,37 +94,20 @@ public class SystemOption implements Serializable {
         this.name = name;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public int getOptionCategory() {
-        return optionCategory;
-    }
-
-    public void setOptionCategory(int optionCategory) {
-        this.optionCategory = optionCategory;
-    }
-
     public int getStatusId() {
         return statusId;
     }
 
     public void setStatusId(int statusId) {
         this.statusId = statusId;
+    }   
+
+    public Set<CategoryOption> getCategories() {
+        return categoriesOptions;
     }
 
-    @XmlTransient
-    public Collection<Profile> getProfileCollection() {
-        return profileCollection;
-    }
-
-    public void setProfileCollection(Collection<Profile> profileCollection) {
-        this.profileCollection = profileCollection;
+    public void setCategories(Set<CategoryOption> categories) {
+        this.categoriesOptions = categories;
     }
 
     @Override
@@ -126,21 +118,42 @@ public class SystemOption implements Serializable {
     }
 
     @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
+    public boolean equals(Object object) {       
         if (!(object instanceof SystemOption)) {
             return false;
         }
-        SystemOption other = (SystemOption) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
-        }
+      
         return true;
     }
 
     @Override
     public String toString() {
         return "com.exception.magicsnumbersws.entities.SystemOption[ id=" + id + " ]";
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    @XmlTransient
+    public Collection<CategoryOption> getCategoryOptionCollection() {
+        return categoryOptionCollection;
+    }
+
+    public void setCategoryOptionCollection(Collection<CategoryOption> categoryOptionCollection) {
+        this.categoryOptionCollection = categoryOptionCollection;
     }
     
 }

@@ -5,32 +5,38 @@
 package com.exception.magicsnumbersws.entities;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
  * @author fpimentel
  */
 @Entity
-@Table(name = "OPTIONS_CATEGORY")
+@Table(name = "CATEGORIES")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "OptionsCategory.findAll", query = "SELECT o FROM OptionsCategory o")})
-public class OptionsCategory implements Serializable {
+    @NamedQuery(name = "Category.findAll", query = "SELECT c FROM Category c")})
+public class Category implements Serializable {    
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -52,18 +58,23 @@ public class OptionsCategory implements Serializable {
     @Column(name = "CREATION_DATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date creationDate;
+    @JoinTable(name = "CATEGORIES_OPTIONS", joinColumns = {
+        @JoinColumn(name = "CATEGORY_ID", referencedColumnName = "ID")}, inverseJoinColumns = {
+        @JoinColumn(name = "OPTION_ID", referencedColumnName = "ID")})
+    @ManyToMany
+    private Collection<SystemOption> systemOptionCollection;
     @JoinColumn(name = "STATUS_ID", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private Status statusId;
 
-    public OptionsCategory() {
+    public Category() {
     }
 
-    public OptionsCategory(Integer id) {
+    public Category(Integer id) {
         this.id = id;
     }
 
-    public OptionsCategory(Integer id, String name, String description, Date creationDate) {
+    public Category(Integer id, String name, String description, Date creationDate) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -102,6 +113,15 @@ public class OptionsCategory implements Serializable {
         this.creationDate = creationDate;
     }
 
+    @XmlTransient
+    public Collection<SystemOption> getSystemOptionCollection() {
+        return systemOptionCollection;
+    }
+
+    public void setSystemOptionCollection(Collection<SystemOption> systemOptionCollection) {
+        this.systemOptionCollection = systemOptionCollection;
+    }
+
     public Status getStatusId() {
         return statusId;
     }
@@ -120,10 +140,10 @@ public class OptionsCategory implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof OptionsCategory)) {
+        if (!(object instanceof Category)) {
             return false;
         }
-        OptionsCategory other = (OptionsCategory) object;
+        Category other = (Category) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -132,7 +152,7 @@ public class OptionsCategory implements Serializable {
 
     @Override
     public String toString() {
-        return "com.exception.magicsnumbersws.entities.OptionsCategory[ id=" + id + " ]";
+        return "com.exception.magicsnumbersws.entities.Category[ id=" + id + " ]";
     }
     
 }

@@ -65,6 +65,9 @@
     <class>com.exception.magicsnumbersws.dao.Status</class>
     <class>com.exception.magicsnumbersws.dao.Consortium</class>
     <class>com.exception.magicsnumbersws.entities.OptionsCategory</class>
+    <class>com.exception.magicsnumbersws.entities.Category</class>
+    <class>com.exception.magicsnumbersws.dao.CategoryOption</class>
+    <class>com.exception.magicsnumbersws.entities.CategoryOption</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="hibernate.connection.username" value="sa"/>

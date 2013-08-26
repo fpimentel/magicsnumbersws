@@ -57,9 +57,7 @@ public class BetBanking implements Serializable {
     @Size(min = 1, max = 50)
     @Column(name = "CREATION_USER")
     private String creationUser;
-    @JoinColumn(name = "STATUS_ID", referencedColumnName = "ID")
-    @ManyToOne(optional = false)
-    private Status statusId;
+   
     @JoinColumn(name = "CONSORTIUM_ID", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private Consortium consortiumId;
@@ -125,13 +123,7 @@ public class BetBanking implements Serializable {
         this.creationUser = creationUser;
     }
 
-    public Status getStatusId() {
-        return statusId;
-    }
 
-    public void setStatusId(Status statusId) {
-        this.statusId = statusId;
-    }
 
     public Consortium getConsortiumId() {
         return consortiumId;

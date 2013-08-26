@@ -48,10 +48,8 @@ public class Status implements Serializable {
     @JoinColumn(name = "STATUS_TYPE_ID", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private StatusType statusTypeId;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "statusId")
-    private Collection<BetBanking> betBankingCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "statusId")
-    private Collection<Bet> betCollection;
+
+   
     
 
     public Status() {
@@ -89,25 +87,6 @@ public class Status implements Serializable {
     public void setStatusTypeId(StatusType statusTypeId) {
         this.statusTypeId = statusTypeId;
     }
-
-    @XmlTransient
-    public Collection<BetBanking> getBetBankingCollection() {
-        return betBankingCollection;
-    }
-
-    public void setBetBankingCollection(Collection<BetBanking> betBankingCollection) {
-        this.betBankingCollection = betBankingCollection;
-    }
-
-    @XmlTransient
-    public Collection<Bet> getBetCollection() {
-        return betCollection;
-    }
-
-    public void setBetCollection(Collection<Bet> betCollection) {
-        this.betCollection = betCollection;
-    }
-
 
     @Override
     public int hashCode() {

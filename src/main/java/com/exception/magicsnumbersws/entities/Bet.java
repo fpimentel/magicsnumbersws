@@ -89,9 +89,7 @@ public class Bet implements Serializable {
     private Collection<WinningNumber> winningNumberCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "betId")
     private Collection<TicketDetail> ticketDetailCollection;
-    @JoinColumn(name = "STATUS_ID", referencedColumnName = "ID")
-    @ManyToOne(optional = false)
-    private Status statusId;
+
     @JoinColumn(name = "BETTYPE_ID", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private BetType bettypeId;
@@ -232,13 +230,6 @@ public class Bet implements Serializable {
         this.ticketDetailCollection = ticketDetailCollection;
     }
 
-    public Status getStatusId() {
-        return statusId;
-    }
-
-    public void setStatusId(Status statusId) {
-        this.statusId = statusId;
-    }
 
     public BetType getBettypeId() {
         return bettypeId;
@@ -261,10 +252,7 @@ public class Bet implements Serializable {
         if (!(object instanceof Bet)) {
             return false;
         }
-        Bet other = (Bet) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
-        }
+    
         return true;
     }
 

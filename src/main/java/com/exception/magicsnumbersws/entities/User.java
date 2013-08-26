@@ -19,6 +19,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -33,14 +34,13 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "USERS")
-@XmlRootElement(name="User")
+@XmlRootElement(name = "User")
 public class User implements Serializable {
-    
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)	
-    @Column(name = "ID")    
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID")
     private Integer id;
-    
     private static final long serialVersionUID = 1L;
     @Basic(optional = false)
     @NotNull
@@ -66,49 +66,46 @@ public class User implements Serializable {
     @Column(name = "PASSWORD")
     private String password;
     @Basic(optional = false)
-    @NotNull
-    @Column(name = "STATUS_ID")
-    private int statusId;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId")
     private Collection<Ticket> ticketCollection;
-    //@OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
-    //private Collection<UserProfile> userProfiles;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private Collection<BetBankingUser> betBankingUserCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private Collection<UserConsortium> userConsortiumCollection;
-    
-     
-    @ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
-    @JoinTable(name = "USERS_PROFILES", joinColumns = { @JoinColumn(name = "USER_ID") }, inverseJoinColumns = { @JoinColumn(name = "PROFILE_ID") })
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "STATUS_ID", nullable = false)
+    private Status status;
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(name = "USERS_PROFILES", joinColumns = {
+        @JoinColumn(name = "USER_ID")}, inverseJoinColumns = {
+        @JoinColumn(name = "PROFILE_ID")})
     private Set<Profile> profiles = new HashSet<Profile>(0);
-  
+
     @XmlElement
     public Set<Profile> getProfiles() {
         return this.profiles;
     }
-    
+
     public void setProfiles(Set<Profile> profiles) {
         this.profiles = profiles;
     }
-    
+
     public User() {
-        
     }
 
     public User(Integer id) {
         this.id = id;
     }
 
-    public User(Integer id, String firtName, String lastName, String userName, String password, int statusId) {
+    public User(Integer id, String firtName, String lastName, String userName, String password,Status status) {
         this.id = id;
         this.firtName = firtName;
         this.lastName = lastName;
         this.userName = userName;
-        this.password = password;
-        this.statusId = statusId;
+        this.password = password;       
+        this.status = status;
     }
-    
+
     @XmlElement
     public Integer getId() {
         return id;
@@ -117,6 +114,7 @@ public class User implements Serializable {
     public void setId(Integer id) {
         this.id = id;
     }
+
     @XmlElement
     public String getFirtName() {
         return firtName;
@@ -125,6 +123,7 @@ public class User implements Serializable {
     public void setFirtName(String firtName) {
         this.firtName = firtName;
     }
+
     @XmlElement
     public String getLastName() {
         return lastName;
@@ -133,6 +132,7 @@ public class User implements Serializable {
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
+
     @XmlElement
     public String getContactNumber() {
         return contactNumber;
@@ -141,6 +141,7 @@ public class User implements Serializable {
     public void setContactNumber(String contactNumber) {
         this.contactNumber = contactNumber;
     }
+
     @XmlElement
     public String getUserName() {
         return userName;
@@ -149,6 +150,7 @@ public class User implements Serializable {
     public void setUserName(String userName) {
         this.userName = userName;
     }
+
     @XmlElement
     public String getPassword() {
         return password;
@@ -157,14 +159,17 @@ public class User implements Serializable {
     public void setPassword(String password) {
         this.password = password;
     }
+
+
     @XmlElement
-    public int getStatusId() {
-        return statusId;
+    public Status getStatus() {
+        return status;
     }
 
-    public void setStatusId(int statusId) {
-        this.statusId = statusId;
+    public void setStatus(Status status) {
+        this.status = status;
     }
+
 
     @XmlTransient
     public Collection<Ticket> getTicketCollection() {
@@ -174,15 +179,7 @@ public class User implements Serializable {
     public void setTicketCollection(Collection<Ticket> ticketCollection) {
         this.ticketCollection = ticketCollection;
     }
-    /*@XmlTransient
-    public Collection<UserProfile> getUserProfiles() {
-        return userProfiles;
-    }
 
-    public void setUserProfiles(Collection<UserProfile> userProfiles) {
-        this.userProfiles = userProfiles;
-    }
-*/
     @XmlTransient
     public Collection<BetBankingUser> getBetBankingUserCollection() {
         return betBankingUserCollection;
@@ -225,5 +222,4 @@ public class User implements Serializable {
     public String toString() {
         return "com.exception.magicsnumbersws.entities.User[ id=" + id + " ]";
     }
-    
 }

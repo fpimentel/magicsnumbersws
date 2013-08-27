@@ -8,7 +8,7 @@
     <packaging>war</packaging>
     <url>http://maven.apache.org</url>
 
-    <name>MagicsNumbersWS</name>
+    <name>MagicNumbersWS</name>
 
     <properties>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
@@ -26,9 +26,9 @@
     <dependencies>
         
         <dependency>
-            <groupId>com.exception</groupId>
-            <artifactId>sqljdbc</artifactId>
-            <version>4</version>
+            <groupId>com.exception.microsoft</groupId>
+            <artifactId>sqljdbc4</artifactId>
+            <version>4.0</version>
         </dependency>        
           
         <!--Spring dependency-->       

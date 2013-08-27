@@ -1,7 +1,6 @@
 package com.exception.magicsnumbersws.dao.impl;
 import com.exception.magicsnumbersws.dao.StatusDao;
 import com.exception.magicsnumbersws.entities.Status;
-import com.exception.magicsnumbersws.exception.SearchAllUserException;
 import java.util.List;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;

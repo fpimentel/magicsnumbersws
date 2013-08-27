@@ -1,11 +1,9 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.exception.magicsnumbersws.endpoints;
 
+import com.exception.magicsnumbersws.entities.SystemOption;
 import com.exception.magicsnumbersws.entities.User;
 import com.exception.magicsnumbersws.exception.SaveUsersDataException;
+import com.exception.magicsnumbersws.exception.SearchAllSystemOptionException;
 import com.exception.magicsnumbersws.exception.SearchAllUserException;
 import java.util.List;
 import java.util.Set;
@@ -27,12 +25,17 @@ public interface SecurityEndPoint {
 
     @GET
     @Path(value = "/user")
-    @Produces(value = MediaType.APPLICATION_JSON)            
-    List<User> getAllUsers()  throws SearchAllUserException;
-    
+    @Produces(value = MediaType.APPLICATION_JSON)
+    List<User> getAllUsers() throws SearchAllUserException;
+
+    @GET
+    @Path(value = "/systemoption")
+    @Produces(value = MediaType.APPLICATION_JSON)
+    List<SystemOption> getAllSystemOptions() throws SearchAllSystemOptionException ;
+
     @POST
     @Path(value = "/user/save")
     @Consumes("application/json")
-    @Produces(value = MediaType.APPLICATION_JSON)       
+    @Produces(value = MediaType.APPLICATION_JSON)
     void saveUsersData(Set<User> users) throws SaveUsersDataException;
 }

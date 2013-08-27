@@ -1,8 +1,10 @@
 package com.exception.magicsnumbersws.endpoints;
 
+import com.exception.magicsnumbersws.entities.Profile;
 import com.exception.magicsnumbersws.entities.SystemOption;
 import com.exception.magicsnumbersws.entities.User;
 import com.exception.magicsnumbersws.exception.SaveUsersDataException;
+import com.exception.magicsnumbersws.exception.SearchAllProfileException;
 import com.exception.magicsnumbersws.exception.SearchAllSystemOptionException;
 import com.exception.magicsnumbersws.exception.SearchAllUserException;
 import java.util.List;
@@ -33,6 +35,11 @@ public interface SecurityEndPoint {
     @Produces(value = MediaType.APPLICATION_JSON)
     List<SystemOption> getAllSystemOptions() throws SearchAllSystemOptionException ;
 
+    @GET
+    @Path(value = "/profile")
+    @Produces(value = MediaType.APPLICATION_JSON)
+    List<Profile> getAllProfiles() throws SearchAllProfileException ;
+    
     @POST
     @Path(value = "/user/save")
     @Consumes("application/json")

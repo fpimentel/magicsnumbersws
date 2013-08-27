@@ -1,11 +1,14 @@
 package com.exception.magicsnumbersws.endpoints.impl;
 
 import com.exception.magicsnumbersws.endpoints.SecurityEndPoint;
+import com.exception.magicsnumbersws.entities.Profile;
 import com.exception.magicsnumbersws.entities.SystemOption;
 import com.exception.magicsnumbersws.entities.User;
 import com.exception.magicsnumbersws.exception.SaveUsersDataException;
+import com.exception.magicsnumbersws.exception.SearchAllProfileException;
 import com.exception.magicsnumbersws.exception.SearchAllSystemOptionException;
 import com.exception.magicsnumbersws.exception.SearchAllUserException;
+import com.exception.magicsnumbersws.service.ProfileService;
 import com.exception.magicsnumbersws.service.SystemOptionService;
 import com.exception.magicsnumbersws.service.UserService;
 import java.util.HashMap;
@@ -38,6 +41,8 @@ public class SecurityEndPointImpl implements SecurityEndPoint {
     private UserService userService;
     @Autowired
     private SystemOptionService systemOptionService;
+    @Autowired
+    private ProfileService profileService;
     private Logger logger = Logger.getLogger(SecurityEndPointImpl.class.getName());
 
     @GET
@@ -63,15 +68,7 @@ public class SecurityEndPointImpl implements SecurityEndPoint {
     public void setUserService(UserService userService) {
         this.userService = userService;
     }
-
-    @POST
-    @Path(value = "/user/save")
-    @Consumes("application/json")
-    @Produces(value = MediaType.APPLICATION_JSON)
-    @Override
-    public void saveUsersData(Set<User> users) throws SaveUsersDataException {
-        userService.saveUsersData(users);
-    }
+   
 
     @GET
     @Path(value = "/systemoption")
@@ -79,5 +76,22 @@ public class SecurityEndPointImpl implements SecurityEndPoint {
     @Override
     public List<SystemOption> getAllSystemOptions() throws SearchAllSystemOptionException {
         return systemOptionService.findAll();
+    }
+    
+    @GET
+    @Path(value = "/profile")
+    @Produces(value = MediaType.APPLICATION_JSON)
+    @Override
+    public List<Profile> getAllProfiles() throws SearchAllProfileException {
+        return profileService.findAll();
+    }
+    
+    @POST
+    @Path(value = "/user/save")
+    @Consumes("application/json")
+    @Produces(value = MediaType.APPLICATION_JSON)
+    @Override
+    public void saveUsersData(Set<User> users) throws SaveUsersDataException {
+        userService.saveUsersData(users);
     }
 }

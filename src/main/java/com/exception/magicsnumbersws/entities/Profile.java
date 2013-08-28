@@ -169,12 +169,22 @@ public class Profile implements Serializable {
     }
 
     @Override
-    public boolean equals(Object object) {        
-        if (!(object instanceof Profile)) {
+    public boolean equals(Object obj) {
+        if (obj == null) {
             return false;
-        }        
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Profile other = (Profile) obj;
+        if (this.id != other.id && (this.id == null || !this.id.equals(other.id))) {
+            return false;
+        }
         return true;
     }
+
+    
+
 
     @Override
     public String toString() {

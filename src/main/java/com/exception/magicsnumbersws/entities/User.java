@@ -35,8 +35,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @Entity
 @Table(name = "USERS")
 @XmlRootElement(name = "User")
-public class User implements Serializable {
-
+public class User implements Serializable {    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
@@ -64,31 +63,13 @@ public class User implements Serializable {
     @NotNull
     @Size(min = 1, max = 50)
     @Column(name = "PASSWORD")
-    private String password;
-    @Basic(optional = false)
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId")
-    private Collection<Ticket> ticketCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
-    private Collection<BetBankingUser> betBankingUserCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
-    private Collection<UserConsortium> userConsortiumCollection;
+    private String password;    
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "STATUS_ID", nullable = false)
     private Status status;
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinTable(name = "USERS_PROFILES", joinColumns = {
-        @JoinColumn(name = "USER_ID")}, inverseJoinColumns = {
-        @JoinColumn(name = "PROFILE_ID")})
-    private Set<Profile> profiles = new HashSet<Profile>(0);
-
-    @XmlElement
-    public Set<Profile> getProfiles() {
-        return this.profiles;
-    }
-
-    public void setProfiles(Set<Profile> profiles) {
-        this.profiles = profiles;
-    }
+    @JoinColumn(name = "PROFILE_ID", referencedColumnName = "ID")
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Profile profile;
 
     public User() {
     }
@@ -171,33 +152,6 @@ public class User implements Serializable {
     }
 
 
-    @XmlTransient
-    public Collection<Ticket> getTicketCollection() {
-        return ticketCollection;
-    }
-
-    public void setTicketCollection(Collection<Ticket> ticketCollection) {
-        this.ticketCollection = ticketCollection;
-    }
-
-    @XmlTransient
-    public Collection<BetBankingUser> getBetBankingUserCollection() {
-        return betBankingUserCollection;
-    }
-
-    public void setBetBankingUserCollection(Collection<BetBankingUser> betBankingUserCollection) {
-        this.betBankingUserCollection = betBankingUserCollection;
-    }
-
-    @XmlTransient
-    public Collection<UserConsortium> getUserConsortiumCollection() {
-        return userConsortiumCollection;
-    }
-
-    public void setUserConsortiumCollection(Collection<UserConsortium> userConsortiumCollection) {
-        this.userConsortiumCollection = userConsortiumCollection;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -221,5 +175,14 @@ public class User implements Serializable {
     @Override
     public String toString() {
         return "com.exception.magicsnumbersws.entities.User[ id=" + id + " ]";
+    }
+ 
+    @XmlElement
+    public Profile getProfile() {
+        return profile;
+    }
+
+    public void setProfile(Profile profile) {
+        this.profile = profile;
     }
 }

@@ -10,6 +10,7 @@ import org.hibernate.FetchMode;
 import org.hibernate.SessionFactory;
 
 import org.hibernate.criterion.Restrictions;
+import org.springframework.beans.BeanUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -77,14 +78,13 @@ public class UserDaoImpl implements UserDao{
     } 
 
     @Override
-    public void saveUsersData(Set<User> users) throws SaveUsersDataException{
+    public void saveUsersData(List<User> users) throws SaveUsersDataException{
         
         for(User currUser : users)
         {
-          User user = (User) sessionFactory.getCurrentSession().createCriteria(User.class)
-                        .add(Restrictions.eq("id", currUser.getId())).list();
+          User user = (User) sessionFactory.getCurrentSession().get(currUser.getClass(),currUser.getId());
           if(user != null){
-              user= currUser;
+              BeanUtils.copyProperties(currUser, user);              
               update(user);
           }
           else 

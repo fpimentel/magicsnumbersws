@@ -44,5 +44,5 @@ public interface SecurityEndPoint {
     @Path(value = "/user/save")
     @Consumes("application/json")
     @Produces(value = MediaType.APPLICATION_JSON)
-    void saveUsersData(Set<User> users) throws SaveUsersDataException;
+    void saveUsersData(List<User> users) throws SaveUsersDataException;
 }

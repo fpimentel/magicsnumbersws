@@ -11,9 +11,7 @@ import com.exception.magicsnumbersws.exception.SearchAllUserException;
 import com.exception.magicsnumbersws.service.ProfileService;
 import com.exception.magicsnumbersws.service.SystemOptionService;
 import com.exception.magicsnumbersws.service.UserService;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -91,7 +89,7 @@ public class SecurityEndPointImpl implements SecurityEndPoint {
     @Consumes("application/json")
     @Produces(value = MediaType.APPLICATION_JSON)
     @Override
-    public void saveUsersData(Set<User> users) throws SaveUsersDataException {
+    public void saveUsersData(List<User> users) throws SaveUsersDataException {
         userService.saveUsersData(users);
     }
 }

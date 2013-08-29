@@ -24,5 +24,5 @@ public interface UserService {
     public User findById(int id);
     public List<User> findAll()  throws SearchAllUserException;
     public User getUserByCredentials(String userName, String pass); 
-    public void saveUsersData(Set<User> users) throws SaveUsersDataException;
+    public void saveUsersData(List<User> users) throws SaveUsersDataException;
 }

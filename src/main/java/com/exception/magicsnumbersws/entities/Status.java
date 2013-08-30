@@ -29,8 +29,6 @@ import javax.xml.bind.annotation.XmlTransient;
 @Entity
 @Table(name = "STATUS")
 @XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Status.findAll", query = "SELECT s FROM Status s")})
 public class Status implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "statusId")
     private Collection<Category> categoryCollection;
@@ -90,23 +88,27 @@ public class Status implements Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        int hash = 5;
+        hash = 89 * hash + (this.categoryCollection != null ? this.categoryCollection.hashCode() : 0);
         return hash;
     }
 
     @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Status)) {
+    public boolean equals(Object obj) {
+        if (obj == null) {
             return false;
         }
-        Status other = (Status) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Status other = (Status) obj;
+        if (this.categoryCollection != other.categoryCollection && (this.categoryCollection == null || !this.categoryCollection.equals(other.categoryCollection))) {
             return false;
         }
         return true;
     }
+
+
 
     @Override
     public String toString() {

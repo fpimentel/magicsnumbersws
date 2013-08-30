@@ -3,11 +3,13 @@ import com.exception.magicsnumbersws.dao.UserDao;
 import com.exception.magicsnumbersws.entities.User;
 import com.exception.magicsnumbersws.exception.SaveUsersDataException;
 import com.exception.magicsnumbersws.exception.SearchAllUserException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Expression;
 
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.BeanUtils;
@@ -21,7 +23,7 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public class UserDaoImpl implements UserDao{
-
+    private static int ACTIVO = 1;
     @Autowired
     private SessionFactory sessionFactory;
 
@@ -63,18 +65,38 @@ public class UserDaoImpl implements UserDao{
 
     @Override
     public User getUserByCredentials(String userName, String pass) {
-        User user = (User)sessionFactory.getCurrentSession().createCriteria(User.class)
-                       .add(Restrictions.eq("userName", userName))
-                       .add(Restrictions.eq("password", pass)).list();         
-        return user;
+        
+        User userSource = (User)sessionFactory.getCurrentSession()
+                       .createCriteria(User.class)                
+                       .createAlias("status", "status")
+                       .setFetchMode("status", FetchMode.JOIN)
+                       .add(Restrictions.eq("status.id", ACTIVO))
+                       .add(Restrictions.eq("userName", userName).ignoreCase())
+                       .add(Restrictions.eq("password", pass)).uniqueResult();
+        User copiedUser = new User();
+        String[] ignoredProperties = {"profile"};        
+        BeanUtils.copyProperties(userSource, copiedUser, ignoredProperties);
+        return copiedUser;
     } 
 
     @Override
     public List<User> findAll() throws SearchAllUserException {
-     return (List<User>)sessionFactory.getCurrentSession().createCriteria(User.class)
+       // User copiedUser;
+        //String[] ignoredProperties = {"profile,status"};        
+            
+        /*List<User> copiedUsers = new ArrayList<User>();
+        for(User currUser : usersSource){
+            copiedUser = new User();
+            BeanUtils.copyProperties(currUser, copiedUser, ignoredProperties);
+            copiedUsers.add(copiedUser);
+        }  */      
+        List<User> userResult = (List<User>)sessionFactory.getCurrentSession().createCriteria(User.class)
                .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)
-               .setFetchMode("profiles", FetchMode.JOIN)               
-               .list(); 
+               .setFetchMode("profile", FetchMode.JOIN)   
+               .setFetchMode("status", FetchMode.JOIN)
+               .setFetchMode("profile.options", FetchMode.JOIN)
+               .list();     
+        return  userResult;    
     } 
 
     @Override

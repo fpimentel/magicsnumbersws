@@ -17,16 +17,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
+
 
 /**
  *
@@ -35,7 +32,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @Entity
 @Table(name = "USERS")
 @XmlRootElement(name = "User")
-public class User implements Serializable {    
+public class User implements Serializable , Comparable<User>{    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
@@ -64,11 +61,11 @@ public class User implements Serializable {
     @Size(min = 1, max = 50)
     @Column(name = "PASSWORD")
     private String password;    
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "STATUS_ID", nullable = false)
     private Status status;
     @JoinColumn(name = "PROFILE_ID", referencedColumnName = "ID")
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     private Profile profile;
 
     public User() {
@@ -176,6 +173,8 @@ public class User implements Serializable {
     public String toString() {
         return "com.exception.magicsnumbersws.entities.User[ id=" + id + " ]";
     }
+    
+    
  
     @XmlElement
     public Profile getProfile() {
@@ -184,5 +183,10 @@ public class User implements Serializable {
 
     public void setProfile(Profile profile) {
         this.profile = profile;
+    }
+
+    @Override
+    public int compareTo(User that) {
+        return this.id - that.id;
     }
 }

@@ -51,10 +51,7 @@ public class SecurityEndPointImpl implements SecurityEndPoint {
         logger.log(Level.INFO, "init- getAllUsers");
         return userService.findAll();
     }
-
-    @GET
-    @Path("/user/{userName,pass}")
-    @Produces(MediaType.APPLICATION_JSON)
+    @Override
     public User getUserByCredential(@PathParam("userName") String userName, @PathParam("userName") String pass) {
         return userService.getUserByCredentials(userName, pass);
     }

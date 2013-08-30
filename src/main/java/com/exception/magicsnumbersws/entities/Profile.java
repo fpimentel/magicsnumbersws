@@ -65,13 +65,9 @@ public class Profile implements Serializable {
     @ManyToOne(optional = false)    
     private SystemOption systemOptionId;
     
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinTable(name = "PROFILES_SYSTEM_OPTIONS", joinColumns = { @JoinColumn(name = "PROFILE_ID") }, inverseJoinColumns = { @JoinColumn(name = "SYSTEM_OPTION_ID") })
-    private Set<SystemOption> options = new HashSet<SystemOption>(0);
-   
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinTable(name = "USERS_PROFILES", joinColumns = { @JoinColumn(name = "PROFILE_ID") }, inverseJoinColumns = { @JoinColumn(name = "USER_ID") })
-    private Set<User> users = new HashSet<User>(0);
+    @JoinTable(name = "PROFILES_SYSTEM_OPTIONS", joinColumns = { @JoinColumn(name = "PROFILE_ID") }, inverseJoinColumns = { @JoinColumn(name = "SYSTEM_OPTION_ID") })
+    private Set<SystemOption> options = new HashSet<SystemOption>(0);       
     
     public Profile() {
     }
@@ -151,20 +147,11 @@ public class Profile implements Serializable {
     public void setOptions(Set<SystemOption> options) {
         this.options = options;
     }
-    @XmlTransient
-    public Set<User> getUsers() {
-        return users;
-    }
-
-    public void setUsers(Set<User> users) {
-        this.users = users;
-    }
-     
 
     @Override
     public int hashCode() {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        int hash = 7;
+        hash = 17 * hash + (this.id != null ? this.id.hashCode() : 0);
         return hash;
     }
 
@@ -182,10 +169,7 @@ public class Profile implements Serializable {
         }
         return true;
     }
-
-    
-
-
+     
     @Override
     public String toString() {
         return "com.exception.magicsnumbersws.entities.Profile[ id=" + id + " ]";

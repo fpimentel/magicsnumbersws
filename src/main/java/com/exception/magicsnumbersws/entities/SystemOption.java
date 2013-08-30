@@ -48,20 +48,12 @@ public class SystemOption implements Serializable {
     @Size(min = 1, max = 50)
     @Column(name = "NAME")
     private String name;
-   
-
     @Basic(optional = false)
     @NotNull
     @Column(name = "STATUS_ID")
     private int statusId;
-    
-    
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "systemOption")
-    private Set<CategoryOption> categoriesOptions = new HashSet<CategoryOption>(0);
-    //@ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
-    //@JoinTable(name = "CATEGORIES_OPTIONS", joinColumns = { @JoinColumn(name = "OPTION_ID") }, inverseJoinColumns = { @JoinColumn(name = "CATEGORY_ID")})    
-    //private Set<CategoryOption> categoriesOptions = new  HashSet<CategoryOption>(0);        
-    //private Set<Category> categories = new  HashSet<Category>(0);        
+    private Set<CategoryOption> categoriesOptions = new HashSet<CategoryOption>(0);           
     
     public SystemOption() {
     }
@@ -110,19 +102,26 @@ public class SystemOption implements Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        int hash = 3;
+        hash = 43 * hash + (this.id != null ? this.id.hashCode() : 0);
         return hash;
     }
 
     @Override
-    public boolean equals(Object object) {       
-        if (!(object instanceof SystemOption)) {
+    public boolean equals(Object obj) {
+        if (obj == null) {
             return false;
         }
-      
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final SystemOption other = (SystemOption) obj;
+        if (this.id != other.id && (this.id == null || !this.id.equals(other.id))) {
+            return false;
+        }
         return true;
     }
+
 
     @Override
     public String toString() {

@@ -2,9 +2,11 @@ package com.exception.magicsnumbersws.dao.impl;
 
 import com.exception.magicsnumbersws.dao.ProfileDao;
 import com.exception.magicsnumbersws.entities.Profile;
+import com.exception.magicsnumbersws.entities.User;
 import com.exception.magicsnumbersws.exception.SearchAllProfileException;
 import java.util.List;
 import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -56,9 +58,11 @@ public class ProfileDaoImpl implements ProfileDao{
 
     @Override
     public List<Profile> findAll() throws SearchAllProfileException {
-        return (List<Profile>)sessionFactory.getCurrentSession().createCriteria(Profile.class)                                          
+        List<Profile> profileResult = (List<Profile>)sessionFactory.getCurrentSession().createCriteria(Profile.class)
                .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)
+               .setFetchMode("options", FetchMode.JOIN)                  
                .list();
+        return profileResult;
     }
 
 }

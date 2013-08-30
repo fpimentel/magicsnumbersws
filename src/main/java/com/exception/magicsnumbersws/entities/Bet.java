@@ -241,20 +241,26 @@ public class Bet implements Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        int hash = 3;
+        hash = 89 * hash + (this.id != null ? this.id.hashCode() : 0);
         return hash;
     }
 
     @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Bet)) {
+    public boolean equals(Object obj) {
+        if (obj == null) {
             return false;
         }
-    
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Bet other = (Bet) obj;
+        if (this.id != other.id && (this.id == null || !this.id.equals(other.id))) {
+            return false;
+        }
         return true;
     }
+
 
     @Override
     public String toString() {

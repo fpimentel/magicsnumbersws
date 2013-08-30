@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.exception.magicsnumbersws.entities;
 
 import java.io.Serializable;
@@ -10,8 +6,6 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -82,23 +76,27 @@ public class CategoryOption implements Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 0;
-        hash += (categoryOptionPK != null ? categoryOptionPK.hashCode() : 0);
+        int hash = 7;
+        hash = 41 * hash + (this.categoryOptionPK != null ? this.categoryOptionPK.hashCode() : 0);
         return hash;
     }
 
     @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof CategoryOption)) {
+    public boolean equals(Object obj) {
+        if (obj == null) {
             return false;
         }
-        CategoryOption other = (CategoryOption) object;
-        if ((this.categoryOptionPK == null && other.categoryOptionPK != null) || (this.categoryOptionPK != null && !this.categoryOptionPK.equals(other.categoryOptionPK))) {
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final CategoryOption other = (CategoryOption) obj;
+        if (this.categoryOptionPK != other.categoryOptionPK && (this.categoryOptionPK == null || !this.categoryOptionPK.equals(other.categoryOptionPK))) {
             return false;
         }
         return true;
     }
+
+
 
     @Override
     public String toString() {

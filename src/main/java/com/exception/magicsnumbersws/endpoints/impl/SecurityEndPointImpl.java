@@ -4,6 +4,7 @@ import com.exception.magicsnumbersws.endpoints.SecurityEndPoint;
 import com.exception.magicsnumbersws.entities.Profile;
 import com.exception.magicsnumbersws.entities.SystemOption;
 import com.exception.magicsnumbersws.entities.User;
+import com.exception.magicsnumbersws.exception.SaveSystemOptionsDataException;
 import com.exception.magicsnumbersws.exception.SaveUsersDataException;
 import com.exception.magicsnumbersws.exception.SearchAllProfileException;
 import com.exception.magicsnumbersws.exception.SearchAllSystemOptionException;
@@ -12,7 +13,6 @@ import com.exception.magicsnumbersws.service.ProfileService;
 import com.exception.magicsnumbersws.service.SystemOptionService;
 import com.exception.magicsnumbersws.service.UserService;
 import java.util.List;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ws.rs.Consumes;
@@ -88,5 +88,10 @@ public class SecurityEndPointImpl implements SecurityEndPoint {
     @Override
     public void saveUsersData(List<User> users) throws SaveUsersDataException {
         userService.saveUsersData(users);
+    }
+
+    @Override
+    public void saveSystemOptionsData(List<SystemOption> systemOptions) throws SaveSystemOptionsDataException {
+        systemOptionService.saveSystemOptionsData(systemOptions);
     }
 }

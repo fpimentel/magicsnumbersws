@@ -1,7 +1,9 @@
 package com.exception.magicsnumbersws.endpoints.impl;
 
 import com.exception.magicsnumbersws.endpoints.LookupTablesEndpoint;
+import com.exception.magicsnumbersws.entities.Category;
 import com.exception.magicsnumbersws.entities.Status;
+import com.exception.magicsnumbersws.service.CategoryService;
 import com.exception.magicsnumbersws.service.StatusService;
 import java.util.List;
 import java.util.logging.Level;
@@ -24,6 +26,8 @@ public class LookupTablesEndpointImpl implements LookupTablesEndpoint {
   
   @Autowired  
   private StatusService statusService;
+  @Autowired
+  private CategoryService categoryService;
     
   private Logger logger = Logger.getLogger(LookupTablesEndpointImpl.class.getName());
 
@@ -35,4 +39,10 @@ public class LookupTablesEndpointImpl implements LookupTablesEndpoint {
       logger.log(Level.INFO, "init - getAllStatus()");
       return statusService.findAll();
   }
+
+    @Override
+    public List<Category> getAllCategories() {
+        logger.log(Level.INFO, "init - getAllCategories()");
+        return categoryService.findAll();
+    }
 }

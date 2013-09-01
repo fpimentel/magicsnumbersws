@@ -2,6 +2,7 @@ package com.exception.magicsnumbersws.dao;
 
 
 import com.exception.magicsnumbersws.entities.SystemOption;
+import com.exception.magicsnumbersws.exception.SaveSystemOptionsDataException;
 import com.exception.magicsnumbersws.exception.SearchAllSystemOptionException;
 import java.util.List;
 
@@ -15,4 +16,5 @@ public interface SystemOptionDao {
     public void delete(int systemOptionId);
     public SystemOption findById(int id);    
     public List<SystemOption> findAll() throws SearchAllSystemOptionException;      
+    public void saveSystemOptionsData(List<SystemOption> systemOptions) throws SaveSystemOptionsDataException;
 }

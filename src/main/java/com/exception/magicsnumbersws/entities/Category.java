@@ -8,8 +8,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -19,7 +17,7 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
+
 
 /**
  *
@@ -51,12 +49,7 @@ public class Category implements Serializable {
     @NotNull
     @Column(name = "CREATION_DATE")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date creationDate;
-    @JoinTable(name = "CATEGORIES_OPTIONS", joinColumns = {
-        @JoinColumn(name = "CATEGORY_ID", referencedColumnName = "ID")}, inverseJoinColumns = {
-        @JoinColumn(name = "OPTION_ID", referencedColumnName = "ID")})
-    @ManyToMany
-    private Collection<SystemOption> systemOptionCollection;
+    private Date creationDate;    
     @JoinColumn(name = "STATUS_ID", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private Status statusId;
@@ -107,15 +100,6 @@ public class Category implements Serializable {
         this.creationDate = creationDate;
     }
 
-    @XmlTransient
-    public Collection<SystemOption> getSystemOptionCollection() {
-        return systemOptionCollection;
-    }
-
-    public void setSystemOptionCollection(Collection<SystemOption> systemOptionCollection) {
-        this.systemOptionCollection = systemOptionCollection;
-    }
-
     public Status getStatusId() {
         return statusId;
     }
@@ -127,7 +111,7 @@ public class Category implements Serializable {
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 83 * hash + (this.id != null ? this.id.hashCode() : 0);
+        hash = 67 * hash + (this.id != null ? this.id.hashCode() : 0);
         return hash;
     }
 
@@ -145,6 +129,8 @@ public class Category implements Serializable {
         }
         return true;
     }
+
+
 
 
 

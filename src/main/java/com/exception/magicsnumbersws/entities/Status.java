@@ -88,8 +88,8 @@ public class Status implements Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 5;
-        hash = 89 * hash + (this.categoryCollection != null ? this.categoryCollection.hashCode() : 0);
+        int hash = 7;
+        hash = 59 * hash + (this.id != null ? this.id.hashCode() : 0);
         return hash;
     }
 
@@ -102,11 +102,12 @@ public class Status implements Serializable {
             return false;
         }
         final Status other = (Status) obj;
-        if (this.categoryCollection != other.categoryCollection && (this.categoryCollection == null || !this.categoryCollection.equals(other.categoryCollection))) {
+        if (this.id != other.id && (this.id == null || !this.id.equals(other.id))) {
             return false;
         }
         return true;
     }
+
 
 
 

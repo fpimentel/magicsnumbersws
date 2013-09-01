@@ -1,5 +1,6 @@
 package com.exception.magicsnumbersws.endpoints;
 
+import com.exception.magicsnumbersws.entities.Category;
 import com.exception.magicsnumbersws.entities.Status;
 import java.util.List;
 import javax.ws.rs.GET;
@@ -20,4 +21,9 @@ public interface LookupTablesEndpoint {
     @Path(value = "/status")
     @Produces(value = MediaType.APPLICATION_JSON)            
     List<Status> getAllStatus();          
+    
+    @GET
+    @Path(value = "/category")
+    @Produces(value = MediaType.APPLICATION_JSON)            
+    List<Category> getAllCategories();   
 }

@@ -8,14 +8,17 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-
-
 
 /**
  *
@@ -24,11 +27,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Entity
 @Table(name = "SYSTEM_OPTIONS")
 @XmlRootElement
-public class SystemOption implements Serializable {      
-    
+public class SystemOption implements Serializable, Comparable<SystemOption> {
+
     @Size(max = 150)
     @Column(name = "OUT_COME")
-    private String outCome; 
+    private String outCome;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 150)
@@ -39,6 +42,7 @@ public class SystemOption implements Serializable {
     private String url;
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @NotNull
     @Column(name = "ID")
@@ -48,13 +52,13 @@ public class SystemOption implements Serializable {
     @Size(min = 1, max = 50)
     @Column(name = "NAME")
     private String name;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "STATUS_ID")
-    private int statusId;
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "systemOption")
-    private Set<CategoryOption> categoriesOptions = new HashSet<CategoryOption>(0);           
-    
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "STATUS_ID", nullable = false)
+    private Status status;
+    @JoinColumn(name = "CATEGORY_ID", referencedColumnName = "ID")
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Category category;
+
     public SystemOption() {
     }
 
@@ -62,10 +66,10 @@ public class SystemOption implements Serializable {
         this.id = id;
     }
 
-    public SystemOption(Integer id, String name, int optionCategory, int statusId) {
+    public SystemOption(Integer id, String name, int optionCategory, Status status) {
         this.id = id;
-        this.name = name;        
-        this.statusId = statusId;
+        this.name = name;
+        this.status = status;
     }
 
     public Integer getId() {
@@ -84,20 +88,20 @@ public class SystemOption implements Serializable {
         this.name = name;
     }
 
-    public int getStatusId() {
-        return statusId;
+    public Status getStatus() {
+        return status;
     }
 
-    public void setStatusId(int statusId) {
-        this.statusId = statusId;
-    }   
-
-    public Set<CategoryOption> getCategories() {
-        return categoriesOptions;
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+    @XmlElement
+    public Category getCategory() {
+        return category;
     }
 
-    public void setCategories(Set<CategoryOption> categories) {
-        this.categoriesOptions = categories;
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
     @Override
@@ -122,7 +126,6 @@ public class SystemOption implements Serializable {
         return true;
     }
 
-
     @Override
     public String toString() {
         return "com.exception.magicsnumbersws.entities.SystemOption[ id=" + id + " ]";
@@ -144,13 +147,16 @@ public class SystemOption implements Serializable {
         this.url = url;
     }
 
-
     public String getOutCome() {
         return outCome;
     }
 
     public void setOutCome(String outCome) {
         this.outCome = outCome;
-    }    
-    
+    }
+
+    @Override
+    public int compareTo(SystemOption that) {
+        return this.id - that.id;
+    }
 }

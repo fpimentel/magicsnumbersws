@@ -173,9 +173,7 @@ public class User implements Serializable , Comparable<User>{
     public String toString() {
         return "com.exception.magicsnumbersws.entities.User[ id=" + id + " ]";
     }
-    
-    
- 
+         
     @XmlElement
     public Profile getProfile() {
         return profile;

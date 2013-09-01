@@ -3,6 +3,7 @@ package com.exception.magicsnumbersws.endpoints;
 import com.exception.magicsnumbersws.entities.Profile;
 import com.exception.magicsnumbersws.entities.SystemOption;
 import com.exception.magicsnumbersws.entities.User;
+import com.exception.magicsnumbersws.exception.SaveSystemOptionsDataException;
 import com.exception.magicsnumbersws.exception.SaveUsersDataException;
 import com.exception.magicsnumbersws.exception.SearchAllProfileException;
 import com.exception.magicsnumbersws.exception.SearchAllSystemOptionException;
@@ -34,21 +35,27 @@ public interface SecurityEndPoint {
     @GET
     @Path(value = "/systemoption")
     @Produces(value = MediaType.APPLICATION_JSON)
-    List<SystemOption> getAllSystemOptions() throws SearchAllSystemOptionException ;
+    List<SystemOption> getAllSystemOptions() throws SearchAllSystemOptionException;
 
     @GET
     @Path(value = "/profile")
     @Produces(value = MediaType.APPLICATION_JSON)
-    List<Profile> getAllProfiles() throws SearchAllProfileException ;
-    
+    List<Profile> getAllProfiles() throws SearchAllProfileException;
+
+    @GET
+    @Path("/user/{userName}/{pass}")
+    @Produces(MediaType.APPLICATION_JSON)
+    User getUserByCredential(@PathParam("userName") String userName, @PathParam("pass") String pass);
+
     @POST
     @Path(value = "/user/save")
     @Consumes("application/json")
     @Produces(value = MediaType.APPLICATION_JSON)
     void saveUsersData(List<User> users) throws SaveUsersDataException;
-        
-    @GET
-    @Path("/user/{userName}/{pass}")    
-    @Produces(MediaType.APPLICATION_JSON)
-    User getUserByCredential(@PathParam("userName") String userName, @PathParam("pass") String pass);
+
+    @POST
+    @Path(value = "/systemoption/save")
+    @Consumes("application/json")
+    @Produces(value = MediaType.APPLICATION_JSON)
+    void saveSystemOptionsData(List<SystemOption> systemOptions) throws SaveSystemOptionsDataException;
 }

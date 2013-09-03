@@ -17,6 +17,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -67,6 +69,9 @@ public class User implements Serializable , Comparable<User>{
     @JoinColumn(name = "PROFILE_ID", referencedColumnName = "ID")
     @ManyToOne(fetch = FetchType.LAZY)
     private Profile profile;
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(name = "USERS_CONSORTIUMS", joinColumns = { @JoinColumn(name = "USER_ID") }, inverseJoinColumns = { @JoinColumn(name = "CONSORTIUM_ID") })
+    private Set<Consortium> consortiums = new HashSet<Consortium>(0);
 
     public User() {
     }
@@ -84,6 +89,14 @@ public class User implements Serializable , Comparable<User>{
         this.status = status;
     }
 
+    public Set<Consortium> getConsortiums() {
+        return consortiums;
+    }
+
+    public void setConsortiums(Set<Consortium> consortiums) {
+        this.consortiums = consortiums;
+    }
+    
     @XmlElement
     public Integer getId() {
         return id;

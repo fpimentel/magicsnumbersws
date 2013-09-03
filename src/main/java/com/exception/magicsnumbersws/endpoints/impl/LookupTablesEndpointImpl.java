@@ -2,8 +2,11 @@ package com.exception.magicsnumbersws.endpoints.impl;
 
 import com.exception.magicsnumbersws.endpoints.LookupTablesEndpoint;
 import com.exception.magicsnumbersws.entities.Category;
+import com.exception.magicsnumbersws.entities.Consortium;
 import com.exception.magicsnumbersws.entities.Status;
+import com.exception.magicsnumbersws.exception.SearchAllConsortiumException;
 import com.exception.magicsnumbersws.service.CategoryService;
+import com.exception.magicsnumbersws.service.ConsortiumService;
 import com.exception.magicsnumbersws.service.StatusService;
 import java.util.List;
 import java.util.logging.Level;
@@ -28,6 +31,8 @@ public class LookupTablesEndpointImpl implements LookupTablesEndpoint {
   private StatusService statusService;
   @Autowired
   private CategoryService categoryService;
+  @Autowired
+  private ConsortiumService consortiumService;
     
   private Logger logger = Logger.getLogger(LookupTablesEndpointImpl.class.getName());
 
@@ -44,5 +49,10 @@ public class LookupTablesEndpointImpl implements LookupTablesEndpoint {
     public List<Category> getAllCategories() {
         logger.log(Level.INFO, "init - getAllCategories()");
         return categoryService.findAll();
+    }
+    
+    @Override
+    public List<Consortium> findConsortiumByUserId(int userId) throws SearchAllConsortiumException{
+        return consortiumService.findByUserId(userId);
     }
 }

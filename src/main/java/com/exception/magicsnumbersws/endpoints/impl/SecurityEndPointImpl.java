@@ -1,17 +1,13 @@
 package com.exception.magicsnumbersws.endpoints.impl;
-
 import com.exception.magicsnumbersws.endpoints.SecurityEndPoint;
-import com.exception.magicsnumbersws.entities.Consortium;
 import com.exception.magicsnumbersws.entities.Profile;
 import com.exception.magicsnumbersws.entities.SystemOption;
 import com.exception.magicsnumbersws.entities.User;
 import com.exception.magicsnumbersws.exception.SaveSystemOptionsDataException;
 import com.exception.magicsnumbersws.exception.SaveUsersDataException;
-import com.exception.magicsnumbersws.exception.SearchAllConsortiumException;
 import com.exception.magicsnumbersws.exception.SearchAllProfileException;
 import com.exception.magicsnumbersws.exception.SearchAllSystemOptionException;
 import com.exception.magicsnumbersws.exception.SearchAllUserException;
-import com.exception.magicsnumbersws.service.ConsortiumService;
 import com.exception.magicsnumbersws.service.ProfileService;
 import com.exception.magicsnumbersws.service.SystemOptionService;
 import com.exception.magicsnumbersws.service.UserService;
@@ -44,8 +40,7 @@ public class SecurityEndPointImpl implements SecurityEndPoint {
     private SystemOptionService systemOptionService;
     @Autowired
     private ProfileService profileService;
-    @Autowired
-    private ConsortiumService consortiumService;
+   
     
     private Logger logger = Logger.getLogger(SecurityEndPointImpl.class.getName());
 
@@ -101,8 +96,4 @@ public class SecurityEndPointImpl implements SecurityEndPoint {
         systemOptionService.saveSystemOptionsData(systemOptions);
     }
 
-    @Override
-    public List<Consortium> findConsortiumByUserId(int userId) throws SearchAllConsortiumException{
-        return consortiumService.findByUserId(userId);
-    }
 }

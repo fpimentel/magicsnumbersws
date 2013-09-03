@@ -1,12 +1,13 @@
 package com.exception.magicsnumbersws.dao.impl;
+
 import com.exception.magicsnumbersws.dao.ConsortiumDao;
-import com.exception.magicsnumbersws.dao.SystemOptionDao;
+
 import com.exception.magicsnumbersws.entities.Consortium;
 import com.exception.magicsnumbersws.entities.SystemOption;
 import com.exception.magicsnumbersws.entities.User;
 import com.exception.magicsnumbersws.exception.SaveSystemOptionsDataException;
 import com.exception.magicsnumbersws.exception.SearchAllConsortiumException;
-import com.exception.magicsnumbersws.exception.SearchAllSystemOptionException;
+import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.FetchMode;
 import org.hibernate.SessionFactory;
@@ -22,6 +23,7 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public class ConsortiumDaoImpl implements ConsortiumDao {
+
     private static int ACTIVO = 1;
     @Autowired
     private SessionFactory sessionFactory;
@@ -41,8 +43,6 @@ public class ConsortiumDaoImpl implements ConsortiumDao {
         this.sessionFactory = sessionFactory;
     }
 
-
-
     /**
      *
      * @return @throws SearchAllSystemOptionException
@@ -51,11 +51,10 @@ public class ConsortiumDaoImpl implements ConsortiumDao {
     public List<Consortium> findAll() throws SearchAllConsortiumException {
         return (List<Consortium>) sessionFactory.getCurrentSession()
                 .createCriteria(Consortium.class)
-                .setFetchMode("status", FetchMode.JOIN)  
+                .setFetchMode("status", FetchMode.JOIN)
                 .add(Restrictions.eq("status.id", ACTIVO))
                 .list();
     }
-
 
     @Override
     public void add(Consortium consortium) {
@@ -69,20 +68,33 @@ public class ConsortiumDaoImpl implements ConsortiumDao {
 
     @Override
     public List<Consortium> findByUserId(int userId) throws SearchAllConsortiumException {
-        if(userId <= 0){
+        if (userId <= 0) {
             return null;
         }
-        List<Consortium> consortiumResult = (List<Consortium>) sessionFactory.getCurrentSession()                
-                .createCriteria(Consortium.class)
-                .setFetchMode("status", FetchMode.JOIN)  
-                .setFetchMode("users", FetchMode.JOIN)
-                //.createAlias("users", "user") 
-                //.add(Restrictions.eq("user.id", userId))            
-                .add(Restrictions.eq("status.id", ACTIVO))                
-                .list();
-        return consortiumResult;
-        
+        User userResult = (User) sessionFactory.getCurrentSession()
+                .createCriteria(User.class)
+                .setFetchMode("status", FetchMode.JOIN)
+                .setFetchMode("consortiums", FetchMode.JOIN)
+                .createAlias("consortiums", "consortium")
+                .add(Restrictions.eq("consortium.status.id", ACTIVO))
+                .add(Restrictions.eq("status.id", ACTIVO))
+                .add(Restrictions.eq("id", userId))
+                .uniqueResult();
+
+        Consortium copiedConsortium;
+        String[] ignoredProperties = {"users"};
+        List<Consortium> finalConsortiums = new ArrayList<Consortium>();
+
+        if (userResult != null) {
+            for (Consortium currConsortium : userResult.getConsortiums()) {
+                copiedConsortium = new Consortium();
+                BeanUtils.copyProperties(currConsortium, copiedConsortium, ignoredProperties);
+                finalConsortiums.add(copiedConsortium);
+            }
+        }
+        return finalConsortiums;
     }
+
     @Override
     public void saveConsortiumsData(List<Consortium> consortiums) throws SaveSystemOptionsDataException {
         for (Consortium currConsortium : consortiums) {

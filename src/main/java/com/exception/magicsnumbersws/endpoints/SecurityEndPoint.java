@@ -47,13 +47,7 @@ public interface SecurityEndPoint {
     @GET
     @Path("/user/{userName}/{pass}")
     @Produces(MediaType.APPLICATION_JSON)
-    User getUserByCredential(@PathParam("userName") String userName, @PathParam("pass") String pass);
-    
-    @GET
-    @Path("/consortium/{userId}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public List<Consortium> findConsortiumByUserId(@PathParam("userId")  int userId) throws SearchAllConsortiumException;
-    
+    User getUserByCredential(@PathParam("userName") String userName, @PathParam("pass") String pass);           
 
     @POST
     @Path(value = "/user/save")

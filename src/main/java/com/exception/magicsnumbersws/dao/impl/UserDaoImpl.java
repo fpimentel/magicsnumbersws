@@ -67,6 +67,7 @@ public class UserDaoImpl implements UserDao {
                 .createAlias("status", "status")
                 .setFetchMode("status", FetchMode.JOIN)
                 .setFetchMode("profile", FetchMode.JOIN)
+                .setFetchMode("consortiums", FetchMode.JOIN)
                 .setFetchMode("profile.options", FetchMode.JOIN)
                 .add(Restrictions.eq("status.id", ACTIVO))
                 .add(Restrictions.eq("userName", userName).ignoreCase())
@@ -84,6 +85,8 @@ public class UserDaoImpl implements UserDao {
                 .setFetchMode("profile", FetchMode.JOIN)
                 .setFetchMode("status", FetchMode.JOIN)
                 .setFetchMode("profile.options", FetchMode.JOIN)
+                .setFetchMode("consortiums", FetchMode.JOIN)
+                .add(Restrictions.eq("status.id", ACTIVO))
                 .list();
         return userResult;
     }

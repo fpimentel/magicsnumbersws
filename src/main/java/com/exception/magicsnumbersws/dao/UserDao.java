@@ -20,6 +20,6 @@ public interface UserDao {
     public void delete(int userId);
     public User findById(int id);    
     public List<User> findAll() throws SearchAllUserException;
-    public User getUserByCredentials(String userName, String pass);    
+    public User getUserByCredentials(String userName, String pass);        
     public void saveUsersData(List<User> users) throws SaveUsersDataException;    
 }

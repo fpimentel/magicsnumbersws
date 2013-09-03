@@ -1,20 +1,21 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.exception.magicsnumbersws.entities;
 
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.Lob;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -31,7 +32,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @Entity
 @Table(name = "CONSORTIUMS")
 @XmlRootElement
-public class Consortium implements Serializable {
+public class Consortium implements Serializable, Comparable<Consortium>{
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -50,22 +51,20 @@ public class Consortium implements Serializable {
     private String description;
     @Basic(optional = false)
     @NotNull
-    @Lob
+    @Size(min = 1, max = 50)
     @Column(name = "CREATION_USER")
-    private byte[] creationUser;
+    private String creationUser;
     @Basic(optional = false)
     @NotNull
     @Column(name = "CREATION_DATE")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date creationDate;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "STATUS_ID")
-    private int statusId;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "consortiumId")
-    private Collection<BetBanking> betBankingCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "consortium")
-    private Collection<UserConsortium> userConsortiumCollection;
+    private Date creationDate;      
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "STATUS_ID", nullable = false)
+    private Status status;
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(name = "USERS_CONSORTIUMS", joinColumns = { @JoinColumn(name = "CONSORTIUM_ID") }, inverseJoinColumns = { @JoinColumn(name = "USER_ID") })
+    private Set<Consortium> users = new HashSet<Consortium>(0);
 
     public Consortium() {
     }
@@ -74,13 +73,13 @@ public class Consortium implements Serializable {
         this.id = id;
     }
 
-    public Consortium(Integer id, String name, String description, byte[] creationUser, Date creationDate, int statusId) {
+    public Consortium(Integer id, String name, String description, String creationUser, Date creationDate, Status statusId) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.creationUser = creationUser;
         this.creationDate = creationDate;
-        this.statusId = statusId;
+        this.status = status;
     }
 
     public Integer getId() {
@@ -107,11 +106,11 @@ public class Consortium implements Serializable {
         this.description = description;
     }
 
-    public byte[] getCreationUser() {
+    public String getCreationUser() {
         return creationUser;
     }
 
-    public void setCreationUser(byte[] creationUser) {
+    public void setCreationUser(String creationUser) {
         this.creationUser = creationUser;
     }
 
@@ -123,31 +122,22 @@ public class Consortium implements Serializable {
         this.creationDate = creationDate;
     }
 
-    public int getStatusId() {
-        return statusId;
+    public Status getStatus() {
+        return status;
     }
 
-    public void setStatusId(int statusId) {
-        this.statusId = statusId;
+    public void setStatus(Status status) {
+        this.status = status;
     }
 
-    @XmlTransient
-    public Collection<BetBanking> getBetBankingCollection() {
-        return betBankingCollection;
+    public Set<Consortium> getUsers() {
+        return users;
     }
 
-    public void setBetBankingCollection(Collection<BetBanking> betBankingCollection) {
-        this.betBankingCollection = betBankingCollection;
+    public void setUsers(Set<Consortium> users) {
+        this.users = users;
     }
 
-    @XmlTransient
-    public Collection<UserConsortium> getUserConsortiumCollection() {
-        return userConsortiumCollection;
-    }
-
-    public void setUserConsortiumCollection(Collection<UserConsortium> userConsortiumCollection) {
-        this.userConsortiumCollection = userConsortiumCollection;
-    }
 
     @Override
     public int hashCode() {
@@ -175,6 +165,11 @@ public class Consortium implements Serializable {
     @Override
     public String toString() {
         return "com.exception.magicsnumbersws.entities.Consortium[ id=" + id + " ]";
+    }
+
+    @Override
+    public int compareTo(Consortium that) {
+        return this.id - that.id;
     }
     
 }

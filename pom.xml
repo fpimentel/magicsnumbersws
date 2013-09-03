@@ -149,6 +149,7 @@
                                 <include>**/com/exception/magicsnumbersws/entities/CategoryOption.class</include>
                                 <include>**/com/exception/magicsnumbersws/entities/Status.class</include>
                                 <include>**/com/exception/magicsnumbersws/entities/StatusType.class</include>
+                                <include>**/com/exception/magicsnumbersws/entities/Consortium.class</include>
                                 <include>**/com/exception/magicsnumbersws/entities/CategoryOptionPK.class</include>
                                 <include>**/com/exception/magicsnumbersws/endpoints/*</include>
                                 <include>**/com/exception/magicsnumbersws/exception/*</include>                                

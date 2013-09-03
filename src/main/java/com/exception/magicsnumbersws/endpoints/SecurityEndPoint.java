@@ -1,10 +1,12 @@
 package com.exception.magicsnumbersws.endpoints;
 
+import com.exception.magicsnumbersws.entities.Consortium;
 import com.exception.magicsnumbersws.entities.Profile;
 import com.exception.magicsnumbersws.entities.SystemOption;
 import com.exception.magicsnumbersws.entities.User;
 import com.exception.magicsnumbersws.exception.SaveSystemOptionsDataException;
 import com.exception.magicsnumbersws.exception.SaveUsersDataException;
+import com.exception.magicsnumbersws.exception.SearchAllConsortiumException;
 import com.exception.magicsnumbersws.exception.SearchAllProfileException;
 import com.exception.magicsnumbersws.exception.SearchAllSystemOptionException;
 import com.exception.magicsnumbersws.exception.SearchAllUserException;
@@ -46,6 +48,12 @@ public interface SecurityEndPoint {
     @Path("/user/{userName}/{pass}")
     @Produces(MediaType.APPLICATION_JSON)
     User getUserByCredential(@PathParam("userName") String userName, @PathParam("pass") String pass);
+    
+    @GET
+    @Path("/consortium/{userId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Consortium> findConsortiumByUserId(@PathParam("userId")  int userId) throws SearchAllConsortiumException;
+    
 
     @POST
     @Path(value = "/user/save")

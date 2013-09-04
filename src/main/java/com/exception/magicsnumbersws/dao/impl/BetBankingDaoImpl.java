@@ -9,7 +9,6 @@ import com.exception.magicsnumbersws.entities.Status;
 import com.exception.magicsnumbersws.exception.SearchAllBetBankingException;
 import java.util.ArrayList;
 import java.util.List;
-import org.hibernate.FetchMode;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.BeanUtils;

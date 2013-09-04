@@ -7,10 +7,12 @@ import com.exception.magicsnumbersws.entities.BetBanking;
 import com.exception.magicsnumbersws.entities.Category;
 import com.exception.magicsnumbersws.entities.Status;
 import com.exception.magicsnumbersws.exception.SearchAllBetBankingException;
+import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.FetchMode;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -70,9 +72,16 @@ public class BetBankingDaoImpl implements BetBankingDao {
     @Override
     
     public List<BetBanking> findAsigned(int consortiumId) throws SearchAllBetBankingException {
-       return (List<BetBanking>) sessionFactory.getCurrentSession().createCriteria(BetBanking.class)
-                 //.setFetchMode("consortium", FetchMode.JOIN)
-                 //.setFetchMode("consortium.betBankings", FetchMode.JOIN)
+       List<BetBanking> result =  (List<BetBanking>) sessionFactory.getCurrentSession().createCriteria(BetBanking.class)                 
                  .add(Restrictions.eq("consortium.id", consortiumId)).list();
+       BetBanking copiedBetBanking;       
+       List<BetBanking> finalBetBankings = new ArrayList<BetBanking>();
+       for(BetBanking currBetBanking :result){
+           copiedBetBanking = new BetBanking();
+           BeanUtils.copyProperties(currBetBanking, copiedBetBanking);
+           copiedBetBanking.setConsortium(null);
+           finalBetBankings.add(copiedBetBanking);
+       }
+       return finalBetBankings;       
     }
 }

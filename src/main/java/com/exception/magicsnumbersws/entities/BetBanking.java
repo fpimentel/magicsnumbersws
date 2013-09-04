@@ -63,12 +63,12 @@ public class BetBanking implements Serializable {
     @ManyToOne(optional = true)
     private Consortium consortium;
     
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "betBanking")
+    /*@OneToMany(cascade = CascadeType.ALL, mappedBy = "betBanking")
     private Collection<BetBankingBetLimit> betBankingBetLimitCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "betBanking")
     private Collection<BetBankingLottery> betBankingLotteryCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "betBanking")
-    private Collection<BetBankingUser> betBankingUserCollection;
+    private Collection<BetBankingUser> betBankingUserCollection;*/
 
     public BetBanking() {
     }
@@ -127,15 +127,15 @@ public class BetBanking implements Serializable {
 
 
 
-    public Consortium getConsortiumId() {
+    public Consortium getConsortium() {
         return consortium;
     }
 
-    public void setConsortiumId(Consortium consortium) {
+    public void setConsortium(Consortium consortium) {
         this.consortium = consortium;
     }
 
-    @XmlTransient
+   /* @XmlTransient
     public Collection<BetBankingBetLimit> getBetBankingBetLimitCollection() {
         return betBankingBetLimitCollection;
     }
@@ -161,7 +161,7 @@ public class BetBanking implements Serializable {
     public void setBetBankingUserCollection(Collection<BetBankingUser> betBankingUserCollection) {
         this.betBankingUserCollection = betBankingUserCollection;
     }
-
+*/
     @Override
     public int hashCode() {
         int hash = 3;

@@ -1,10 +1,14 @@
 package com.exception.magicsnumbersws.endpoints.impl;
 
 import com.exception.magicsnumbersws.endpoints.LookupTablesEndpoint;
+import com.exception.magicsnumbersws.entities.BetBanking;
 import com.exception.magicsnumbersws.entities.Category;
 import com.exception.magicsnumbersws.entities.Consortium;
 import com.exception.magicsnumbersws.entities.Status;
+import com.exception.magicsnumbersws.exception.SaveConsortiumDataException;
+import com.exception.magicsnumbersws.exception.SearchAllBetBankingException;
 import com.exception.magicsnumbersws.exception.SearchAllConsortiumException;
+import com.exception.magicsnumbersws.service.BetBankingService;
 import com.exception.magicsnumbersws.service.CategoryService;
 import com.exception.magicsnumbersws.service.ConsortiumService;
 import com.exception.magicsnumbersws.service.StatusService;
@@ -33,6 +37,8 @@ public class LookupTablesEndpointImpl implements LookupTablesEndpoint {
   private CategoryService categoryService;
   @Autowired
   private ConsortiumService consortiumService;
+  @Autowired
+  private BetBankingService betBankingService;
     
   private Logger logger = Logger.getLogger(LookupTablesEndpointImpl.class.getName());
 
@@ -54,5 +60,22 @@ public class LookupTablesEndpointImpl implements LookupTablesEndpoint {
     @Override
     public List<Consortium> findConsortiumByUserId(int userId) throws SearchAllConsortiumException{
         return consortiumService.findByUserId(userId);
+    }
+
+    @Override
+    public void saveConsortiumsData(List<Consortium> consortium) throws SaveConsortiumDataException {
+        consortiumService.saveConsortiumsData(consortium);
+    }
+
+    
+    @Override
+    public List<BetBanking> findAvailableBetBankings() throws SearchAllBetBankingException {
+        return betBankingService.findAvailable();
+    }
+
+    //Se encarga de buscar las bancas asignadas a un consorcio
+    @Override
+    public List<BetBanking> findBetBankingAsignedToConsortium(int consortiumId) throws SearchAllBetBankingException {
+        return betBankingService.findAsigned(consortiumId);
     }
 }

@@ -5,7 +5,7 @@ import com.exception.magicsnumbersws.dao.ConsortiumDao;
 import com.exception.magicsnumbersws.entities.Consortium;
 import com.exception.magicsnumbersws.entities.SystemOption;
 import com.exception.magicsnumbersws.entities.User;
-import com.exception.magicsnumbersws.exception.SaveSystemOptionsDataException;
+import com.exception.magicsnumbersws.exception.SaveConsortiumDataException;
 import com.exception.magicsnumbersws.exception.SearchAllConsortiumException;
 import java.util.ArrayList;
 import java.util.List;
@@ -75,6 +75,7 @@ public class ConsortiumDaoImpl implements ConsortiumDao {
                 .createCriteria(User.class)
                 .setFetchMode("status", FetchMode.JOIN)
                 .setFetchMode("consortiums", FetchMode.JOIN)
+                .setFetchMode("consortiums.betBankings", FetchMode.JOIN)
                 .createAlias("consortiums", "consortium")
                 .add(Restrictions.eq("consortium.status.id", ACTIVO))
                 .add(Restrictions.eq("status.id", ACTIVO))
@@ -96,7 +97,7 @@ public class ConsortiumDaoImpl implements ConsortiumDao {
     }
 
     @Override
-    public void saveConsortiumsData(List<Consortium> consortiums) throws SaveSystemOptionsDataException {
+    public void saveConsortiumsData(List<Consortium> consortiums) throws SaveConsortiumDataException {
         for (Consortium currConsortium : consortiums) {
             Consortium consortium = (Consortium) sessionFactory.getCurrentSession()
                     .get(currConsortium.getClass(), currConsortium.getId());

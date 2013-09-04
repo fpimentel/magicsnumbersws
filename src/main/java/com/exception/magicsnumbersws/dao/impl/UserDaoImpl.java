@@ -68,7 +68,8 @@ public class UserDaoImpl implements UserDao {
                 .setFetchMode("status", FetchMode.JOIN)
                 .setFetchMode("profile", FetchMode.JOIN)
                 .setFetchMode("consortiums", FetchMode.JOIN)
-                .setFetchMode("profile.options", FetchMode.JOIN)
+                .setFetchMode("consortiums.betBankings", FetchMode.JOIN)
+                .setFetchMode("profile.options", FetchMode.JOIN)                
                 .add(Restrictions.eq("status.id", ACTIVO))
                 .add(Restrictions.eq("userName", userName).ignoreCase())
                 .add(Restrictions.eq("password", pass)).uniqueResult();
@@ -86,6 +87,7 @@ public class UserDaoImpl implements UserDao {
                 .setFetchMode("status", FetchMode.JOIN)
                 .setFetchMode("profile.options", FetchMode.JOIN)
                 .setFetchMode("consortiums", FetchMode.JOIN)
+                .setFetchMode("consortiums.betBankings", FetchMode.JOIN)
                 .add(Restrictions.eq("status.id", ACTIVO))
                 .list();
         return userResult;

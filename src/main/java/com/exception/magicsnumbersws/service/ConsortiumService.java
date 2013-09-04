@@ -1,6 +1,5 @@
 package com.exception.magicsnumbersws.service;
 import com.exception.magicsnumbersws.entities.Consortium;
-import com.exception.magicsnumbersws.entities.User;
 import com.exception.magicsnumbersws.exception.SaveConsortiumDataException;
 import com.exception.magicsnumbersws.exception.SearchAllConsortiumException;
 
@@ -25,5 +24,5 @@ public interface ConsortiumService {
 
     public List<Consortium> findByUserId(int userId) throws SearchAllConsortiumException;
 
-    public void saveSystemOptionsData(List<Consortium> consortiums) throws SaveConsortiumDataException;
+    public void saveConsortiumsData(List<Consortium> consortiums) throws SaveConsortiumDataException;
 }

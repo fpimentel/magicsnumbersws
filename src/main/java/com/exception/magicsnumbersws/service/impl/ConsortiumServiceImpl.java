@@ -63,8 +63,8 @@ public class ConsortiumServiceImpl implements ConsortiumService {
     }
 
     @Override
-    public void saveSystemOptionsData(List<Consortium> consortiums) throws SaveConsortiumDataException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void saveConsortiumsData(List<Consortium> consortiums) throws SaveConsortiumDataException {
+        consortiumDao.saveConsortiumsData(consortiums);
     }
 
     

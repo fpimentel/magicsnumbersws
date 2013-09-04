@@ -10,13 +10,14 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -35,6 +36,7 @@ import javax.xml.bind.annotation.XmlTransient;
 public class Consortium implements Serializable, Comparable<Consortium>{
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @NotNull
     @Column(name = "ID")
@@ -48,15 +50,11 @@ public class Consortium implements Serializable, Comparable<Consortium>{
     @NotNull
     @Size(min = 1, max = 100)
     @Column(name = "DESCRIPTION")
-    private String description;
-    @Basic(optional = false)
-    @NotNull
+    private String description;        
     @Size(min = 1, max = 50)
     @Column(name = "CREATION_USER")
-    private String creationUser;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "CREATION_DATE")
+    private String creationUser;    
+    @Column(nullable = true, name = "CREATION_DATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date creationDate;      
     @ManyToOne(fetch = FetchType.LAZY)
@@ -64,7 +62,10 @@ public class Consortium implements Serializable, Comparable<Consortium>{
     private Status status;
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "USERS_CONSORTIUMS", joinColumns = { @JoinColumn(name = "CONSORTIUM_ID") }, inverseJoinColumns = { @JoinColumn(name = "USER_ID") })
-    private Set<User> users = new HashSet<User>(0);
+    private Set<User> users = new HashSet<User>(0);    
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(name = "CONSORTIUMS_BETBANKINGS", joinColumns = { @JoinColumn(name = "CONSORTIUM_ID") }, inverseJoinColumns = { @JoinColumn(name = "BETBANKING_ID") })
+    private Set<BetBanking> betBankings = new HashSet<BetBanking>(0);
 
     public Consortium() {
     }
@@ -138,6 +139,13 @@ public class Consortium implements Serializable, Comparable<Consortium>{
         this.users = users;
     }
 
+    public Set<BetBanking> getBetBankings() {
+        return betBankings;
+    }
+
+    public void setBetBankings(Set<BetBanking> betBankings) {
+        this.betBankings = betBankings;
+    }
 
     @Override
     public int hashCode() {

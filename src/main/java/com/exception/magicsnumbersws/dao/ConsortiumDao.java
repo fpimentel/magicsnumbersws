@@ -1,8 +1,7 @@
 package com.exception.magicsnumbersws.dao;
 import com.exception.magicsnumbersws.entities.Consortium;
 import com.exception.magicsnumbersws.entities.SystemOption;
-import com.exception.magicsnumbersws.entities.User;
-import com.exception.magicsnumbersws.exception.SaveSystemOptionsDataException;
+import com.exception.magicsnumbersws.exception.SaveConsortiumDataException;
 import com.exception.magicsnumbersws.exception.SearchAllConsortiumException;
 import java.util.List;
 
@@ -18,5 +17,5 @@ public interface ConsortiumDao {
     public SystemOption findById(int id);    
     public List<Consortium> findAll() throws SearchAllConsortiumException;      
     public List<Consortium> findByUserId(int userId) throws SearchAllConsortiumException;      
-    public void saveConsortiumsData(List<Consortium> consortiums) throws SaveSystemOptionsDataException;
+    public void saveConsortiumsData(List<Consortium> consortiums) throws SaveConsortiumDataException;
 }

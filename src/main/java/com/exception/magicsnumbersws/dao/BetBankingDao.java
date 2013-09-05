@@ -15,4 +15,5 @@ public interface BetBankingDao {
     public BetBanking findById(int id);    
     public List<BetBanking> findAvailable() throws SearchAllBetBankingException;  
     public List<BetBanking> findAsigned(int consortiumId) throws SearchAllBetBankingException;  
+    public List<BetBanking> findAll() throws SearchAllBetBankingException;  
 }

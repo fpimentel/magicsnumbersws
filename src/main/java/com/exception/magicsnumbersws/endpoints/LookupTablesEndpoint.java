@@ -51,6 +51,11 @@ public interface LookupTablesEndpoint {
     @Produces(MediaType.APPLICATION_JSON)
     public List<BetBanking> findBetBankingAsignedToConsortium(@PathParam("consortiumId") int consortiumId) throws SearchAllBetBankingException;  
     
+    @GET
+    @Path("/betBanking")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<BetBanking> findAllBetBanking() throws SearchAllBetBankingException;  
+    
     @POST
     @Path(value = "/consortium/save")
     @Consumes("application/json")

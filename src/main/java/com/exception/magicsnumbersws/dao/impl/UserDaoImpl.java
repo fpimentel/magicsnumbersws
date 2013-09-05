@@ -1,10 +1,14 @@
 package com.exception.magicsnumbersws.dao.impl;
 
 import com.exception.magicsnumbersws.dao.UserDao;
+import com.exception.magicsnumbersws.entities.Consortium;
+import com.exception.magicsnumbersws.entities.SystemOption;
 import com.exception.magicsnumbersws.entities.User;
 import com.exception.magicsnumbersws.exception.SaveUsersDataException;
 import com.exception.magicsnumbersws.exception.SearchAllUserException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
 import org.hibernate.SessionFactory;
@@ -67,30 +71,51 @@ public class UserDaoImpl implements UserDao {
                 .createAlias("status", "status")
                 .setFetchMode("status", FetchMode.JOIN)
                 .setFetchMode("profile", FetchMode.JOIN)
-                .setFetchMode("consortiums", FetchMode.JOIN)
-                .setFetchMode("consortiums.betBankings", FetchMode.JOIN)
+               // .setFetchMode("consortiums", FetchMode.JOIN)
+               // .setFetchMode("consortiums.betBankings", FetchMode.JOIN)
                 .setFetchMode("profile.options", FetchMode.JOIN)                
                 .add(Restrictions.eq("status.id", ACTIVO))
                 .add(Restrictions.eq("userName", userName).ignoreCase())
                 .add(Restrictions.eq("password", pass)).uniqueResult();
+       User copiedUser = new User();
+       BeanUtils.copyProperties(userResult, copiedUser);
+       copiedUser.setConsortiums(null);
         //User copiedUser = new User();
         //String[] ignoredProperties = {"profile"};        
         //BeanUtils.copyProperties(userSource, copiedUser, ignoredProperties);
-        return userResult;
+        return copiedUser;
     }
 
     @Override
     public List<User> findAll() throws SearchAllUserException {
-        List<User> userResult = (List<User>) sessionFactory.getCurrentSession().createCriteria(User.class)
+        List<User> users = (List<User>) sessionFactory.getCurrentSession().createCriteria(User.class)
                 .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)
                 .setFetchMode("profile", FetchMode.JOIN)
                 .setFetchMode("status", FetchMode.JOIN)
                 .setFetchMode("profile.options", FetchMode.JOIN)
-                .setFetchMode("consortiums", FetchMode.JOIN)
-                .setFetchMode("consortiums.betBankings", FetchMode.JOIN)
+                //.setFetchMode("consortiums", FetchMode.JOIN)
+                //.setFetchMode("consortiums.betBankings", FetchMode.JOIN)
                 .add(Restrictions.eq("status.id", ACTIVO))
                 .list();
-        return userResult;
+        User copiedUser;
+        List<User> finalUsers = new ArrayList<User>();
+        for(User currUser : users){
+            copiedUser = new User();
+            BeanUtils.copyProperties(currUser, copiedUser);
+            copiedUser.setConsortiums(null);
+            //if(copiedUser.getProfile()!= null){                
+              //  copiedUser.getProfile().setOptions(null);
+            //}  
+            //Set<Consortium> consortiums = copiedUser.getConsortiums();
+            //if(consortiums!= null){
+            //    for(Consortium currConsortium : consortiums){
+             //       currConsortium.setBetBankings(null);
+              //  }
+           // }
+           // copiedUser.setProfile(null);
+            finalUsers.add(copiedUser);
+        }
+        return finalUsers;
     }
 
     @Override

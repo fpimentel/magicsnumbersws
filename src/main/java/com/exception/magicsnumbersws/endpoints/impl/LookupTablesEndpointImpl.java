@@ -78,4 +78,9 @@ public class LookupTablesEndpointImpl implements LookupTablesEndpoint {
     public List<BetBanking> findBetBankingAsignedToConsortium(int consortiumId) throws SearchAllBetBankingException {
         return betBankingService.findAsigned(consortiumId);
     }
+
+    @Override
+    public List<BetBanking> findAllBetBanking() throws SearchAllBetBankingException {
+        return betBankingService.findAll();
+    }
 }

@@ -76,8 +76,9 @@ public class ConsortiumDaoImpl implements ConsortiumDao {
                 .setFetchMode("status", FetchMode.JOIN)
                 .setFetchMode("consortiums", FetchMode.JOIN)
                 .setFetchMode("consortiums.betBankings", FetchMode.JOIN)
+                .setFetchMode("consortiums.status", FetchMode.JOIN)
                 .createAlias("consortiums", "consortium")
-                .add(Restrictions.eq("consortium.status.id", ACTIVO))
+                //.add(Restrictions.eq("consortium.status.id", ACTIVO))
                 .add(Restrictions.eq("status.id", ACTIVO))
                 .add(Restrictions.eq("id", userId))
                 .uniqueResult();
@@ -90,6 +91,7 @@ public class ConsortiumDaoImpl implements ConsortiumDao {
             for (Consortium currConsortium : userResult.getConsortiums()) {
                 copiedConsortium = new Consortium();
                 BeanUtils.copyProperties(currConsortium, copiedConsortium, ignoredProperties);
+                //copiedConsortium.setStatus(null);
                 finalConsortiums.add(copiedConsortium);
             }
         }

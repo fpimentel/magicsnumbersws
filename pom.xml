@@ -26,9 +26,9 @@
     <dependencies>
         
         <dependency>
-            <groupId>com.exception.microsoft</groupId>
-            <artifactId>sqljdbc4</artifactId>
-            <version>4.0</version>
+             <groupId>com.exception</groupId>
+            <artifactId>sqljdbc</artifactId>
+            <version>4</version>
         </dependency>        
           
         <!--Spring dependency-->       

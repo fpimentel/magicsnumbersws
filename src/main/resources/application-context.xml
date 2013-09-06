@@ -15,7 +15,7 @@
     
     
     <!--DATASOURCE-->
-    <!-- 
+   
    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>
         <property name="url" value="jdbc:sqlserver://localhost\DTOD-DEV-05\SQLEXPRESS:1433;databaseName=magicsnumbersdb"/>
@@ -24,14 +24,14 @@
     </bean>
     
     
-        
+         <!-- 
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>
         <property name="url" value="jdbc:sqlserver://localhost\P3441455\MAGICS:1433;databaseName=magicsnumbersdb"/>                                    
         <property name="username" value="magicsnumbersuser"/>
         <property name="password" value="mag1cp@ssw0r"/>
     </bean>
-    -->
+ 
      
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>
@@ -39,7 +39,7 @@
         <property name="username" value="magicsnumbersuser"/>
         <property name="password" value="mag1cp@ssw0r"/>
     </bean>
-    
+       -->
     <!-- Basic DataSource Configuration 
  <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">               
      <property name="driverClass" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>

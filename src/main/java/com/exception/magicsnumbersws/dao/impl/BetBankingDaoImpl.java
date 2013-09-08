@@ -1,16 +1,11 @@
 package com.exception.magicsnumbersws.dao.impl;
 
-import com.exception.magicsnumbersws.constants.StatusConstant;
 import com.exception.magicsnumbersws.dao.BetBankingDao;
-import com.exception.magicsnumbersws.dao.CategoryDao;
-import com.exception.magicsnumbersws.dao.StatusDao;
 import com.exception.magicsnumbersws.entities.BetBanking;
-import com.exception.magicsnumbersws.entities.Category;
-import com.exception.magicsnumbersws.entities.Status;
+import com.exception.magicsnumbersws.entities.Consortium;
 import com.exception.magicsnumbersws.exception.SearchAllBetBankingException;
 import java.util.ArrayList;
 import java.util.List;
-import org.hibernate.FetchMode;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.BeanUtils;
@@ -41,7 +36,7 @@ public class BetBankingDaoImpl implements BetBankingDao {
 
     public void setSessionFactory(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
-    }        
+    }
 
     @Override
     public void delete(int categoryId) {
@@ -55,7 +50,7 @@ public class BetBankingDaoImpl implements BetBankingDao {
 
     @Override
     public void update(BetBanking betBanking) {
-   sessionFactory.getCurrentSession().update(betBanking);
+        sessionFactory.getCurrentSession().update(betBanking);
     }
 
     @Override
@@ -63,7 +58,6 @@ public class BetBankingDaoImpl implements BetBankingDao {
         return (List<BetBanking>) sessionFactory.getCurrentSession().createCriteria(BetBanking.class)
                 .add(Restrictions.isNull("consortium")).list();
     }
-    
 
     @Override
     public BetBanking findById(int id) {
@@ -71,33 +65,52 @@ public class BetBankingDaoImpl implements BetBankingDao {
     }
 
     @Override
-    
     public List<BetBanking> findAsigned(int consortiumId) throws SearchAllBetBankingException {
-       List<BetBanking> result =  (List<BetBanking>) sessionFactory.getCurrentSession().createCriteria(BetBanking.class)                 
-                 .add(Restrictions.eq("consortium.id", consortiumId)).list();
-       BetBanking copiedBetBanking;       
-       List<BetBanking> finalBetBankings = new ArrayList<BetBanking>();
-       for(BetBanking currBetBanking :result){
-           copiedBetBanking = new BetBanking();
-           BeanUtils.copyProperties(currBetBanking, copiedBetBanking);
-           copiedBetBanking.setConsortium(null);
-           finalBetBankings.add(copiedBetBanking);
-       }
-       return finalBetBankings;       
+        List<BetBanking> result = (List<BetBanking>) sessionFactory.getCurrentSession().createCriteria(BetBanking.class)
+                .add(Restrictions.eq("consortium.id", consortiumId)).list();
+        BetBanking copiedBetBanking;
+        List<BetBanking> finalBetBankings = new ArrayList<BetBanking>();
+        for (BetBanking currBetBanking : result) {
+            copiedBetBanking = new BetBanking();
+            BeanUtils.copyProperties(currBetBanking, copiedBetBanking);
+            copiedBetBanking.setConsortium(null);
+            finalBetBankings.add(copiedBetBanking);
+        }
+        return finalBetBankings;
+    }
+
+    //Encargado de obtener las bancas disponibles y asignadas a un consorcio(Para el betBankingConverter)
+    @Override
+    public List<BetBanking> findAll(int consortiumId) throws SearchAllBetBankingException {
+        List<BetBanking> assigned = findAsigned(consortiumId);
+        List<BetBanking> availables = findAvailable();
+        List<BetBanking> results = new ArrayList<BetBanking>(availables);
+        results.addAll(assigned);
+        return results;
+    }
+    
+    
+    @Override
+    public void deleteAssigned(int consortiumIdToDelete) {
+        List<BetBanking> result = (List<BetBanking>) sessionFactory.getCurrentSession().createCriteria(BetBanking.class)
+                .add(Restrictions.eq("consortium.id", consortiumIdToDelete)).list();
+        BetBanking copiedBetBanking;
+        // List<BetBanking> finalBetBankings = new ArrayList<BetBanking>();
+        for (BetBanking currBetBanking : result) {
+            currBetBanking.setConsortium(null);
+            //copiedBetBanking = new BetBanking();
+            // BeanUtils.copyProperties(currBetBanking, copiedBetBanking);
+            //copiedBetBanking.setConsortium(null);
+            // finalBetBankings.add(copiedBetBanking);
+        }
     }
 
     @Override
-    public List<BetBanking> findAll() throws SearchAllBetBankingException {
-         List<BetBanking> result =  (List<BetBanking>) sessionFactory.getCurrentSession().createCriteria(BetBanking.class)                 
-                 .add(Restrictions.eq("consortium.id", 4)).list();
-       BetBanking copiedBetBanking;       
-       List<BetBanking> finalBetBankings = new ArrayList<BetBanking>();
-       for(BetBanking currBetBanking :result){
-           copiedBetBanking = new BetBanking();
-           BeanUtils.copyProperties(currBetBanking, copiedBetBanking);
-           copiedBetBanking.setConsortium(null);
-           finalBetBankings.add(copiedBetBanking);
-       }
-       return finalBetBankings;                      
+    public void assingConsortium(Consortium cons) {
+        for (BetBanking currBanking : cons.getBetBankings()) {
+            BetBanking betBanking = findById(currBanking.getId());
+            betBanking.setConsortium(cons);
+            update(betBanking);
+        }
     }
 }

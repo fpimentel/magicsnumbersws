@@ -7,10 +7,12 @@ import com.exception.magicsnumbersws.entities.Status;
 import com.exception.magicsnumbersws.exception.SaveConsortiumDataException;
 import com.exception.magicsnumbersws.exception.SearchAllBetBankingException;
 import com.exception.magicsnumbersws.exception.SearchAllConsortiumException;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -52,13 +54,24 @@ public interface LookupTablesEndpoint {
     public List<BetBanking> findBetBankingAsignedToConsortium(@PathParam("consortiumId") int consortiumId) throws SearchAllBetBankingException;  
     
     @GET
-    @Path("/betBanking")
+    @Path("/betBankingAll/{consortiumId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<BetBanking> findAllBetBanking() throws SearchAllBetBankingException;  
+    public List<BetBanking> findAllBetBanking(@PathParam("consortiumId") int consortiumId) throws SearchAllBetBankingException;  
+    
+    @GET
+    @Path("/betBankingById/{betBankingId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public BetBanking findBetBankingById(@PathParam("betBankingId") int betBankingId) throws SearchAllBetBankingException;  
     
     @POST
-    @Path(value = "/consortium/save")
+    @Path(value = "/consortium/saveAll")
     @Consumes("application/json")
     @Produces(value = MediaType.APPLICATION_JSON)
     void saveConsortiumsData(List<Consortium> consortium) throws SaveConsortiumDataException;   
+    
+    @POST
+    @Path(value = "/consortium/saveData")
+    @Consumes("application/json")
+    @Produces(value = MediaType.APPLICATION_JSON)
+    void saveConsortiumData(Consortium consortium) throws SaveConsortiumDataException; 
 }

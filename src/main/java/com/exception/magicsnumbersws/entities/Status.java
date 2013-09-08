@@ -29,9 +29,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @Entity
 @Table(name = "STATUS")
 @XmlRootElement
-public class Status implements Serializable {
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "statusId")
-    private Collection<Category> categoryCollection;
+public class Status implements Serializable {    
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -114,15 +112,6 @@ public class Status implements Serializable {
     @Override
     public String toString() {
         return "com.exception.magicsnumbersws.entities.Status[ id=" + id + " ]";
-    }
-
-    @XmlTransient
-    public Collection<Category> getCategoryCollection() {
-        return categoryCollection;
-    }
-
-    public void setCategoryCollection(Collection<Category> categoryCollection) {
-        this.categoryCollection = categoryCollection;
     }
     
 }

@@ -18,6 +18,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -63,10 +64,13 @@ public class Consortium implements Serializable, Comparable<Consortium>{
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "USERS_CONSORTIUMS", joinColumns = { @JoinColumn(name = "CONSORTIUM_ID") }, inverseJoinColumns = { @JoinColumn(name = "USER_ID") })
     private Set<User> users = new HashSet<User>(0);    
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinTable(name = "CONSORTIUMS_BETBANKINGS", joinColumns = { @JoinColumn(name = "CONSORTIUM_ID") }, inverseJoinColumns = { @JoinColumn(name = "BETBANKING_ID") })
-    private Set<BetBanking> betBankings = new HashSet<BetBanking>(0);
-
+    //@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    //@JoinTable(name = "CONSORTIUMS_BETBANKINGS", joinColumns = { @JoinColumn(name = "CONSORTIUM_ID") }, inverseJoinColumns = { @JoinColumn(name = "BETBANKING_ID") })
+    //private Set<BetBanking> betBankings = new HashSet<BetBanking>(0);
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "consortium")
+    private Set<BetBanking> betBankings = new HashSet<BetBanking>(0);        
+    
+    
     public Consortium() {
     }
 
@@ -74,7 +78,7 @@ public class Consortium implements Serializable, Comparable<Consortium>{
         this.id = id;
     }
 
-    public Consortium(Integer id, String name, String description, String creationUser, Date creationDate, Status statusId) {
+    public Consortium(Integer id, String name, String description, String creationUser, Date creationDate, Status status) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -146,6 +150,8 @@ public class Consortium implements Serializable, Comparable<Consortium>{
     public void setBetBankings(Set<BetBanking> betBankings) {
         this.betBankings = betBankings;
     }
+
+ 
 
     @Override
     public int hashCode() {

@@ -1,5 +1,6 @@
 package com.exception.magicsnumbersws.dao;
 import com.exception.magicsnumbersws.entities.BetBanking;
+import com.exception.magicsnumbersws.entities.Consortium;
 import com.exception.magicsnumbersws.exception.SearchAllBetBankingException;
 import java.util.List;
 
@@ -15,5 +16,7 @@ public interface BetBankingDao {
     public BetBanking findById(int id);    
     public List<BetBanking> findAvailable() throws SearchAllBetBankingException;  
     public List<BetBanking> findAsigned(int consortiumId) throws SearchAllBetBankingException;  
-    public List<BetBanking> findAll() throws SearchAllBetBankingException;  
+    public List<BetBanking> findAll(int consortiumId) throws SearchAllBetBankingException;  
+    public void deleteAssigned(int consortiumIdToDelete);
+    public void assingConsortium(Consortium cons);
 }

@@ -1,6 +1,8 @@
 package com.exception.magicsnumbersws.dao.impl;
 
+import com.exception.magicsnumbersws.dao.BetBankingDao;
 import com.exception.magicsnumbersws.dao.ConsortiumDao;
+import com.exception.magicsnumbersws.entities.BetBanking;
 
 import com.exception.magicsnumbersws.entities.Consortium;
 import com.exception.magicsnumbersws.entities.SystemOption;
@@ -27,6 +29,8 @@ public class ConsortiumDaoImpl implements ConsortiumDao {
     private static int ACTIVO = 1;
     @Autowired
     private SessionFactory sessionFactory;
+    @Autowired
+    private BetBankingDao betBankingDao;
 
     public ConsortiumDaoImpl() {
     }
@@ -100,15 +104,19 @@ public class ConsortiumDaoImpl implements ConsortiumDao {
 
     @Override
     public void saveConsortiumsData(List<Consortium> consortiums) throws SaveConsortiumDataException {
-        for (Consortium currConsortium : consortiums) {
-            Consortium consortium = (Consortium) sessionFactory.getCurrentSession()
-                    .get(currConsortium.getClass(), currConsortium.getId());
-            if (consortium != null) {
-                BeanUtils.copyProperties(currConsortium, consortium);
-                update(consortium);
-            } else {
-                add(currConsortium);
+        try {
+            for (Consortium currConsortium : consortiums) {
+                Consortium consortium = (Consortium) sessionFactory.getCurrentSession()
+                        .get(currConsortium.getClass(), currConsortium.getId());
+                if (consortium != null) {
+                    BeanUtils.copyProperties(currConsortium, consortium);
+                    update(consortium);
+                } else {
+                    add(currConsortium);
+                }
             }
+        } catch (Exception ex) {
+            throw new SaveConsortiumDataException();
         }
     }
 
@@ -120,5 +128,43 @@ public class ConsortiumDaoImpl implements ConsortiumDao {
     @Override
     public SystemOption findById(int id) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void saveConsortiumData(Consortium consortium) throws SaveConsortiumDataException {
+        if (consortium == null) {
+            throw new SaveConsortiumDataException();//Reemplazar por la exception EMPTYCOMSORTIUMEXCEPTION
+        }
+        try {
+            if (consortium.getId() != null) {//Editar consorcio
+                Consortium cons = (Consortium) sessionFactory.getCurrentSession()
+                        .get(consortium.getClass(), consortium.getId());
+                //Primero ponemos a null el consorcio asociado a las bancas (para resetear data))
+                betBankingDao.deleteAssigned(cons.getId());
+                if (cons != null) {
+                    BeanUtils.copyProperties(consortium, cons, new String[]{"users"});
+                    update(cons);                    
+                     //Segundo asociamos el consorcio a las bancas
+                     betBankingDao.assingConsortium(cons);
+                }
+            } else {//Agregar nuevo consorcio
+                add(consortium);
+                betBankingDao.assingConsortium(consortium);
+            }
+        } catch (Exception ex) {
+            throw new SaveConsortiumDataException();
+        }
+        /*try {
+         Consortium cons = (Consortium) sessionFactory.getCurrentSession()
+         .get(consortium.getClass(), consortium.getId());
+         if (cons != null) {
+         BeanUtils.copyProperties(consortium, cons,new String[]{"users"});                
+         update(cons);
+         } else {
+         add(consortium);
+         }
+         } catch (Exception ex) {
+         throw new SaveConsortiumDataException();
+         }*/
     }
 }

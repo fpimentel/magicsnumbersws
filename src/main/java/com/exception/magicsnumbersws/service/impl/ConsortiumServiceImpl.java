@@ -1,5 +1,4 @@
 package com.exception.magicsnumbersws.service.impl;
-
 import com.exception.magicsnumbersws.dao.ConsortiumDao;
 import com.exception.magicsnumbersws.entities.Consortium;
 import com.exception.magicsnumbersws.exception.SaveConsortiumDataException;
@@ -67,6 +66,12 @@ public class ConsortiumServiceImpl implements ConsortiumService {
         consortiumDao.saveConsortiumsData(consortiums);
     }
 
-    
-
+    @Override
+    public void saveConsortiumData(Consortium consortium) throws SaveConsortiumDataException {
+        try {
+            consortiumDao.saveConsortiumData(consortium);
+        } catch (Exception ex) {
+            throw new SaveConsortiumDataException();
+        }
+    }
 }

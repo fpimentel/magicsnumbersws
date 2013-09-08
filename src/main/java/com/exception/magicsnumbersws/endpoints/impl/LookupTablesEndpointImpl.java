@@ -21,6 +21,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
 /**
  *
  * @author fpimentel
@@ -30,35 +31,34 @@ import org.springframework.stereotype.Component;
 @Component
 @Path("lookuptables")
 public class LookupTablesEndpointImpl implements LookupTablesEndpoint {
-  
-  @Autowired  
-  private StatusService statusService;
-  @Autowired
-  private CategoryService categoryService;
-  @Autowired
-  private ConsortiumService consortiumService;
-  @Autowired
-  private BetBankingService betBankingService;
-    
-  private Logger logger = Logger.getLogger(LookupTablesEndpointImpl.class.getName());
 
-  @GET
-  @Path(value = "/status")
-  @Produces(value = MediaType.APPLICATION_JSON)    
-  @Override
-  public List<Status> getAllStatus() {
-      logger.log(Level.INFO, "init - getAllStatus()");
-      return statusService.findAll();
-  }
+    @Autowired
+    private StatusService statusService;
+    @Autowired
+    private CategoryService categoryService;
+    @Autowired
+    private ConsortiumService consortiumService;
+    @Autowired
+    private BetBankingService betBankingService;
+    private Logger logger = Logger.getLogger(LookupTablesEndpointImpl.class.getName());
+
+    @GET
+    @Path(value = "/status")
+    @Produces(value = MediaType.APPLICATION_JSON)
+    @Override
+    public List<Status> getAllStatus() {
+        logger.log(Level.INFO, "init - getAllStatus()");
+        return statusService.findAll();
+    }
 
     @Override
     public List<Category> getAllCategories() {
         logger.log(Level.INFO, "init - getAllCategories()");
         return categoryService.findAll();
     }
-    
+
     @Override
-    public List<Consortium> findConsortiumByUserId(int userId) throws SearchAllConsortiumException{
+    public List<Consortium> findConsortiumByUserId(int userId) throws SearchAllConsortiumException {
         return consortiumService.findByUserId(userId);
     }
 
@@ -67,7 +67,6 @@ public class LookupTablesEndpointImpl implements LookupTablesEndpoint {
         consortiumService.saveConsortiumsData(consortium);
     }
 
-    
     @Override
     public List<BetBanking> findAvailableBetBankings() throws SearchAllBetBankingException {
         return betBankingService.findAvailable();
@@ -80,7 +79,22 @@ public class LookupTablesEndpointImpl implements LookupTablesEndpoint {
     }
 
     @Override
-    public List<BetBanking> findAllBetBanking() throws SearchAllBetBankingException {
-        return betBankingService.findAll();
+    public List<BetBanking> findAllBetBanking(int consortiumId) throws SearchAllBetBankingException {
+        return betBankingService.findAll(consortiumId);
+    }
+
+    @Override
+    public void saveConsortiumData(Consortium consortium) throws SaveConsortiumDataException {
+        try {
+            consortiumService.saveConsortiumData(consortium);
+        } catch (Exception ex) {
+            logger.log(Level.SEVERE, "saveConsortium()".concat(ex.getMessage()));
+            throw new SaveConsortiumDataException(ex.getMessage(), ex);
+        }
+    }
+
+    @Override
+    public BetBanking findBetBankingById(int betBankingId) throws SearchAllBetBankingException {
+        return betBankingService.findById(betBankingId);
     }
 }

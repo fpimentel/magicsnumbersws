@@ -1,79 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+<persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence">
   <persistence-unit name="com.exception_MagicsNumbersWS_war_1.0-SNAPSHOTPU" transaction-type="RESOURCE_LOCAL">
     <provider>org.hibernate.ejb.HibernatePersistence</provider>
-    <class>com.exception.magicsnumbersws.entities.BetBankingBetLimit</class>
-    <class>com.exception.magicsnumbersws.entities.OptionCategory</class>
-    <class>com.exception.magicsnumbersws.entities.Consortium</class>
-    <class>com.exception.magicsnumbersws.entities.BetTypes</class>
-    <class>com.exception.magicsnumbersws.entities.OperationType</class>
-    <class>com.exception.magicsnumbersws.entities.WinningNumber</class>
-    <class>com.exception.magicsnumbersws.entities.Status</class>
-    <class>com.exception.magicsnumbersws.entities.User_1</class>
-    <class>com.exception.magicsnumbersws.entities.Bet</class>
-    <class>com.exception.magicsnumbersws.entities.BlockingNumber</class>
-    <class>com.exception.magicsnumbersws.entities.HistoryOperation</class>
-    <class>com.exception.magicsnumbersws.entities.WayToWin</class>
-    <class>com.exception.magicsnumbersws.entities.Lottery</class>
-    <class>com.exception.magicsnumbersws.entities.TicketDetail</class>
-    <class>com.exception.magicsnumbersws.entities.Operation</class>
-    <class>com.exception.magicsnumbersws.entities.SystemOption</class>
-    <class>com.exception.magicsnumbersws.entities.Ticket</class>
-    <class>com.exception.magicsnumbersws.entities.BetType</class>
-    <class>com.exception.magicsnumbersws.entities.Sysdiagrams</class>
-    <class>com.exception.magicsnumbersws.entities.Profile</class>
-    <class>com.exception.magicsnumbersws.entities.BetBankingLottery</class>
-    <class>com.exception.magicsnumbersws.entities.BetBanking</class>
-    <class>com.exception.magicsnumbersws.entities.StatusType</class>
-    <class>com.exception.magicsnumbersws.entities.User</class>
-    <class>com.exception.magicsnumbersws.entities.UserConsortium</class>
-    <class>com.exception.magicsnumbersws.entities.WayTOWinBet</class>
-    <class>com.exception.magicsnumbersws.entities.UserProfile_1</class>
-    <class>com.exception.magicsnumbersws.entities.UserProfile</class>
-    <class>com.exception.magicsnumbersws.entities.BetBankingsUser</class>
-    <class>com.exception.magicsnumbersws.entities.WaysTOWinLottery</class>
-    <class>com.exception.magicsnumbersws.entities.WayToWinLottery</class>
-    <class>com.exception.magicsnumbersws.entities.Winningnumber</class>
-    <class>com.exception.magicsnumbersws.entities.BetType_1</class>
-    <class>com.exception.magicsnumbersws.entities.WayToWinBet</class>
-    <class>com.exception.magicsnumbersws.entities.BetBankingUser</class>
-    <class>com.exception.magicsnumbersws.dao.BetBankingUser</class>
-    <class>com.exception.magicsnumbersws.dao.Ticket</class>
-    <class>com.exception.magicsnumbersws.dao.StatusType</class>
-    <class>com.exception.magicsnumbersws.dao.BetBankingBetLimit</class>
-    <class>com.exception.magicsnumbersws.dao.User</class>
-    <class>com.exception.magicsnumbersws.dao.Profile</class>
-    <class>com.exception.magicsnumbersws.dao.WayToWinLottery</class>
-    <class>com.exception.magicsnumbersws.dao.Bet</class>
-    <class>com.exception.magicsnumbersws.dao.UserProfile</class>
-    <class>com.exception.magicsnumbersws.dao.BetBankingLottery</class>
-    <class>com.exception.magicsnumbersws.dao.WayToWinBet</class>
-    <class>com.exception.magicsnumbersws.dao.Sysdiagrams</class>
-    <class>com.exception.magicsnumbersws.dao.WinningNumber</class>
-    <class>com.exception.magicsnumbersws.dao.HistoryOperation</class>
-    <class>com.exception.magicsnumbersws.dao.Operation</class>
-    <class>com.exception.magicsnumbersws.dao.OperationType</class>
-    <class>com.exception.magicsnumbersws.dao.BetBanking</class>
-    <class>com.exception.magicsnumbersws.dao.UserConsortium</class>
-    <class>com.exception.magicsnumbersws.dao.WayToWin</class>
     <class>com.exception.magicsnumbersws.dao.BlockingNumber</class>
-    <class>com.exception.magicsnumbersws.dao.SystemOption</class>
-    <class>com.exception.magicsnumbersws.dao.TicketDetail</class>
-    <class>com.exception.magicsnumbersws.dao.Lottery</class>
-    <class>com.exception.magicsnumbersws.dao.BetType</class>
-    <class>com.exception.magicsnumbersws.dao.OptionCategory</class>
-    <class>com.exception.magicsnumbersws.dao.Status</class>
-    <class>com.exception.magicsnumbersws.dao.Consortium</class>
-    <class>com.exception.magicsnumbersws.entities.OptionsCategory</class>
-    <class>com.exception.magicsnumbersws.entities.Category</class>
-    <class>com.exception.magicsnumbersws.dao.CategoryOption</class>
-    <class>com.exception.magicsnumbersws.entities.CategoryOption</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="hibernate.connection.username" value="sa"/>
       <property name="hibernate.connection.driver_class" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>
       <property name="hibernate.connection.password" value="logicsoft"/>
       <property name="hibernate.connection.url" value="jdbc:sqlserver://localhost\logicsoft:1433;databaseName=magicsnumbersdb"/>
+    </properties>
+  </persistence-unit>
+  <persistence-unit name="com.exception_magicsnumbersws_war_0.1PU" transaction-type="RESOURCE_LOCAL">
+    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+    <exclude-unlisted-classes>false</exclude-unlisted-classes>
+    <properties>
+      <property name="javax.persistence.jdbc.url" value="jdbc:sqlserver://localhost\logicsoft:1433;databaseName=magicsnumbersdb"/>
+      <property name="javax.persistence.jdbc.password" value="mag1cp@ssw0r"/>
+      <property name="javax.persistence.jdbc.driver" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>
+      <property name="javax.persistence.jdbc.user" value="magicsnumbersuser"/>
     </properties>
   </persistence-unit>
 </persistence>

@@ -19,16 +19,21 @@
         <repository>
             <id>org.jboss.resteasy</id>
             <url>http://repository.jboss.org/maven2/</url>
-        </repository>   
-   
+        </repository>
+        <repository>
+            <url>http://download.eclipse.org/rt/eclipselink/maven.repo/</url>
+            <id>eclipselink</id>
+            <layout>default</layout>
+            <name>Repository for library EclipseLink (JPA 2.1)</name>
+        </repository>
     </repositories>
             
     <dependencies>
         
         <dependency>
-             <groupId>com.exception</groupId>
-            <artifactId>sqljdbc</artifactId>
-            <version>4</version>
+            <groupId>com.exception.microsoft</groupId>
+            <artifactId>sqljdbc4</artifactId>
+            <version>4.0</version>
         </dependency>        
           
         <!--Spring dependency-->       
@@ -87,8 +92,17 @@
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
             <version>1.2.17</version>
-        </dependency>                                
-                                                                                                        
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.persistence</groupId>
+            <artifactId>eclipselink</artifactId>
+            <version>2.5.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.persistence</groupId>
+            <artifactId>javax.persistence</artifactId>
+            <version>2.1.0-SNAPSHOT</version>
+        </dependency>
         <dependency>
             <groupId>javax</groupId>
             <artifactId>javaee-web-api</artifactId>
@@ -136,8 +150,7 @@
                         </goals>
                         <configuration>
                             <classifier>client</classifier>
-                            <includes>                                
-                                <include>**/com/exception/magicsnumbersws/entities/User.class</include>
+                            <includes>                                                                
                                 <include>**/com/exception/magicsnumbersws/entities/*</include>                                
                                 <include>**/com/exception/magicsnumbersws/endpoints/*</include>
                                 <include>**/com/exception/magicsnumbersws/exception/*</include>                                

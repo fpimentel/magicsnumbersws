@@ -1,9 +1,7 @@
 package com.exception.magicsnumbersws.dao.impl;
-
 import com.exception.magicsnumbersws.dao.BetBankingDao;
 import com.exception.magicsnumbersws.dao.ConsortiumDao;
-import com.exception.magicsnumbersws.entities.BetBanking;
-
+import com.exception.magicsnumbersws.dao.UserDao;
 import com.exception.magicsnumbersws.entities.Consortium;
 import com.exception.magicsnumbersws.entities.SystemOption;
 import com.exception.magicsnumbersws.entities.User;
@@ -31,6 +29,8 @@ public class ConsortiumDaoImpl implements ConsortiumDao {
     private SessionFactory sessionFactory;
     @Autowired
     private BetBankingDao betBankingDao;
+    @Autowired
+    private UserDao userDao;
 
     public ConsortiumDaoImpl() {
     }
@@ -147,24 +147,16 @@ public class ConsortiumDaoImpl implements ConsortiumDao {
                      //Segundo asociamos el consorcio a las bancas
                      betBankingDao.assingConsortium(cons);
                 }
-            } else {//Agregar nuevo consorcio
+            } else {//Agregar nuevo consorcio   
+                //Por defecto, se asocia el nuevo consorcio al usuario que lo creo.
+                User user = userDao.findByUserName(consortium.getCreationUser());
+                consortium.getUsers().add(user);
                 add(consortium);
+                //Se asocian las bancas al consorcio creado.
                 betBankingDao.assingConsortium(consortium);
             }
         } catch (Exception ex) {
             throw new SaveConsortiumDataException();
-        }
-        /*try {
-         Consortium cons = (Consortium) sessionFactory.getCurrentSession()
-         .get(consortium.getClass(), consortium.getId());
-         if (cons != null) {
-         BeanUtils.copyProperties(consortium, cons,new String[]{"users"});                
-         update(cons);
-         } else {
-         add(consortium);
-         }
-         } catch (Exception ex) {
-         throw new SaveConsortiumDataException();
-         }*/
+        }        
     }
 }

@@ -29,12 +29,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class UserConsortium implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
-    protected UserConsortiumPK userConsortiumPK;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 50)
-    @Column(name = "CREATION_USER")
-    private String creationUser;
+    protected UserConsortiumPK userConsortiumPK;    
     @Basic(optional = false)
     @NotNull
     @Column(name = "CREATION_DATE")
@@ -55,8 +50,7 @@ public class UserConsortium implements Serializable {
     }
 
     public UserConsortium(UserConsortiumPK userConsortiumPK, String creationUser, Date creationDate) {
-        this.userConsortiumPK = userConsortiumPK;
-        this.creationUser = creationUser;
+        this.userConsortiumPK = userConsortiumPK;        
         this.creationDate = creationDate;
     }
 
@@ -72,13 +66,6 @@ public class UserConsortium implements Serializable {
         this.userConsortiumPK = userConsortiumPK;
     }
 
-    public String getCreationUser() {
-        return creationUser;
-    }
-
-    public void setCreationUser(String creationUser) {
-        this.creationUser = creationUser;
-    }
 
     public Date getCreationDate() {
         return creationDate;

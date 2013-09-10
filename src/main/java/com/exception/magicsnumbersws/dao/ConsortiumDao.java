@@ -18,5 +18,5 @@ public interface ConsortiumDao {
     public List<Consortium> findAll() throws SearchAllConsortiumException;      
     public List<Consortium> findByUserId(int userId) throws SearchAllConsortiumException;      
     public void saveConsortiumsData(List<Consortium> consortiums) throws SaveConsortiumDataException;
-    public void saveConsortiumData(Consortium consortium) throws SaveConsortiumDataException;
+    public void saveConsortiumData(Consortium consortium) throws SaveConsortiumDataException;    
 }

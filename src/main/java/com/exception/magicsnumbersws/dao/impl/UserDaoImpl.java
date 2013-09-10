@@ -1,14 +1,11 @@
 package com.exception.magicsnumbersws.dao.impl;
 
 import com.exception.magicsnumbersws.dao.UserDao;
-import com.exception.magicsnumbersws.entities.Consortium;
-import com.exception.magicsnumbersws.entities.SystemOption;
 import com.exception.magicsnumbersws.entities.User;
 import com.exception.magicsnumbersws.exception.SaveUsersDataException;
 import com.exception.magicsnumbersws.exception.SearchAllUserException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
 import org.hibernate.SessionFactory;
@@ -54,7 +51,7 @@ public class UserDaoImpl implements UserDao {
     public User findById(int id) {
         return (User) sessionFactory.getCurrentSession().get(User.class, id);
     }
-
+    
     public SessionFactory getSessionFactory() {
         return sessionFactory;
     }
@@ -129,5 +126,11 @@ public class UserDaoImpl implements UserDao {
                 add(currUser);
             }
         }
+    }
+
+    @Override
+    public User findByUserName(String userName) throws SearchAllUserException {
+        return (User) sessionFactory.getCurrentSession().createCriteria(User.class)
+                .add(Restrictions.eq("userName", userName)).uniqueResult();
     }
 }

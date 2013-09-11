@@ -7,12 +7,10 @@ import com.exception.magicsnumbersws.entities.Status;
 import com.exception.magicsnumbersws.exception.SaveConsortiumDataException;
 import com.exception.magicsnumbersws.exception.SearchAllBetBankingException;
 import com.exception.magicsnumbersws.exception.SearchAllConsortiumException;
-import java.util.ArrayList;
 import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -57,6 +55,11 @@ public interface LookupTablesEndpoint {
     @Path("/betBankingAll/{consortiumId}")
     @Produces(MediaType.APPLICATION_JSON)
     public List<BetBanking> findAllBetBanking(@PathParam("consortiumId") int consortiumId) throws SearchAllBetBankingException;  
+    
+    @GET
+    @Path("/betBankingAll")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<BetBanking> findAllBetBanking() throws SearchAllBetBankingException;  
     
     @GET
     @Path("/betBankingById/{betBankingId}")

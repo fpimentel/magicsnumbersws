@@ -97,4 +97,9 @@ public class LookupTablesEndpointImpl implements LookupTablesEndpoint {
     public BetBanking findBetBankingById(int betBankingId) throws SearchAllBetBankingException {
         return betBankingService.findById(betBankingId);
     }
+
+    @Override
+    public List<BetBanking> findAllBetBanking() throws SearchAllBetBankingException {
+        return betBankingService.findAll();
+    }
 }

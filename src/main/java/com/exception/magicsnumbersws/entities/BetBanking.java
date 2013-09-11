@@ -27,7 +27,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @Entity
 @Table(name = "BET_BANKING")
 @XmlRootElement
-public class BetBanking implements Serializable {
+public class BetBanking implements Serializable, Comparable<BetBanking>{
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -59,13 +59,6 @@ public class BetBanking implements Serializable {
     @JoinColumn(name = "CONSORTIUM_ID", referencedColumnName = "ID" )
     @ManyToOne(fetch = FetchType.EAGER, optional = true)
     private Consortium consortium;
-    
-    /*@OneToMany(cascade = CascadeType.ALL, mappedBy = "betBanking")
-    private Collection<BetBankingBetLimit> betBankingBetLimitCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "betBanking")
-    private Collection<BetBankingLottery> betBankingLotteryCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "betBanking")
-    private Collection<BetBankingUser> betBankingUserCollection;*/
 
     public BetBanking() {
     }
@@ -138,34 +131,6 @@ public class BetBanking implements Serializable {
     public void setStatus(Status status) {
         this.status = status;
     }
-
-   /* @XmlTransient
-    public Collection<BetBankingBetLimit> getBetBankingBetLimitCollection() {
-        return betBankingBetLimitCollection;
-    }
-
-    public void setBetBankingBetLimitCollection(Collection<BetBankingBetLimit> betBankingBetLimitCollection) {
-        this.betBankingBetLimitCollection = betBankingBetLimitCollection;
-    }
-
-    @XmlTransient
-    public Collection<BetBankingLottery> getBetBankingLotteryCollection() {
-        return betBankingLotteryCollection;
-    }
-
-    public void setBetBankingLotteryCollection(Collection<BetBankingLottery> betBankingLotteryCollection) {
-        this.betBankingLotteryCollection = betBankingLotteryCollection;
-    }
-
-    @XmlTransient
-    public Collection<BetBankingUser> getBetBankingUserCollection() {
-        return betBankingUserCollection;
-    }
-
-    public void setBetBankingUserCollection(Collection<BetBankingUser> betBankingUserCollection) {
-        this.betBankingUserCollection = betBankingUserCollection;
-    }
-*/
     @Override
     public int hashCode() {
         int hash = 3;
@@ -193,6 +158,11 @@ public class BetBanking implements Serializable {
     @Override
     public String toString() {
         return "com.exception.magicsnumbersws.entities.BetBanking[ id=" + id + " ]";
+    }
+
+    @Override
+    public int compareTo(BetBanking that) {
+        return this.id - that.id;
     }
     
 }

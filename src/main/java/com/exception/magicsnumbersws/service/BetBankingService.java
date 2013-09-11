@@ -19,4 +19,5 @@ public interface BetBankingService {
     public List<BetBanking> findAvailable() throws SearchAllBetBankingException;     
     public List<BetBanking> findAsigned(int consortiumId) throws SearchAllBetBankingException;
     public List<BetBanking> findAll(int consortiumId) throws SearchAllBetBankingException;  
+    public List<BetBanking> findAll() throws SearchAllBetBankingException;  
 }

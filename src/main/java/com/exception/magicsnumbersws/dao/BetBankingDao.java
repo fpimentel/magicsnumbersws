@@ -17,6 +17,7 @@ public interface BetBankingDao {
     public List<BetBanking> findAvailable() throws SearchAllBetBankingException;  
     public List<BetBanking> findAsigned(int consortiumId) throws SearchAllBetBankingException;  
     public List<BetBanking> findAll(int consortiumId) throws SearchAllBetBankingException;  
+    public List<BetBanking> findAll() throws SearchAllBetBankingException;  
     public void deleteAssigned(int consortiumIdToDelete);
     public void assingConsortium(Consortium cons);
 }

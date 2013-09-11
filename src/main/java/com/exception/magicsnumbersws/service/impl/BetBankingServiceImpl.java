@@ -69,4 +69,9 @@ public class BetBankingServiceImpl implements BetBankingService {
     public List<BetBanking> findAll(int consortiumId) throws SearchAllBetBankingException {
         return betBankingDao.findAll(consortiumId);
     }
+
+    @Override
+    public List<BetBanking> findAll() throws SearchAllBetBankingException {
+        return betBankingDao.findAll();
+    }
 }

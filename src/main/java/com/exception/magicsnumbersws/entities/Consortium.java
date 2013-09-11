@@ -59,7 +59,7 @@ public class Consortium implements Serializable, Comparable<Consortium>{
     @Temporal(TemporalType.TIMESTAMP)
     private Date creationDate;      
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "STATUS_ID", nullable = false)
+    @JoinColumn(name = "STATUS_ID", nullable = true)
     private Status status;
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "USERS_CONSORTIUMS", joinColumns = { @JoinColumn(name = "CONSORTIUM_ID") }, inverseJoinColumns = { @JoinColumn(name = "USER_ID") })

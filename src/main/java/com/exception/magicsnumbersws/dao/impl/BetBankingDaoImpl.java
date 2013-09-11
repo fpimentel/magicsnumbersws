@@ -64,7 +64,7 @@ public class BetBankingDaoImpl implements BetBankingDao {
     public BetBanking findById(int id) {
         return (BetBanking) sessionFactory.getCurrentSession().get(BetBanking.class, id);
     }
-
+        
     @Override
     public List<BetBanking> findAsigned(int consortiumId) throws SearchAllBetBankingException {
         List<BetBanking> result = (List<BetBanking>) sessionFactory.getCurrentSession().createCriteria(BetBanking.class)
@@ -89,20 +89,13 @@ public class BetBankingDaoImpl implements BetBankingDao {
         results.addAll(assigned);
         return results;
     }
-    
-    
+
     @Override
     public void deleteAssigned(int consortiumIdToDelete) {
         List<BetBanking> result = (List<BetBanking>) sessionFactory.getCurrentSession().createCriteria(BetBanking.class)
-                .add(Restrictions.eq("consortium.id", consortiumIdToDelete)).list();
-        BetBanking copiedBetBanking;
-        // List<BetBanking> finalBetBankings = new ArrayList<BetBanking>();
+                .add(Restrictions.eq("consortium.id", consortiumIdToDelete)).list();        
         for (BetBanking currBetBanking : result) {
             currBetBanking.setConsortium(null);
-            //copiedBetBanking = new BetBanking();
-            // BeanUtils.copyProperties(currBetBanking, copiedBetBanking);
-            //copiedBetBanking.setConsortium(null);
-            // finalBetBankings.add(copiedBetBanking);
         }
     }
 
@@ -115,21 +108,25 @@ public class BetBankingDaoImpl implements BetBankingDao {
         }
     }
 
-    @Override
-    public List<BetBanking> findAll() throws SearchAllBetBankingException {
+    @Override    
+    public List<BetBanking> findAll() throws SearchAllBetBankingException {      
         List<BetBanking> result = (List<BetBanking>) sessionFactory
-                                    .getCurrentSession()
-                                    .createCriteria(BetBanking.class)
-                                    .setFetchMode("consortium", FetchMode.JOIN)
-                                    .list();
-        BetBanking copiedBetBanking;
-        List<BetBanking> finalBetBankings = new ArrayList<BetBanking>();
-        for (BetBanking currBetBanking : result) {
-            copiedBetBanking = new BetBanking();
-            BeanUtils.copyProperties(currBetBanking, copiedBetBanking);
-            //copiedBetBanking.setConsortium(null);
-            finalBetBankings.add(copiedBetBanking);
+                .getCurrentSession()
+                .createCriteria(BetBanking.class)
+                .setFetchMode("consortium", FetchMode.JOIN)                
+                .list();
+        //Null en la data no requerida en el json.        
+        for (BetBanking currBetBanking : result) {                       
+            if (currBetBanking.getConsortium() != null) {
+                currBetBanking.getConsortium().setBetBankings(null);
+                if (currBetBanking.getConsortium().getUsers() != null) {
+                    currBetBanking.getConsortium().setUsers(null);
+                }
+                if (currBetBanking.getConsortium().getStatus() != null) {
+                    currBetBanking.getConsortium().setStatus(null);
+                }
+            }          
         }
-        return finalBetBankings;
+        return result;
     }
 }

@@ -27,7 +27,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @Entity
 @Table(name = "BET_BANKING")
 @XmlRootElement
-public class BetBanking implements Serializable, Comparable<BetBanking>{
+public class BetBanking implements Serializable, Comparable<BetBanking> {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -115,7 +115,7 @@ public class BetBanking implements Serializable, Comparable<BetBanking>{
         this.creationUser = creationUser;
     }
 
-    @XmlTransient
+   // @XmlTransient
     public Consortium getConsortium() {
         return consortium;
     }

@@ -24,6 +24,8 @@ public interface ConsortiumService {
 
     public Consortium findById(int id);
 
+    public List<Consortium> findActiveConsortium() throws SearchAllConsortiumException;
+    
     public List<Consortium> findByUserId(int userId) throws SearchAllConsortiumException;
 
     public void saveConsortiumsData(List<Consortium> consortiums) throws SaveConsortiumDataException;

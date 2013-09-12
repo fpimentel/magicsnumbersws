@@ -67,20 +67,16 @@ public class UserDaoImpl implements UserDao {
                 .createCriteria(User.class)
                 .createAlias("status", "status")
                 .setFetchMode("status", FetchMode.JOIN)
-                .setFetchMode("profile", FetchMode.JOIN)
-               // .setFetchMode("consortiums", FetchMode.JOIN)
-               // .setFetchMode("consortiums.betBankings", FetchMode.JOIN)
+                .setFetchMode("profile", FetchMode.JOIN)                            
                 .setFetchMode("profile.options", FetchMode.JOIN)                
                 .add(Restrictions.eq("status.id", ACTIVO))
                 .add(Restrictions.eq("userName", userName).ignoreCase())
                 .add(Restrictions.eq("password", pass)).uniqueResult();
-       User copiedUser = new User();
-       BeanUtils.copyProperties(userResult, copiedUser);
-       copiedUser.setConsortiums(null);
-        //User copiedUser = new User();
-        //String[] ignoredProperties = {"profile"};        
-        //BeanUtils.copyProperties(userSource, copiedUser, ignoredProperties);
-        return copiedUser;
+        if(userResult != null){
+            userResult.setConsortiums(null);
+            userResult.setBetBankings(null);
+        }              
+        return userResult;
     }
 
     @Override
@@ -89,9 +85,7 @@ public class UserDaoImpl implements UserDao {
                 .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)
                 .setFetchMode("profile", FetchMode.JOIN)
                 .setFetchMode("status", FetchMode.JOIN)
-                .setFetchMode("profile.options", FetchMode.JOIN)
-                //.setFetchMode("consortiums", FetchMode.JOIN)
-                //.setFetchMode("consortiums.betBankings", FetchMode.JOIN)
+                .setFetchMode("profile.options", FetchMode.JOIN)                                
                 .add(Restrictions.eq("status.id", ACTIVO))
                 .list();
         User copiedUser;
@@ -100,16 +94,7 @@ public class UserDaoImpl implements UserDao {
             copiedUser = new User();
             BeanUtils.copyProperties(currUser, copiedUser);
             copiedUser.setConsortiums(null);
-            //if(copiedUser.getProfile()!= null){                
-              //  copiedUser.getProfile().setOptions(null);
-            //}  
-            //Set<Consortium> consortiums = copiedUser.getConsortiums();
-            //if(consortiums!= null){
-            //    for(Consortium currConsortium : consortiums){
-             //       currConsortium.setBetBankings(null);
-              //  }
-           // }
-           // copiedUser.setProfile(null);
+            copiedUser.setBetBankings(null);           
             finalUsers.add(copiedUser);
         }
         return finalUsers;

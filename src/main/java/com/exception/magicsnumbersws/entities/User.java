@@ -69,10 +69,16 @@ public class User implements Serializable , Comparable<User>{
     @JoinColumn(name = "PROFILE_ID", referencedColumnName = "ID")
     @ManyToOne(fetch = FetchType.LAZY)
     private Profile profile;
+    
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "USERS_CONSORTIUMS", joinColumns = { @JoinColumn(name = "USER_ID") }, inverseJoinColumns = { @JoinColumn(name = "CONSORTIUM_ID") })
     private Set<Consortium> consortiums = new HashSet<Consortium>(0);
 
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(name = "BET_BANKINGS_USERS", joinColumns = { @JoinColumn(name = "USER_ID") }, inverseJoinColumns = { @JoinColumn(name = "BETBANKING_ID") })
+    private Set<BetBanking> betBankings = new HashSet<BetBanking>(0);
+    
+    
     public User() {
     }
 
@@ -96,6 +102,14 @@ public class User implements Serializable , Comparable<User>{
     public void setConsortiums(Set<Consortium> consortiums) {
         this.consortiums = consortiums;
     }
+
+    public Set<BetBanking> getBetBankings() {
+        return betBankings;
+    }
+
+    public void setBetBankings(Set<BetBanking> betBankings) {
+        this.betBankings = betBankings;
+    }        
     
     @XmlElement
     public Integer getId() {

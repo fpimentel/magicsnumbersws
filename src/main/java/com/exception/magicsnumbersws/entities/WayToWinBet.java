@@ -41,6 +41,7 @@ public class WayToWinBet implements Serializable {
     @JoinColumn(name = "WAY_TO_WIN_ID", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private WayToWin wayToWinId;
+  
     @JoinColumn(name = "BET_ID", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private Bet betId;

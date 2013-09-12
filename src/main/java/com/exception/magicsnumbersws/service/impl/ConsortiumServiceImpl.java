@@ -74,4 +74,9 @@ public class ConsortiumServiceImpl implements ConsortiumService {
             throw new SaveConsortiumDataException();
         }
     }
+
+    @Override
+    public List<Consortium> findActiveConsortium() throws SearchAllConsortiumException {
+        return consortiumDao.findActiveConsortium();
+    }
 }

@@ -42,6 +42,11 @@ public interface LookupTablesEndpoint {
     public List<Consortium> findConsortiumByUserId(@PathParam("userId")  int userId) throws SearchAllConsortiumException;
     
     @GET
+    @Path("/consortium/active")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Consortium> findActiveConsortium() throws SearchAllConsortiumException;
+    
+    @GET
     @Path("/betBanking")
     @Produces(MediaType.APPLICATION_JSON)
     public List<BetBanking> findAvailableBetBankings() throws SearchAllBetBankingException;
@@ -65,6 +70,12 @@ public interface LookupTablesEndpoint {
     @Path("/betBankingById/{betBankingId}")
     @Produces(MediaType.APPLICATION_JSON)
     public BetBanking findBetBankingById(@PathParam("betBankingId") int betBankingId) throws SearchAllBetBankingException;  
+    
+    @GET
+    @Path("/betBankingByUserId/{userId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<BetBanking> findBetBankingByUserId(@PathParam("userId") int userId) throws SearchAllBetBankingException;  
+    
     
     @POST
     @Path(value = "/consortium/saveAll")

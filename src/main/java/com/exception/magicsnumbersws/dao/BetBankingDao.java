@@ -25,6 +25,9 @@ public interface BetBankingDao {
     public List<BetBanking> findAvailable() throws SearchAllBetBankingException;
 
     @Transactional(propagation=Propagation.REQUIRES_NEW, readOnly=true)
+    public List<BetBanking> findByUserId(int userId) throws SearchAllBetBankingException;
+    
+    @Transactional(propagation=Propagation.REQUIRES_NEW, readOnly=true)
     public List<BetBanking> findAsigned(int consortiumId) throws SearchAllBetBankingException;
 
     public List<BetBanking> findAll(int consortiumId) throws SearchAllBetBankingException;

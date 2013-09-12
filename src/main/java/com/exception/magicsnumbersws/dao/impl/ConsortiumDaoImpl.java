@@ -52,12 +52,18 @@ public class ConsortiumDaoImpl implements ConsortiumDao {
      * @return @throws SearchAllSystemOptionException
      */
     @Override
-    public List<Consortium> findAll() throws SearchAllConsortiumException {
-        return (List<Consortium>) sessionFactory.getCurrentSession()
+    public List<Consortium> findActiveConsortium() throws SearchAllConsortiumException {
+        List<Consortium> consortiums =  sessionFactory.getCurrentSession()
                 .createCriteria(Consortium.class)
                 .setFetchMode("status", FetchMode.JOIN)
                 .add(Restrictions.eq("status.id", ACTIVO))
                 .list();
+        for(Consortium consortium :consortiums){
+            consortium.setBetBankings(null);
+            consortium.setUsers(null);
+            consortium.setStatus(null);
+        }
+        return consortiums;
     }
 
     @Override
@@ -81,8 +87,7 @@ public class ConsortiumDaoImpl implements ConsortiumDao {
                 .setFetchMode("consortiums", FetchMode.JOIN)
                 .setFetchMode("consortiums.betBankings", FetchMode.JOIN)
                 .setFetchMode("consortiums.status", FetchMode.JOIN)
-                .createAlias("consortiums", "consortium")
-                //.add(Restrictions.eq("consortium.status.id", ACTIVO))
+                .createAlias("consortiums", "consortium")                
                 .add(Restrictions.eq("status.id", ACTIVO))
                 .add(Restrictions.eq("id", userId))
                 .uniqueResult();
@@ -95,6 +100,7 @@ public class ConsortiumDaoImpl implements ConsortiumDao {
             for (Consortium currConsortium : userResult.getConsortiums()) {
                 copiedConsortium = new Consortium();
                 BeanUtils.copyProperties(currConsortium, copiedConsortium, ignoredProperties);
+                copiedConsortium.setBetBankings(null);
                 //copiedConsortium.setStatus(null);
                 finalConsortiums.add(copiedConsortium);
             }

@@ -45,6 +45,11 @@ public class BetBanking implements Serializable, Comparable<BetBanking> {
     private String address;
     @Basic(optional = false)
     @NotNull
+    @Size(min = 1, max = 200)
+    @Column(name = "CONTACT")
+    private String contact;
+    @Basic(optional = false)
+    @NotNull
     @Column(name = "CREATION_DATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date creationDate;
@@ -53,7 +58,7 @@ public class BetBanking implements Serializable, Comparable<BetBanking> {
     @Size(min = 1, max = 50)
     @Column(name = "CREATION_USER")
     private String creationUser;
-   @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "STATUS_ID", nullable = false)
     private Status status;
     @JoinColumn(name = "CONSORTIUM_ID", referencedColumnName = "ID" )
@@ -131,6 +136,17 @@ public class BetBanking implements Serializable, Comparable<BetBanking> {
     public void setStatus(Status status) {
         this.status = status;
     }
+
+    public String getContact() {
+        return contact;
+    }
+
+    public void setContact(String contact) {
+        this.contact = contact;
+    }
+    
+    
+    
     @Override
     public int hashCode() {
         int hash = 3;

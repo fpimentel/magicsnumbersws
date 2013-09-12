@@ -61,6 +61,8 @@ public class LookupTablesEndpointImpl implements LookupTablesEndpoint {
     public List<Consortium> findConsortiumByUserId(int userId) throws SearchAllConsortiumException {
         return consortiumService.findByUserId(userId);
     }
+    
+    
 
     @Override
     public void saveConsortiumsData(List<Consortium> consortium) throws SaveConsortiumDataException {
@@ -101,5 +103,15 @@ public class LookupTablesEndpointImpl implements LookupTablesEndpoint {
     @Override
     public List<BetBanking> findAllBetBanking() throws SearchAllBetBankingException {
         return betBankingService.findAll();
+    }
+
+    @Override
+    public List<Consortium> findActiveConsortium() throws SearchAllConsortiumException {
+        return consortiumService.findActiveConsortium();
+    }
+
+    @Override
+    public List<BetBanking> findBetBankingByUserId(int userId) throws SearchAllBetBankingException {
+        return betBankingService.findByUserId(userId);
     }
 }

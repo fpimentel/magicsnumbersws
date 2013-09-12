@@ -3,9 +3,12 @@ package com.exception.magicsnumbersws.dao.impl;
 import com.exception.magicsnumbersws.dao.BetBankingDao;
 import com.exception.magicsnumbersws.entities.BetBanking;
 import com.exception.magicsnumbersws.entities.Consortium;
+import com.exception.magicsnumbersws.entities.User;
 import com.exception.magicsnumbersws.exception.SearchAllBetBankingException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import org.hibernate.FetchMode;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
@@ -128,5 +131,24 @@ public class BetBankingDaoImpl implements BetBankingDao {
             }          
         }
         return result;
+    }
+
+    @Override
+    public List<BetBanking> findByUserId(int userId) throws SearchAllBetBankingException {
+        User user = (User) sessionFactory
+                .getCurrentSession()
+                .createCriteria(User.class)
+                .setFetchMode("betBankings", FetchMode.JOIN)
+                .add(Restrictions.eq("id", userId)).uniqueResult();  
+        Set<BetBanking> bankings = new HashSet<BetBanking>(0);
+        if(user != null){
+            bankings = user.getBetBankings();
+            if(bankings != null){
+                for(BetBanking betBanking : bankings){
+                    betBanking.setConsortium(null);                                        
+                }
+            }            
+        }
+        return new ArrayList(bankings);
     }
 }

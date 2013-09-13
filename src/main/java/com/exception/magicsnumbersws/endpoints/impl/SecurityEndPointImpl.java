@@ -14,13 +14,8 @@ import com.exception.magicsnumbersws.service.UserService;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -44,9 +39,6 @@ public class SecurityEndPointImpl implements SecurityEndPoint {
     
     private Logger logger = Logger.getLogger(SecurityEndPointImpl.class.getName());
 
-    @GET
-    @Path("/user")
-    @Produces(MediaType.APPLICATION_JSON)
     @Override
     public List<User> getAllUsers() throws SearchAllUserException {
         logger.log(Level.INFO, "init- getAllUsers");
@@ -65,27 +57,16 @@ public class SecurityEndPointImpl implements SecurityEndPoint {
         this.userService = userService;
     }
    
-
-    @GET
-    @Path(value = "/systemoption")
-    @Produces(value = MediaType.APPLICATION_JSON)
     @Override
     public List<SystemOption> getAllSystemOptions() throws SearchAllSystemOptionException {
         return systemOptionService.findAll();
     }
     
-    @GET
-    @Path(value = "/profile")
-    @Produces(value = MediaType.APPLICATION_JSON)
     @Override
     public List<Profile> getAllProfiles() throws SearchAllProfileException {
         return profileService.findAll();
     }
     
-    @POST
-    @Path(value = "/user/save")
-    @Consumes("application/json")
-    @Produces(value = MediaType.APPLICATION_JSON)
     @Override
     public void saveUsersData(List<User> users) throws SaveUsersDataException {
         userService.saveUsersData(users);

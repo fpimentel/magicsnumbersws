@@ -15,10 +15,7 @@ import com.exception.magicsnumbersws.service.StatusService;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.ws.rs.GET;
 import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -41,10 +38,7 @@ public class LookupTablesEndpointImpl implements LookupTablesEndpoint {
     @Autowired
     private BetBankingService betBankingService;
     private Logger logger = Logger.getLogger(LookupTablesEndpointImpl.class.getName());
-
-    @GET
-    @Path(value = "/status")
-    @Produces(value = MediaType.APPLICATION_JSON)
+    
     @Override
     public List<Status> getAllStatus() {
         logger.log(Level.INFO, "init - getAllStatus()");
@@ -62,8 +56,6 @@ public class LookupTablesEndpointImpl implements LookupTablesEndpoint {
         return consortiumService.findByUserId(userId);
     }
     
-    
-
     @Override
     public void saveConsortiumsData(List<Consortium> consortium) throws SaveConsortiumDataException {
         consortiumService.saveConsortiumsData(consortium);

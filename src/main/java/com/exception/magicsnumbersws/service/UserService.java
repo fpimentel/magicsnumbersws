@@ -1,15 +1,11 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.exception.magicsnumbersws.service;
 
 import com.exception.magicsnumbersws.entities.User;
 import com.exception.magicsnumbersws.exception.SaveUsersDataException;
 import com.exception.magicsnumbersws.exception.SearchAllUserException;
 import java.util.List;
-import java.util.Set;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -17,12 +13,21 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public interface UserService {
-        
+
     public void add(User user);
+
     public void update(User user);
+
     public void delete(int userId);
+
+    @Transactional(readOnly = true)
     public User findById(int id);
-    public List<User> findAll()  throws SearchAllUserException;
-    public User getUserByCredentials(String userName, String pass); 
+
+    @Transactional(readOnly = true)
+    public List<User> findAll() throws SearchAllUserException;
+
+    @Transactional(readOnly = true)
+    public User getUserByCredentials(String userName, String pass);
+
     public void saveUsersData(List<User> users) throws SaveUsersDataException;
 }

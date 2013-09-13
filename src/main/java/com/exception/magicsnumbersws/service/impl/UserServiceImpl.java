@@ -7,7 +7,6 @@ import com.exception.magicsnumbersws.exception.SaveUsersDataException;
 import com.exception.magicsnumbersws.exception.SearchAllUserException;
 import com.exception.magicsnumbersws.service.UserService;
 import java.util.List;
-import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

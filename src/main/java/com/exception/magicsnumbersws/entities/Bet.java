@@ -12,6 +12,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -34,6 +35,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "BET")
 @XmlRootElement
 public class Bet implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -76,23 +78,15 @@ public class Bet implements Serializable {
     @Column(name = "CREATION_DATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date creationDate;
-    @JoinTable(name = "LOTTERIES_BETS", joinColumns = {
-        @JoinColumn(name = "BET_ID", referencedColumnName = "ID")}, inverseJoinColumns = {
-        @JoinColumn(name = "LOTTERY_ID", referencedColumnName = "ID")})
-    @ManyToMany
-    private Collection<Lottery> lotteryCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "bet")
-    private Collection<BetBankingBetLimit> betBankingBetLimitCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "betId")
-    private Collection<WayToWinBet> wayToWinBetCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "betId")
-    private Collection<WinningNumber> winningNumberCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "betId")
-    private Collection<TicketDetail> ticketDetailCollection;
-
+    
     @JoinColumn(name = "BETTYPE_ID", referencedColumnName = "ID")
     @ManyToOne(optional = false)
-    private BetType bettypeId;
+    private BetType betType;
+    
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "STATUS_ID", nullable = false)
+    private Status status;
+    
 
     public Bet() {
     }
@@ -184,59 +178,13 @@ public class Bet implements Serializable {
     public void setCreationDate(Date creationDate) {
         this.creationDate = creationDate;
     }
-
-    @XmlTransient
-    public Collection<Lottery> getLotteryCollection() {
-        return lotteryCollection;
+    
+    public BetType getBetType() {
+        return betType;
     }
 
-    public void setLotteryCollection(Collection<Lottery> lotteryCollection) {
-        this.lotteryCollection = lotteryCollection;
-    }
-
-    @XmlTransient
-    public Collection<BetBankingBetLimit> getBetBankingBetLimitCollection() {
-        return betBankingBetLimitCollection;
-    }
-
-    public void setBetBankingBetLimitCollection(Collection<BetBankingBetLimit> betBankingBetLimitCollection) {
-        this.betBankingBetLimitCollection = betBankingBetLimitCollection;
-    }
-
-    @XmlTransient
-    public Collection<WayToWinBet> getWayToWinBetCollection() {
-        return wayToWinBetCollection;
-    }
-
-    public void setWayToWinBetCollection(Collection<WayToWinBet> wayToWinBetCollection) {
-        this.wayToWinBetCollection = wayToWinBetCollection;
-    }
-
-    @XmlTransient
-    public Collection<WinningNumber> getWinningNumberCollection() {
-        return winningNumberCollection;
-    }
-
-    public void setWinningNumberCollection(Collection<WinningNumber> winningNumberCollection) {
-        this.winningNumberCollection = winningNumberCollection;
-    }
-
-    @XmlTransient
-    public Collection<TicketDetail> getTicketDetailCollection() {
-        return ticketDetailCollection;
-    }
-
-    public void setTicketDetailCollection(Collection<TicketDetail> ticketDetailCollection) {
-        this.ticketDetailCollection = ticketDetailCollection;
-    }
-
-
-    public BetType getBettypeId() {
-        return bettypeId;
-    }
-
-    public void setBettypeId(BetType bettypeId) {
-        this.bettypeId = bettypeId;
+    public void setBetType(BetType betType) {
+        this.betType = betType;
     }
 
     @Override
@@ -261,10 +209,8 @@ public class Bet implements Serializable {
         return true;
     }
 
-
     @Override
     public String toString() {
         return "com.exception.magicsnumbersws.entities.Bet[ id=" + id + " ]";
     }
-    
 }

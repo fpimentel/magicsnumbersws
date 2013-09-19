@@ -1,14 +1,17 @@
 package com.exception.magicsnumbersws.endpoints.impl;
 
 import com.exception.magicsnumbersws.endpoints.LookupTablesEndpoint;
+import com.exception.magicsnumbersws.entities.Bet;
 import com.exception.magicsnumbersws.entities.BetBanking;
 import com.exception.magicsnumbersws.entities.Category;
 import com.exception.magicsnumbersws.entities.Consortium;
 import com.exception.magicsnumbersws.entities.Status;
+import com.exception.magicsnumbersws.exception.FindBetException;
 import com.exception.magicsnumbersws.exception.SaveConsortiumDataException;
 import com.exception.magicsnumbersws.exception.SearchAllBetBankingException;
 import com.exception.magicsnumbersws.exception.SearchAllConsortiumException;
 import com.exception.magicsnumbersws.service.BetBankingService;
+import com.exception.magicsnumbersws.service.BetService;
 import com.exception.magicsnumbersws.service.CategoryService;
 import com.exception.magicsnumbersws.service.ConsortiumService;
 import com.exception.magicsnumbersws.service.StatusService;
@@ -36,7 +39,10 @@ public class LookupTablesEndpointImpl implements LookupTablesEndpoint {
     @Autowired
     private ConsortiumService consortiumService;
     @Autowired
-    private BetBankingService betBankingService;
+    private BetBankingService betBankingService;    
+    @Autowired
+    private BetService betService;
+    
     private Logger logger = Logger.getLogger(LookupTablesEndpointImpl.class.getName());
     
     @Override
@@ -105,5 +111,17 @@ public class LookupTablesEndpointImpl implements LookupTablesEndpoint {
     @Override
     public List<BetBanking> findBetBankingByUserId(int userId) throws SearchAllBetBankingException {
         return betBankingService.findByUserId(userId);
+    }
+
+    @Override
+    public List<BetBanking> findBetBankingsToConsortiumsAssignedToUser(int userId) throws SearchAllBetBankingException {
+        logger.info("init - LookupTablesEndpointImpl.findBetBankingsToConsortiumsAssignedToUser("+userId);        
+        return betBankingService.findBetBankingsToConsortiumsAssignedToUser(userId);
+    }
+
+    @Override
+    public List<Bet> findActiveBets() throws FindBetException {
+        logger.info("init - LookupTablesEndpointImpl.findActiveBets");        
+        return betService.findActiveBets();
     }
 }

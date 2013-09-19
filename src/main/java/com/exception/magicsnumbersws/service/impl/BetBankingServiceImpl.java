@@ -4,6 +4,7 @@ import com.exception.magicsnumbersws.entities.BetBanking;
 import com.exception.magicsnumbersws.exception.SearchAllBetBankingException;
 import com.exception.magicsnumbersws.service.BetBankingService;
 import java.util.List;
+import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +20,8 @@ public class BetBankingServiceImpl implements BetBankingService {
 
     @Autowired
     private BetBankingDao betBankingDao;
+    private static final Logger LOG = Logger.getLogger(BetBankingServiceImpl.class.getName());
+    
 
     public BetBankingServiceImpl() {
     }
@@ -75,8 +78,15 @@ public class BetBankingServiceImpl implements BetBankingService {
         return betBankingDao.findAll();
     }
 
+    
     @Override
     public List<BetBanking> findByUserId(int userId) throws SearchAllBetBankingException {
         return betBankingDao.findByUserId(userId);
+    }
+
+    @Override
+    public List<BetBanking> findBetBankingsToConsortiumsAssignedToUser(int userId) throws SearchAllBetBankingException {
+        LOG.info("init - BetBankingServiceImpl.findBetBankingsToConsortiumsAssignedToUser("+userId);  
+        return betBankingDao.findBetBankingsToConsortiumsAssignedToUser(userId);        
     }
 }

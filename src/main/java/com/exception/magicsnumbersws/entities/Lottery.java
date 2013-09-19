@@ -56,14 +56,6 @@ public class Lottery implements Serializable {
     @NotNull
     @Column(name = "STATUS_ID")
     private int statusId;
-    @ManyToMany(mappedBy = "lotteryCollection")
-    private Collection<Bet> betCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "lotteryId")
-    private Collection<WinningNumber> winningNumberCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "lotteryId")
-    private Collection<TicketDetail> ticketDetailCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "lotteryId")
-    private Collection<WayToWinLottery> wayToWinLotteryCollection;
 
     public Lottery() {
     }
@@ -119,42 +111,7 @@ public class Lottery implements Serializable {
     public void setStatusId(int statusId) {
         this.statusId = statusId;
     }
-
-    @XmlTransient
-    public Collection<Bet> getBetCollection() {
-        return betCollection;
-    }
-
-    public void setBetCollection(Collection<Bet> betCollection) {
-        this.betCollection = betCollection;
-    }
-
-    @XmlTransient
-    public Collection<WinningNumber> getWinningNumberCollection() {
-        return winningNumberCollection;
-    }
-
-    public void setWinningNumberCollection(Collection<WinningNumber> winningNumberCollection) {
-        this.winningNumberCollection = winningNumberCollection;
-    }
-
-    @XmlTransient
-    public Collection<TicketDetail> getTicketDetailCollection() {
-        return ticketDetailCollection;
-    }
-
-    public void setTicketDetailCollection(Collection<TicketDetail> ticketDetailCollection) {
-        this.ticketDetailCollection = ticketDetailCollection;
-    }
-
-    @XmlTransient
-    public Collection<WayToWinLottery> getWayToWinLotteryCollection() {
-        return wayToWinLotteryCollection;
-    }
-
-    public void setWayToWinLotteryCollection(Collection<WayToWinLottery> wayToWinLotteryCollection) {
-        this.wayToWinLotteryCollection = wayToWinLotteryCollection;
-    }
+   
 
     @Override
     public int hashCode() {

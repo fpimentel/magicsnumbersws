@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Logger;
 import org.hibernate.FetchMode;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
@@ -26,6 +27,7 @@ public class BetBankingDaoImpl implements BetBankingDao {
 
     @Autowired
     private SessionFactory sessionFactory;
+    private static final Logger LOG = Logger.getLogger(BetBankingDaoImpl.class.getName());
 
     public BetBankingDaoImpl() {
     }
@@ -67,7 +69,7 @@ public class BetBankingDaoImpl implements BetBankingDao {
     public BetBanking findById(int id) {
         return (BetBanking) sessionFactory.getCurrentSession().get(BetBanking.class, id);
     }
-        
+
     @Override
     public List<BetBanking> findAsigned(int consortiumId) throws SearchAllBetBankingException {
         List<BetBanking> result = (List<BetBanking>) sessionFactory.getCurrentSession().createCriteria(BetBanking.class)
@@ -96,7 +98,7 @@ public class BetBankingDaoImpl implements BetBankingDao {
     @Override
     public void deleteAssigned(int consortiumIdToDelete) {
         List<BetBanking> result = (List<BetBanking>) sessionFactory.getCurrentSession().createCriteria(BetBanking.class)
-                .add(Restrictions.eq("consortium.id", consortiumIdToDelete)).list();        
+                .add(Restrictions.eq("consortium.id", consortiumIdToDelete)).list();
         for (BetBanking currBetBanking : result) {
             currBetBanking.setConsortium(null);
         }
@@ -111,15 +113,15 @@ public class BetBankingDaoImpl implements BetBankingDao {
         }
     }
 
-    @Override    
-    public List<BetBanking> findAll() throws SearchAllBetBankingException {      
+    @Override
+    public List<BetBanking> findAll() throws SearchAllBetBankingException {
         List<BetBanking> result = (List<BetBanking>) sessionFactory
                 .getCurrentSession()
                 .createCriteria(BetBanking.class)
-                .setFetchMode("consortium", FetchMode.JOIN)                
+                .setFetchMode("consortium", FetchMode.JOIN)
                 .list();
         //Null en la data no requerida en el json.        
-        for (BetBanking currBetBanking : result) {                       
+        for (BetBanking currBetBanking : result) {
             if (currBetBanking.getConsortium() != null) {
                 currBetBanking.getConsortium().setBetBankings(null);
                 if (currBetBanking.getConsortium().getUsers() != null) {
@@ -128,7 +130,7 @@ public class BetBankingDaoImpl implements BetBankingDao {
                 if (currBetBanking.getConsortium().getStatus() != null) {
                     currBetBanking.getConsortium().setStatus(null);
                 }
-            }          
+            }
         }
         return result;
     }
@@ -139,16 +141,40 @@ public class BetBankingDaoImpl implements BetBankingDao {
                 .getCurrentSession()
                 .createCriteria(User.class)
                 .setFetchMode("betBankings", FetchMode.JOIN)
-                .add(Restrictions.eq("id", userId)).uniqueResult();  
+                .add(Restrictions.eq("id", userId)).uniqueResult();
         Set<BetBanking> bankings = new HashSet<BetBanking>(0);
-        if(user != null){
+        if (user != null) {
             bankings = user.getBetBankings();
-            if(bankings != null){
-                for(BetBanking betBanking : bankings){
-                    betBanking.setConsortium(null);                                        
+            if (bankings != null) {
+                for (BetBanking betBanking : bankings) {
+                    betBanking.setConsortium(null);
                 }
-            }            
+            }
         }
         return new ArrayList(bankings);
+    }
+
+    @Override
+    public List<BetBanking> findBetBankingsToConsortiumsAssignedToUser(int userId) throws SearchAllBetBankingException {
+        LOG.info("init - BetBankingDaoImpl.findBetBankingsToConsortiumsAssignedToUser(" + userId);
+        List<BetBanking> betBankings = new ArrayList();
+        User user = (User) sessionFactory
+                .getCurrentSession()
+                .createCriteria(User.class)
+                .setFetchMode("consortiums", FetchMode.JOIN)
+                .add(Restrictions.eq("id", userId)).uniqueResult();
+
+        Set<Consortium> consortiums = user.getConsortiums();
+
+        for (Consortium consortium : consortiums) {
+            betBankings.addAll(consortium.getBetBankings());
+        }
+
+        //Quitamos los consorcios
+        for (BetBanking betBanking : betBankings) {
+            betBanking.setConsortium(null);
+        }
+        LOG.info("finish - BetBankingDaoImpl.findBetBankingsToConsortiumsAssignedToUser(" + userId);
+        return betBankings;
     }
 }

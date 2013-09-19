@@ -1,4 +1,7 @@
-
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package com.exception.magicsnumbersws.entities;
 
 import java.io.Serializable;
@@ -41,7 +44,6 @@ public class WayToWinBet implements Serializable {
     @JoinColumn(name = "WAY_TO_WIN_ID", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private WayToWin wayToWinId;
-  
     @JoinColumn(name = "BET_ID", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private Bet betId;

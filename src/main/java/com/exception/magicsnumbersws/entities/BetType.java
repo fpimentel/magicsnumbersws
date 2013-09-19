@@ -6,6 +6,7 @@ package com.exception.magicsnumbersws.entities;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -27,8 +28,6 @@ import javax.xml.bind.annotation.XmlTransient;
 @Entity
 @Table(name = "BET_TYPES")
 @XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "BetType.findAll", query = "SELECT b FROM BetType b")})
 public class BetType implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -50,8 +49,9 @@ public class BetType implements Serializable {
     @NotNull
     @Column(name = "STATUS_ID")
     private int statusId;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "bettypeId")
-    private Collection<Bet> betCollection;
+    
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "betType")
+    private List<Bet> bets;
 
     public BetType() {
     }
@@ -100,13 +100,15 @@ public class BetType implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Bet> getBetCollection() {
-        return betCollection;
+    public List<Bet> getBets() {
+        return bets;
     }
 
-    public void setBetCollection(Collection<Bet> betCollection) {
-        this.betCollection = betCollection;
+    public void setBets(List<Bet> bets) {
+        this.bets = bets;
     }
+
+ 
 
     @Override
     public int hashCode() {

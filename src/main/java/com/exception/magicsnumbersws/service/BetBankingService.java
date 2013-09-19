@@ -25,16 +25,27 @@ public interface BetBankingService {
 
     @Transactional(readOnly = true)
     public List<BetBanking> findAvailable() throws SearchAllBetBankingException;
-    
+
     @Transactional(readOnly = true)
     public List<BetBanking> findAsigned(int consortiumId) throws SearchAllBetBankingException;
-    
+
     @Transactional(readOnly = true)
     public List<BetBanking> findAll(int consortiumId) throws SearchAllBetBankingException;
 
     @Transactional(readOnly = true)
     public List<BetBanking> findAll() throws SearchAllBetBankingException;
-    
+
     @Transactional(readOnly = true)
     public List<BetBanking> findByUserId(int userId) throws SearchAllBetBankingException;
+
+    /**
+     * *
+     * Encargado de devolver las bancas asignadas a los consorcios del
+     * usuario.     
+     * @param userId
+     * @return List<BetBanking>
+     * @throws SearchAllBetBankingException
+     */
+    @Transactional(readOnly = true)
+    public List<BetBanking> findBetBankingsToConsortiumsAssignedToUser(int userId) throws SearchAllBetBankingException;
 }

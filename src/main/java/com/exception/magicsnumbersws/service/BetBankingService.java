@@ -1,6 +1,8 @@
 package com.exception.magicsnumbersws.service;
 
 import com.exception.magicsnumbersws.entities.BetBanking;
+import com.exception.magicsnumbersws.entities.BetBankingBetLimit;
+import com.exception.magicsnumbersws.exception.FindBetLimitException;
 import com.exception.magicsnumbersws.exception.SearchAllBetBankingException;
 import java.util.List;
 import org.springframework.stereotype.Service;
@@ -48,4 +50,15 @@ public interface BetBankingService {
      */
     @Transactional(readOnly = true)
     public List<BetBanking> findBetBankingsToConsortiumsAssignedToUser(int userId) throws SearchAllBetBankingException;
+    
+    
+    /**
+     * *
+     * Obtiene las jugadas con sus limites    
+     * @param betBankingId
+     * @return List<BetBankingBetLimit>
+     * @throws FindBetLimitException
+     */
+    @Transactional(readOnly = true)
+    public List<BetBankingBetLimit> findBetLimitsByBetBankingId(int betBankingId) throws FindBetLimitException;
 }

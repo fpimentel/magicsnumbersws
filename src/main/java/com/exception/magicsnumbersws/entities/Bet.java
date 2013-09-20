@@ -6,26 +6,20 @@ package com.exception.magicsnumbersws.entities;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -34,7 +28,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @Entity
 @Table(name = "BET")
 @XmlRootElement
-public class Bet implements Serializable {
+public class Bet implements Serializable, Comparable<Bet> {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -78,15 +72,12 @@ public class Bet implements Serializable {
     @Column(name = "CREATION_DATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date creationDate;
-    
     @JoinColumn(name = "BETTYPE_ID", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private BetType betType;
-    
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "STATUS_ID", nullable = false)
     private Status status;
-    
 
     public Bet() {
     }
@@ -178,7 +169,7 @@ public class Bet implements Serializable {
     public void setCreationDate(Date creationDate) {
         this.creationDate = creationDate;
     }
-    
+
     public BetType getBetType() {
         return betType;
     }
@@ -189,8 +180,8 @@ public class Bet implements Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 3;
-        hash = 89 * hash + (this.id != null ? this.id.hashCode() : 0);
+        int hash = 7;
+        hash = 29 * hash + (this.id != null ? this.id.hashCode() : 0);
         return hash;
     }
 
@@ -210,7 +201,7 @@ public class Bet implements Serializable {
     }
 
     @Override
-    public String toString() {
-        return "com.exception.magicsnumbersws.entities.Bet[ id=" + id + " ]";
+    public int compareTo(Bet that) {
+        return this.id - that.id;
     }
 }

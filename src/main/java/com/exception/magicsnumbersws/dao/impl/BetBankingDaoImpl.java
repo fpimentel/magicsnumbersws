@@ -2,8 +2,10 @@ package com.exception.magicsnumbersws.dao.impl;
 
 import com.exception.magicsnumbersws.dao.BetBankingDao;
 import com.exception.magicsnumbersws.entities.BetBanking;
+import com.exception.magicsnumbersws.entities.BetBankingBetLimit;
 import com.exception.magicsnumbersws.entities.Consortium;
 import com.exception.magicsnumbersws.entities.User;
+import com.exception.magicsnumbersws.exception.FindBetLimitException;
 import com.exception.magicsnumbersws.exception.SearchAllBetBankingException;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -176,5 +178,27 @@ public class BetBankingDaoImpl implements BetBankingDao {
         }
         LOG.info("finish - BetBankingDaoImpl.findBetBankingsToConsortiumsAssignedToUser(" + userId);
         return betBankings;
+    }
+
+    @Override
+    public List<BetBankingBetLimit> findBetLimitsByBetBankingId(int betBankingId) throws FindBetLimitException {
+        LOG.info("init - BetBankingDaoImpl.findBetLimitsByBetBankingId(" + betBankingId);
+        List<BetBankingBetLimit> betLimits = sessionFactory
+                .getCurrentSession()
+                .createCriteria(BetBankingBetLimit.class)
+                .setFetchMode("bet", FetchMode.JOIN)
+                .add(Restrictions.eq("betBanking.id", betBankingId)).list();
+        
+        //Quitamos del json los datos innecesarios
+        for(BetBankingBetLimit betLimit : betLimits){
+            betLimit.setBetBankingBetLimitPK(null);
+            betLimit.getBet().setBetType(null);
+            betLimit.getBet().setCreationDate(null);
+            betLimit.getBet().setCreationUser(null);            
+            betLimit.setCreationDate(null);
+            betLimit.setCreationUser(null);
+            betLimit.setBetBanking(null);
+        }
+        return betLimits;
     }
 }

@@ -1,6 +1,8 @@
 package com.exception.magicsnumbersws.service.impl;
 import com.exception.magicsnumbersws.dao.BetBankingDao;
 import com.exception.magicsnumbersws.entities.BetBanking;
+import com.exception.magicsnumbersws.entities.BetBankingBetLimit;
+import com.exception.magicsnumbersws.exception.FindBetLimitException;
 import com.exception.magicsnumbersws.exception.SearchAllBetBankingException;
 import com.exception.magicsnumbersws.service.BetBankingService;
 import java.util.List;
@@ -88,5 +90,11 @@ public class BetBankingServiceImpl implements BetBankingService {
     public List<BetBanking> findBetBankingsToConsortiumsAssignedToUser(int userId) throws SearchAllBetBankingException {
         LOG.info("init - BetBankingServiceImpl.findBetBankingsToConsortiumsAssignedToUser("+userId);  
         return betBankingDao.findBetBankingsToConsortiumsAssignedToUser(userId);        
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<BetBankingBetLimit> findBetLimitsByBetBankingId(int betBankingId) throws FindBetLimitException {
+        return betBankingDao.findBetLimitsByBetBankingId(betBankingId);
     }
 }

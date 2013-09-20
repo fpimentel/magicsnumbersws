@@ -3,10 +3,12 @@ package com.exception.magicsnumbersws.endpoints.impl;
 import com.exception.magicsnumbersws.endpoints.LookupTablesEndpoint;
 import com.exception.magicsnumbersws.entities.Bet;
 import com.exception.magicsnumbersws.entities.BetBanking;
+import com.exception.magicsnumbersws.entities.BetBankingBetLimit;
 import com.exception.magicsnumbersws.entities.Category;
 import com.exception.magicsnumbersws.entities.Consortium;
 import com.exception.magicsnumbersws.entities.Status;
 import com.exception.magicsnumbersws.exception.FindBetException;
+import com.exception.magicsnumbersws.exception.FindBetLimitException;
 import com.exception.magicsnumbersws.exception.SaveConsortiumDataException;
 import com.exception.magicsnumbersws.exception.SearchAllBetBankingException;
 import com.exception.magicsnumbersws.exception.SearchAllConsortiumException;
@@ -123,5 +125,10 @@ public class LookupTablesEndpointImpl implements LookupTablesEndpoint {
     public List<Bet> findActiveBets() throws FindBetException {
         logger.info("init - LookupTablesEndpointImpl.findActiveBets");        
         return betService.findActiveBets();
+    }
+
+    @Override
+    public List<BetBankingBetLimit> findBetLimitsByBetBankingId(int betBankingId) throws FindBetLimitException {
+        return betBankingService.findBetLimitsByBetBankingId(betBankingId);
     }
 }

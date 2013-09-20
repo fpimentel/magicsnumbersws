@@ -2,10 +2,12 @@ package com.exception.magicsnumbersws.endpoints;
 
 import com.exception.magicsnumbersws.entities.Bet;
 import com.exception.magicsnumbersws.entities.BetBanking;
+import com.exception.magicsnumbersws.entities.BetBankingBetLimit;
 import com.exception.magicsnumbersws.entities.Category;
 import com.exception.magicsnumbersws.entities.Consortium;
 import com.exception.magicsnumbersws.entities.Status;
 import com.exception.magicsnumbersws.exception.FindBetException;
+import com.exception.magicsnumbersws.exception.FindBetLimitException;
 import com.exception.magicsnumbersws.exception.SaveConsortiumDataException;
 import com.exception.magicsnumbersws.exception.SearchAllBetBankingException;
 import com.exception.magicsnumbersws.exception.SearchAllConsortiumException;
@@ -18,6 +20,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -108,6 +111,18 @@ public interface LookupTablesEndpoint {
     @Path("/bet/active/")
     @Produces(MediaType.APPLICATION_JSON)
     public List<Bet> findActiveBets() throws FindBetException;
+    
+    /**
+     * *
+     * Obtiene las jugadas con sus limites    
+     * @param betBankingId
+     * @return List<BetBankingBetLimit>
+     * @throws FindBetLimitException
+     */    
+    @GET
+    @Path("/betBanking/betLimitsByBetBankingId/{betBankingId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<BetBankingBetLimit> findBetLimitsByBetBankingId(@PathParam("betBankingId") int betBankingId) throws FindBetLimitException;
 
     @POST
     @Path(value = "/consortium/saveAll")

@@ -1,8 +1,8 @@
 package com.exception.magicsnumbersws.dao;
-
 import com.exception.magicsnumbersws.entities.BetBanking;
+import com.exception.magicsnumbersws.entities.BetBankingBetLimit;
 import com.exception.magicsnumbersws.entities.Consortium;
-import com.exception.magicsnumbersws.entities.User;
+import com.exception.magicsnumbersws.exception.FindBetLimitException;
 import com.exception.magicsnumbersws.exception.SearchAllBetBankingException;
 import java.util.List;
 import org.springframework.transaction.annotation.Propagation;
@@ -21,6 +21,8 @@ public interface BetBankingDao {
 
     public void delete(int betBankingId);
 
+    public List<BetBankingBetLimit> findBetLimitsByBetBankingId(int betBankingId) throws FindBetLimitException;
+    
     @Transactional(readOnly = true, propagation = Propagation.REQUIRES_NEW)
     public BetBanking findById(int id);
 

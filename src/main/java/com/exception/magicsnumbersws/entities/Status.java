@@ -29,7 +29,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @Entity
 @Table(name = "STATUS")
 @XmlRootElement
-public class Status implements Serializable {    
+public class Status implements Serializable {   
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -44,9 +44,6 @@ public class Status implements Serializable {
     @JoinColumn(name = "STATUS_TYPE_ID", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private StatusType statusTypeId;
-
-   
-    
 
     public Status() {
     }
@@ -106,12 +103,8 @@ public class Status implements Serializable {
         return true;
     }
 
-
-
-
     @Override
     public String toString() {
         return "com.exception.magicsnumbersws.entities.Status[ id=" + id + " ]";
     }
-    
 }

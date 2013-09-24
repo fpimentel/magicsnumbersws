@@ -60,5 +60,5 @@ public interface BetBankingService {
      * @throws FindBetLimitException
      */
     @Transactional(readOnly = true)
-    public List<BetBankingBetLimit> findBetLimitsByBetBankingId(int betBankingId) throws FindBetLimitException;
+    public List<BetBankingBetLimit> findBetLimitsByBetBankingId(int betBankingId) throws FindBetLimitException;        
 }

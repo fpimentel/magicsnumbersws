@@ -1,13 +1,11 @@
-
 package com.exception.magicsnumbersws.entities;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -24,15 +22,21 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Entity
 @Table(name = "BET_BANKING_BET_LIMIT")
 @XmlRootElement
-public class BetBankingBetLimit implements Serializable {
-    private static final long serialVersionUID = 1L;
-    @EmbeddedId
-    protected BetBankingBetLimitPK betBankingBetLimitPK;
+public class BetBankingBetLimit implements Serializable, Comparable<BetBankingBetLimit> {
+
+    @Id
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "ID")
+    private Integer id;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Basic(optional = false)
     @NotNull
     @Column(name = "AMOUNT_LIMIT")
-    private BigDecimal amountLimit;
+    private double amountLimit;
+    private static final long serialVersionUID = 1L;
+    //@EmbeddedId
+    //protected BetBankingBetLimitPK betBankingBetLimitPK;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 50)
@@ -53,34 +57,32 @@ public class BetBankingBetLimit implements Serializable {
     public BetBankingBetLimit() {
     }
 
-    public BetBankingBetLimit(BetBankingBetLimitPK betBankingBetLimitPK) {
-        this.betBankingBetLimitPK = betBankingBetLimitPK;
-    }
-
-    public BetBankingBetLimit(BetBankingBetLimitPK betBankingBetLimitPK, BigDecimal amountLimit, String creationUser, Date creationDate) {
-        this.betBankingBetLimitPK = betBankingBetLimitPK;
+    /*public BetBankingBetLimit(BetBankingBetLimitPK betBankingBetLimitPK) {
+     this.betBankingBetLimitPK = betBankingBetLimitPK;
+     }*/
+    public BetBankingBetLimit(BetBankingBetLimitPK betBankingBetLimitPK, double amountLimit, String creationUser, Date creationDate) {
+        // this.betBankingBetLimitPK = betBankingBetLimitPK;
         this.amountLimit = amountLimit;
         this.creationUser = creationUser;
         this.creationDate = creationDate;
     }
 
-    public BetBankingBetLimit(int betId, int betbankingId) {
-        this.betBankingBetLimitPK = new BetBankingBetLimitPK(betId, betbankingId);
-    }
+    /*public BetBankingBetLimit(int betId, int betbankingId) {
+     this.betBankingBetLimitPK = new BetBankingBetLimitPK(betId, betbankingId);
+     }
 
-    public BetBankingBetLimitPK getBetBankingBetLimitPK() {
-        return betBankingBetLimitPK;
-    }
+     public BetBankingBetLimitPK getBetBankingBetLimitPK() {
+     return betBankingBetLimitPK;
+     }
 
-    public void setBetBankingBetLimitPK(BetBankingBetLimitPK betBankingBetLimitPK) {
-        this.betBankingBetLimitPK = betBankingBetLimitPK;
-    }
-
-    public BigDecimal getAmountLimit() {
+     public void setBetBankingBetLimitPK(BetBankingBetLimitPK betBankingBetLimitPK) {
+     this.betBankingBetLimitPK = betBankingBetLimitPK;
+     }*/
+    public double getAmountLimit() {
         return amountLimit;
     }
 
-    public void setAmountLimit(BigDecimal amountLimit) {
+    public void setAmountLimit(double amountLimit) {
         this.amountLimit = amountLimit;
     }
 
@@ -117,9 +119,31 @@ public class BetBankingBetLimit implements Serializable {
     }
 
     @Override
+    public String toString() {
+        return "com.exception.magicsnumbersws.entities.BetBankingBetLimit[ betBankingBetLimitPK=" + " ]";
+    }
+
+    public BetBankingBetLimit(Integer id) {
+        this.id = id;
+    }
+
+    public BetBankingBetLimit(Integer id, double amountLimit) {
+        this.id = id;
+        this.amountLimit = amountLimit;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    @Override
     public int hashCode() {
         int hash = 0;
-        hash += (betBankingBetLimitPK != null ? betBankingBetLimitPK.hashCode() : 0);
+        hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
 
@@ -130,15 +154,14 @@ public class BetBankingBetLimit implements Serializable {
             return false;
         }
         BetBankingBetLimit other = (BetBankingBetLimit) object;
-        if ((this.betBankingBetLimitPK == null && other.betBankingBetLimitPK != null) || (this.betBankingBetLimitPK != null && !this.betBankingBetLimitPK.equals(other.betBankingBetLimitPK))) {
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
         return true;
     }
 
     @Override
-    public String toString() {
-        return "com.exception.magicsnumbersws.entities.BetBankingBetLimit[ betBankingBetLimitPK=" + betBankingBetLimitPK + " ]";
+    public int compareTo(BetBankingBetLimit that) {
+        return this.id - that.id;
     }
-    
 }

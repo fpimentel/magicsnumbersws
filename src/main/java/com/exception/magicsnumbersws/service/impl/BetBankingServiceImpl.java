@@ -1,4 +1,5 @@
 package com.exception.magicsnumbersws.service.impl;
+
 import com.exception.magicsnumbersws.dao.BetBankingDao;
 import com.exception.magicsnumbersws.entities.BetBanking;
 import com.exception.magicsnumbersws.entities.BetBankingBetLimit;
@@ -23,7 +24,6 @@ public class BetBankingServiceImpl implements BetBankingService {
     @Autowired
     private BetBankingDao betBankingDao;
     private static final Logger LOG = Logger.getLogger(BetBankingServiceImpl.class.getName());
-    
 
     public BetBankingServiceImpl() {
     }
@@ -52,7 +52,7 @@ public class BetBankingServiceImpl implements BetBankingService {
 
     @Override
     public BetBanking findById(int id) {
-       return betBankingDao.findById(id);
+        return betBankingDao.findById(id);
     }
 
     @Override
@@ -80,7 +80,6 @@ public class BetBankingServiceImpl implements BetBankingService {
         return betBankingDao.findAll();
     }
 
-    
     @Override
     public List<BetBanking> findByUserId(int userId) throws SearchAllBetBankingException {
         return betBankingDao.findByUserId(userId);
@@ -88,8 +87,8 @@ public class BetBankingServiceImpl implements BetBankingService {
 
     @Override
     public List<BetBanking> findBetBankingsToConsortiumsAssignedToUser(int userId) throws SearchAllBetBankingException {
-        LOG.info("init - BetBankingServiceImpl.findBetBankingsToConsortiumsAssignedToUser("+userId);  
-        return betBankingDao.findBetBankingsToConsortiumsAssignedToUser(userId);        
+        LOG.info("init - BetBankingServiceImpl.findBetBankingsToConsortiumsAssignedToUser(" + userId);
+        return betBankingDao.findBetBankingsToConsortiumsAssignedToUser(userId);
     }
 
     @Transactional(readOnly = true)

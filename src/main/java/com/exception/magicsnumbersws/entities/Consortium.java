@@ -34,7 +34,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @Entity
 @Table(name = "CONSORTIUMS")
 @XmlRootElement
-public class Consortium implements Serializable, Comparable<Consortium>{
+public class Consortium implements Serializable, Comparable<Consortium>{    
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

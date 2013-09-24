@@ -188,17 +188,17 @@ public class BetBankingDaoImpl implements BetBankingDao {
                 .createCriteria(BetBankingBetLimit.class)
                 .setFetchMode("bet", FetchMode.JOIN)
                 .add(Restrictions.eq("betBanking.id", betBankingId)).list();
-        
+
         //Quitamos del json los datos innecesarios
-        for(BetBankingBetLimit betLimit : betLimits){
-            betLimit.setBetBankingBetLimitPK(null);
+        for (BetBankingBetLimit betLimit : betLimits) {           
             betLimit.getBet().setBetType(null);
             betLimit.getBet().setCreationDate(null);
-            betLimit.getBet().setCreationUser(null);            
+            betLimit.getBet().setCreationUser(null);
             betLimit.setCreationDate(null);
             betLimit.setCreationUser(null);
             betLimit.setBetBanking(null);
         }
         return betLimits;
     }
+   
 }

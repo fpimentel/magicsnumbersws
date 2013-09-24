@@ -51,8 +51,10 @@ public interface BetBankingDao {
      * @throws SearchAllBetBankingException
      */
     public List<BetBanking> findBetBankingsToConsortiumsAssignedToUser(int userId) throws SearchAllBetBankingException;
-
+    
+    
     public void deleteAssigned(int consortiumIdToDelete);
 
     public void assingConsortium(Consortium cons);
+        
 }

@@ -111,14 +111,15 @@ public interface LookupTablesEndpoint {
     @Path("/bet/active/")
     @Produces(MediaType.APPLICATION_JSON)
     public List<Bet> findActiveBets() throws FindBetException;
-    
+
     /**
      * *
-     * Obtiene las jugadas con sus limites    
+     * Obtiene las jugadas con sus limites
+     *
      * @param betBankingId
      * @return List<BetBankingBetLimit>
      * @throws FindBetLimitException
-     */    
+     */
     @GET
     @Path("/betBanking/betLimitsByBetBankingId/{betBankingId}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -135,4 +136,5 @@ public interface LookupTablesEndpoint {
     @Consumes("application/json")
     @Produces(value = MediaType.APPLICATION_JSON)
     void saveConsortiumData(Consortium consortium) throws SaveConsortiumDataException;
+
 }

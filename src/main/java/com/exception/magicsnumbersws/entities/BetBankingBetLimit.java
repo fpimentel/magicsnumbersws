@@ -24,6 +24,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class BetBankingBetLimit implements Serializable, Comparable<BetBankingBetLimit> {
 
+    private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
     @NotNull
@@ -34,7 +35,10 @@ public class BetBankingBetLimit implements Serializable, Comparable<BetBankingBe
     @NotNull
     @Column(name = "AMOUNT_LIMIT")
     private double amountLimit;
-    private static final long serialVersionUID = 1L;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "COMMISSION")
+    private int commission;
     //@EmbeddedId
     //protected BetBankingBetLimitPK betBankingBetLimitPK;
     @Basic(optional = false)
@@ -140,6 +144,14 @@ public class BetBankingBetLimit implements Serializable, Comparable<BetBankingBe
         this.id = id;
     }
 
+    public int getCommission() {
+        return commission;
+    }
+
+    public void setCommission(int commission) {
+        this.commission = commission;
+    }   
+    
     @Override
     public int hashCode() {
         int hash = 0;

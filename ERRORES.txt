@@ -1,4 +1,3 @@
+1- Resolver inconveniente que aveces da, cuando se esta insertando jugada(nullpointerexception), esto es esporadico no se sabe exactamente cuando.
 1- Tube que poner scope session en el controlador de Consorcio, porque se perdia el valor de la variable editmode en los request.
 2- No me quiere capturar las exceptiones del lado cliente.
-3- Cuando me pongo en  modo edicion y luego quiero agregar un nuevo consorcio se ponen los datos en los campos.
-4- Cuando se editan valores la pantalla se pone lenta cargando los datos de los consorcios.

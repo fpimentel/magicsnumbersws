@@ -3,11 +3,14 @@ package com.exception.magicsnumbersws.endpoints;
 import com.exception.magicsnumbersws.entities.Bet;
 import com.exception.magicsnumbersws.entities.BetBanking;
 import com.exception.magicsnumbersws.entities.BetBankingBetLimit;
+import com.exception.magicsnumbersws.entities.BlockingNumberBetBanking;
 import com.exception.magicsnumbersws.entities.Category;
 import com.exception.magicsnumbersws.entities.Consortium;
 import com.exception.magicsnumbersws.entities.Status;
 import com.exception.magicsnumbersws.exception.FindBetException;
 import com.exception.magicsnumbersws.exception.FindBetLimitException;
+import com.exception.magicsnumbersws.exception.FindBlockingNumberException;
+import com.exception.magicsnumbersws.exception.SaveBetBankingInfoException;
 import com.exception.magicsnumbersws.exception.SaveConsortiumDataException;
 import com.exception.magicsnumbersws.exception.SearchAllBetBankingException;
 import com.exception.magicsnumbersws.exception.SearchAllConsortiumException;
@@ -20,7 +23,6 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -137,4 +139,15 @@ public interface LookupTablesEndpoint {
     @Produces(value = MediaType.APPLICATION_JSON)
     void saveConsortiumData(Consortium consortium) throws SaveConsortiumDataException;
 
+    
+    @GET
+    @Path("/betBanking/blockingNumbers/{betBankingId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<BlockingNumberBetBanking> findBlokingNumbersByBetBankingId(@PathParam("betBankingId") int betBankingId) throws FindBlockingNumberException;   
+    
+    @POST
+    @Path(value = "/betBanking/saveData")
+    @Consumes("application/json")
+    @Produces(value = MediaType.APPLICATION_JSON)
+    public void saveBetBankingInformation(BetBanking betBanking) throws SaveBetBankingInfoException;
 }

@@ -4,11 +4,14 @@ import com.exception.magicsnumbersws.endpoints.LookupTablesEndpoint;
 import com.exception.magicsnumbersws.entities.Bet;
 import com.exception.magicsnumbersws.entities.BetBanking;
 import com.exception.magicsnumbersws.entities.BetBankingBetLimit;
+import com.exception.magicsnumbersws.entities.BlockingNumberBetBanking;
 import com.exception.magicsnumbersws.entities.Category;
 import com.exception.magicsnumbersws.entities.Consortium;
 import com.exception.magicsnumbersws.entities.Status;
 import com.exception.magicsnumbersws.exception.FindBetException;
 import com.exception.magicsnumbersws.exception.FindBetLimitException;
+import com.exception.magicsnumbersws.exception.FindBlockingNumberException;
+import com.exception.magicsnumbersws.exception.SaveBetBankingInfoException;
 import com.exception.magicsnumbersws.exception.SaveConsortiumDataException;
 import com.exception.magicsnumbersws.exception.SearchAllBetBankingException;
 import com.exception.magicsnumbersws.exception.SearchAllConsortiumException;
@@ -130,5 +133,15 @@ public class LookupTablesEndpointImpl implements LookupTablesEndpoint {
     @Override
     public List<BetBankingBetLimit> findBetLimitsByBetBankingId(int betBankingId) throws FindBetLimitException {
         return betBankingService.findBetLimitsByBetBankingId(betBankingId);
+    }
+
+    @Override
+    public List<BlockingNumberBetBanking> findBlokingNumbersByBetBankingId(int betBankingId) throws FindBlockingNumberException {
+       return betBankingService.findBlokingNumbersByBetBankingId(betBankingId);
+    }
+
+    @Override
+    public void saveBetBankingInformation(BetBanking betBanking) throws SaveBetBankingInfoException {
+        betBankingService.saveBetBankingInformation(betBanking);
     }
 }

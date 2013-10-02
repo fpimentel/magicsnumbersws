@@ -1,8 +1,10 @@
 package com.exception.magicsnumbersws.dao;
 import com.exception.magicsnumbersws.entities.BetBanking;
 import com.exception.magicsnumbersws.entities.BetBankingBetLimit;
+import com.exception.magicsnumbersws.entities.BlockingNumberBetBanking;
 import com.exception.magicsnumbersws.entities.Consortium;
 import com.exception.magicsnumbersws.exception.FindBetLimitException;
+import com.exception.magicsnumbersws.exception.FindBlockingNumberException;
 import com.exception.magicsnumbersws.exception.SearchAllBetBankingException;
 import java.util.List;
 import org.springframework.transaction.annotation.Propagation;
@@ -56,5 +58,14 @@ public interface BetBankingDao {
     public void deleteAssigned(int consortiumIdToDelete);
 
     public void assingConsortium(Consortium cons);
-        
+    
+    /**
+     * *
+     * Obtiene los numeros bloqueados de una banca.
+     *
+     * @param betBankingId
+     * @return List<BlockingNumberBetBanking>
+     * @throws FindBlockingNumberException
+     */
+    public List<BlockingNumberBetBanking> findBlokingNumbersByBetBankingId(int betBankingId) throws FindBlockingNumberException;
 }

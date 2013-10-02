@@ -2,7 +2,10 @@ package com.exception.magicsnumbersws.service;
 
 import com.exception.magicsnumbersws.entities.BetBanking;
 import com.exception.magicsnumbersws.entities.BetBankingBetLimit;
+import com.exception.magicsnumbersws.entities.BlockingNumberBetBanking;
 import com.exception.magicsnumbersws.exception.FindBetLimitException;
+import com.exception.magicsnumbersws.exception.FindBlockingNumberException;
+import com.exception.magicsnumbersws.exception.SaveBetBankingInfoException;
 import com.exception.magicsnumbersws.exception.SearchAllBetBankingException;
 import java.util.List;
 import org.springframework.stereotype.Service;
@@ -61,4 +64,25 @@ public interface BetBankingService {
      */
     @Transactional(readOnly = true)
     public List<BetBankingBetLimit> findBetLimitsByBetBankingId(int betBankingId) throws FindBetLimitException;        
+    
+    
+    /**
+     * *
+     * Obtiene los numeros bloqueados de una banca.
+     *
+     * @param betBankingId
+     * @return List<BlockingNumberBetBanking>
+     * @throws FindBlockingNumberException
+     */
+    @Transactional(readOnly = true)
+    public List<BlockingNumberBetBanking> findBlokingNumbersByBetBankingId(int betBankingId) throws FindBlockingNumberException;
+    
+    /**
+     * *
+     * Guarda la informacion del objeto BetBanking.     
+     * @param betBanking     
+     * @throws SaveBetBankingInfoException
+     */    
+    public void saveBetBankingInformation(BetBanking betBanking) throws SaveBetBankingInfoException;
+    
 }

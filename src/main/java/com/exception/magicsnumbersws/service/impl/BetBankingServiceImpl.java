@@ -3,11 +3,15 @@ package com.exception.magicsnumbersws.service.impl;
 import com.exception.magicsnumbersws.dao.BetBankingDao;
 import com.exception.magicsnumbersws.entities.BetBanking;
 import com.exception.magicsnumbersws.entities.BetBankingBetLimit;
+import com.exception.magicsnumbersws.entities.BlockingNumberBetBanking;
 import com.exception.magicsnumbersws.exception.FindBetLimitException;
+import com.exception.magicsnumbersws.exception.FindBlockingNumberException;
+import com.exception.magicsnumbersws.exception.SaveBetBankingInfoException;
 import com.exception.magicsnumbersws.exception.SearchAllBetBankingException;
 import com.exception.magicsnumbersws.service.BetBankingService;
 import java.util.List;
 import java.util.logging.Logger;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -95,5 +99,26 @@ public class BetBankingServiceImpl implements BetBankingService {
     @Override
     public List<BetBankingBetLimit> findBetLimitsByBetBankingId(int betBankingId) throws FindBetLimitException {
         return betBankingDao.findBetLimitsByBetBankingId(betBankingId);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<BlockingNumberBetBanking> findBlokingNumbersByBetBankingId(int betBankingId) throws FindBlockingNumberException {
+        LOG.info("init - BetBankingServiceImpl.findBlokingNumbersByBetBankingId(" + betBankingId);
+        return betBankingDao.findBlokingNumbersByBetBankingId(betBankingId);
+    }
+
+    @Override
+    public void saveBetBankingInformation(BetBanking betBanking) throws SaveBetBankingInfoException {
+        LOG.info("init - BetBankingServiceImpl.saveBetBankingInformation");
+        BetBanking banking = betBankingDao.findById(betBanking.getId());
+        if(banking != null){//update
+            BeanUtils.copyProperties(betBanking, banking);
+            betBankingDao.update(banking);
+        }
+        else{//Adding
+           betBankingDao.add(betBanking);
+        }
+        LOG.info("finish - BetBankingServiceImpl.saveBetBankingInformation");
     }
 }

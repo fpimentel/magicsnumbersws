@@ -1,16 +1,14 @@
-
 package com.exception.magicsnumbersws.entities;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
-import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -18,45 +16,31 @@ import javax.xml.bind.annotation.XmlRootElement;
 /**
  *
  * @author fpimentel
+ * @since 01-Sept-2013
  */
 @Entity
 @Table(name = "BLOCKING_NUMBERS_BET_BANKINGS")
 @XmlRootElement
-public class BlockingNumberBetBanking implements Serializable {
+public class BlockingNumberBetBanking implements Serializable, Comparable<BlockingNumberBetBanking>{
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
     @NotNull
     @Column(name = "ID")
     private Integer id;
+    @JoinColumn(name = "BET_BANKING_ID", referencedColumnName = "ID")
+    @ManyToOne(fetch = FetchType.EAGER, optional = true)
+    private BetBanking betBanking;
+    @Basic(optional = false)
+    @NotNull    
+    @Column(name = "NUMBER")
+    private int number;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 50)
     @Column(name = "CREATION_USER")
     private String creationUser;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "LOTTERY_ID")
-    private int lotteryId;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "BET_DAY")
-    private int betDay;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 100)
-    @Column(name = "NUMBERS")
-    private String numbers;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "AMOUNT_LIMIT")
-    private BigDecimal amountLimit;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "INSERTION_DATE")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date insertionDate;
 
     public BlockingNumberBetBanking() {
     }
@@ -65,15 +49,13 @@ public class BlockingNumberBetBanking implements Serializable {
         this.id = id;
     }
 
-    public BlockingNumberBetBanking(Integer id, String creationUser, int lotteryId, int betDay, String numbers, BigDecimal amountLimit, Date insertionDate) {
+    public BlockingNumberBetBanking(Integer id, BetBanking betBanking, int number, String creationUser) {
         this.id = id;
+        this.betBanking = betBanking;
+        this.number = number;
         this.creationUser = creationUser;
-        this.lotteryId = lotteryId;
-        this.betDay = betDay;
-        this.numbers = numbers;
-        this.amountLimit = amountLimit;
-        this.insertionDate = insertionDate;
     }
+  
 
     public Integer getId() {
         return id;
@@ -81,6 +63,14 @@ public class BlockingNumberBetBanking implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public BetBanking getBetBanking() {
+        return betBanking;
+    }
+
+    public void setBetBanking(BetBanking betBanking) {
+        this.betBanking = betBanking;
     }
 
     public String getCreationUser() {
@@ -91,45 +81,14 @@ public class BlockingNumberBetBanking implements Serializable {
         this.creationUser = creationUser;
     }
 
-    public int getLotteryId() {
-        return lotteryId;
+    public int getNumber() {
+        return number;
     }
 
-    public void setLotteryId(int lotteryId) {
-        this.lotteryId = lotteryId;
+    public void setNumber(int number) {
+        this.number = number;
     }
 
-    public int getBetDay() {
-        return betDay;
-    }
-
-    public void setBetDay(int betDay) {
-        this.betDay = betDay;
-    }
-
-    public String getNumbers() {
-        return numbers;
-    }
-
-    public void setNumbers(String numbers) {
-        this.numbers = numbers;
-    }
-
-    public BigDecimal getAmountLimit() {
-        return amountLimit;
-    }
-
-    public void setAmountLimit(BigDecimal amountLimit) {
-        this.amountLimit = amountLimit;
-    }
-
-    public Date getInsertionDate() {
-        return insertionDate;
-    }
-
-    public void setInsertionDate(Date insertionDate) {
-        this.insertionDate = insertionDate;
-    }
 
     @Override
     public int hashCode() {
@@ -153,11 +112,13 @@ public class BlockingNumberBetBanking implements Serializable {
         return true;
     }
 
-
-
     @Override
     public String toString() {
         return "com.exception.magicsnumbersws.entities.BlockingNumberBetBanking[ id=" + id + " ]";
     }
-    
+
+    @Override
+    public int compareTo(BlockingNumberBetBanking that) {
+        return this.id - that.id;
+    }
 }

@@ -3,9 +3,11 @@ package com.exception.magicsnumbersws.dao.impl;
 import com.exception.magicsnumbersws.dao.BetBankingDao;
 import com.exception.magicsnumbersws.entities.BetBanking;
 import com.exception.magicsnumbersws.entities.BetBankingBetLimit;
+import com.exception.magicsnumbersws.entities.BlockingNumberBetBanking;
 import com.exception.magicsnumbersws.entities.Consortium;
 import com.exception.magicsnumbersws.entities.User;
 import com.exception.magicsnumbersws.exception.FindBetLimitException;
+import com.exception.magicsnumbersws.exception.FindBlockingNumberException;
 import com.exception.magicsnumbersws.exception.SearchAllBetBankingException;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -190,7 +192,7 @@ public class BetBankingDaoImpl implements BetBankingDao {
                 .add(Restrictions.eq("betBanking.id", betBankingId)).list();
 
         //Quitamos del json los datos innecesarios
-        for (BetBankingBetLimit betLimit : betLimits) {           
+        for (BetBankingBetLimit betLimit : betLimits) {
             betLimit.getBet().setBetType(null);
             betLimit.getBet().setCreationDate(null);
             betLimit.getBet().setCreationUser(null);
@@ -200,5 +202,18 @@ public class BetBankingDaoImpl implements BetBankingDao {
         }
         return betLimits;
     }
-   
+
+    @Override
+    public List<BlockingNumberBetBanking> findBlokingNumbersByBetBankingId(int betBankingId) throws FindBlockingNumberException {
+        LOG.info("init - BetBankingDaoImpl.findBlokingNumbersByBetBankingId: " + betBankingId);
+        List<BlockingNumberBetBanking> blockingNumbers = sessionFactory
+                .getCurrentSession()
+                .createCriteria(BlockingNumberBetBanking.class)                
+                .add(Restrictions.eq("betBanking.id", betBankingId)).list();
+        
+        for(BlockingNumberBetBanking blockNumber : blockingNumbers){
+            blockNumber.setBetBanking(null);            
+        }
+        return blockingNumbers;
+    }
 }

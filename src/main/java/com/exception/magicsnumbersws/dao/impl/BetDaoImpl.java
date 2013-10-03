@@ -65,7 +65,16 @@ public class BetDaoImpl implements BetDao {
 
      @Override
     public Bet findById(int id) {
-        return (Bet) sessionFactory.getCurrentSession().get(Bet.class, id);
+          
+        //return (Bet) sessionFactory.getCurrentSession().get(Bet.class, id);
+         Bet bet = (Bet) sessionFactory.getCurrentSession()
+                 .createCriteria(Bet.class)
+                 .setFetchMode("betType", FetchMode.JOIN)
+                 .setFetchMode("status", FetchMode.JOIN)
+                 .add(Restrictions.eq("id", id))
+                 .uniqueResult();
+         
+         return bet;        
     }    
 
   

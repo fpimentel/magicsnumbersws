@@ -55,10 +55,8 @@ public class BetBanking implements Serializable, Comparable<BetBanking> {
     @NotNull
     @Size(min = 1, max = 200)
     @Column(name = "CONTACT")
-    private String contact;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "CREATION_DATE")
+    private String contact;         
+    @Column(nullable = true,name = "CREATION_DATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date creationDate;
     @Basic(optional = false)

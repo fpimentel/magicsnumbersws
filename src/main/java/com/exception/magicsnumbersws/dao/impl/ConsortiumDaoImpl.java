@@ -8,6 +8,7 @@ import com.exception.magicsnumbersws.entities.User;
 import com.exception.magicsnumbersws.exception.SaveConsortiumDataException;
 import com.exception.magicsnumbersws.exception.SearchAllConsortiumException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import org.hibernate.FetchMode;
 import org.hibernate.SessionFactory;
@@ -157,6 +158,7 @@ public class ConsortiumDaoImpl implements ConsortiumDao {
                 //Por defecto, se asocia el nuevo consorcio al usuario que lo creo.
                 User user = userDao.findByUserName(consortium.getCreationUser());
                 consortium.getUsers().add(user);
+                consortium.setCreationDate(new Date());
                 add(consortium);
                 //Se asocian las bancas al consorcio creado.
                 betBankingDao.assingConsortium(consortium);

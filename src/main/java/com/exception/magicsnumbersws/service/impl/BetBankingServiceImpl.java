@@ -1,14 +1,19 @@
 package com.exception.magicsnumbersws.service.impl;
 
+import com.exception.magicsnumbersws.dao.BetBankingBetLimitDao;
 import com.exception.magicsnumbersws.dao.BetBankingDao;
+import com.exception.magicsnumbersws.dao.BetDao;
 import com.exception.magicsnumbersws.entities.BetBanking;
 import com.exception.magicsnumbersws.entities.BetBankingBetLimit;
 import com.exception.magicsnumbersws.entities.BlockingNumberBetBanking;
+import com.exception.magicsnumbersws.exception.DeleteBetBankingBetLimitException;
 import com.exception.magicsnumbersws.exception.FindBetLimitException;
 import com.exception.magicsnumbersws.exception.FindBlockingNumberException;
+import com.exception.magicsnumbersws.exception.SaveBetBankingBetLimitException;
 import com.exception.magicsnumbersws.exception.SaveBetBankingInfoException;
 import com.exception.magicsnumbersws.exception.SearchAllBetBankingException;
 import com.exception.magicsnumbersws.service.BetBankingService;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
 import org.springframework.beans.BeanUtils;
@@ -27,6 +32,11 @@ public class BetBankingServiceImpl implements BetBankingService {
 
     @Autowired
     private BetBankingDao betBankingDao;
+    @Autowired
+    private BetBankingBetLimitDao betBankingBetLimitDao;
+    @Autowired
+    private BetDao betDao;
+    
     private static final Logger LOG = Logger.getLogger(BetBankingServiceImpl.class.getName());
 
     public BetBankingServiceImpl() {
@@ -111,14 +121,37 @@ public class BetBankingServiceImpl implements BetBankingService {
     @Override
     public void saveBetBankingInformation(BetBanking betBanking) throws SaveBetBankingInfoException {
         LOG.info("init - BetBankingServiceImpl.saveBetBankingInformation");
-        BetBanking banking = betBankingDao.findById(betBanking.getId());
-        if(banking != null){//update
-            BeanUtils.copyProperties(betBanking, banking);
-            betBankingDao.update(banking);
-        }
-        else{//Adding
-           betBankingDao.add(betBanking);
+        if (betBanking != null) {
+            if (betBanking.getId() == null) {//Id null is for adding
+                betBanking.setCreationDate(new Date());
+                betBankingDao.add(betBanking);
+            } else {// Id with value is for editing
+                BetBanking banking = betBankingDao.findById(betBanking.getId());
+                BeanUtils.copyProperties(betBanking, banking);
+                betBankingDao.update(banking);
+            }
         }
         LOG.info("finish - BetBankingServiceImpl.saveBetBankingInformation");
+    }
+
+    @Override
+    public void saveBetBankingBetLimits(List<BetBankingBetLimit> betLimits) throws SaveBetBankingBetLimitException, FindBetLimitException, DeleteBetBankingBetLimitException {
+        LOG.info("init - BetBankingServiceImpl.saveBetBankingBetLimits");
+        //Se eliminan todas las jugadas asociadas a la banca.
+        deleteBetLimitsByBetBankingId(betLimits.get(0).getBetBanking().getId());
+        //Se insertan las jugadas enviadas como parametro.
+        //for (BetBankingBetLimit currBetLimit : betLimits) {
+          //  currBetLimit.setBet(betDao.findById(currBetLimit.getBet().getId()));
+            //betBankingBetLimitDao.add(currBetLimit);
+        //}
+        LOG.info("finish - BetBankingServiceImpl.saveBetBankingBetLimits");
+    }
+
+    @Override
+    public void deleteBetLimitsByBetBankingId(int betBankingId) throws DeleteBetBankingBetLimitException, FindBetLimitException {
+        List<BetBankingBetLimit> betLimits = betBankingDao.findBetLimitsByBetBankingId(betBankingId);
+        for (BetBankingBetLimit currBetLimit : betLimits) {
+            betBankingBetLimitDao.delete(currBetLimit.getId());
+        }
     }
 }

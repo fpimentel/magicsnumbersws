@@ -3,8 +3,10 @@ package com.exception.magicsnumbersws.service;
 import com.exception.magicsnumbersws.entities.BetBanking;
 import com.exception.magicsnumbersws.entities.BetBankingBetLimit;
 import com.exception.magicsnumbersws.entities.BlockingNumberBetBanking;
+import com.exception.magicsnumbersws.exception.DeleteBetBankingBetLimitException;
 import com.exception.magicsnumbersws.exception.FindBetLimitException;
 import com.exception.magicsnumbersws.exception.FindBlockingNumberException;
+import com.exception.magicsnumbersws.exception.SaveBetBankingBetLimitException;
 import com.exception.magicsnumbersws.exception.SaveBetBankingInfoException;
 import com.exception.magicsnumbersws.exception.SearchAllBetBankingException;
 import java.util.List;
@@ -85,4 +87,20 @@ public interface BetBankingService {
      */    
     public void saveBetBankingInformation(BetBanking betBanking) throws SaveBetBankingInfoException;
     
+    /**
+     * *
+     * Guarda la informacion de las jugadas asocciada a la banca.     
+     * @param betLimits     
+     * @throws SaveBetBankingInfoException
+     */    
+    public void saveBetBankingBetLimits(List<BetBankingBetLimit> betLimits) throws SaveBetBankingBetLimitException, FindBetLimitException, DeleteBetBankingBetLimitException;
+    
+    
+    /**
+     * *
+     * Elimina todas los betLimits asociados a una banca.
+     * @param betBankingId     
+     * @throws DeleteBetBankingBetLimitException,FindBetLimitException
+     */ 
+    public void deleteBetLimitsByBetBankingId(int betBankingId) throws DeleteBetBankingBetLimitException, FindBetLimitException;   
 }

@@ -76,8 +76,8 @@ public class Bet implements Serializable, Comparable<Bet> {
     @Column(name = "CREATION_DATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date creationDate;
-    @JoinColumn(name = "BETTYPE_ID", referencedColumnName = "ID")
-    @ManyToOne(optional = false)
+    @JoinColumn( name = "BETTYPE_ID", referencedColumnName = "ID")
+    @ManyToOne(fetch = FetchType.LAZY)
     private BetType betType;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "STATUS_ID", nullable = false)

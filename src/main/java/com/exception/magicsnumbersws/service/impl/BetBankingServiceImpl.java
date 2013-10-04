@@ -177,7 +177,7 @@ public class BetBankingServiceImpl implements BetBankingService {
         deleteBlockinNumberByBetBankingId(betBanking.getId());
         
         //Se insertan los numeros a bloquear enviados como parametro.
-        if (blockNumbers.get(0).getBetBanking() != null) {
+        if (blockNumbers.get(0).getCreationUser() != null) {
             for (BlockingNumberBetBanking currBlockingNumber : blockNumbers) {
                // BetBanking bet = betBankingDao.findById(currBlockingNumber.getBetBanking().getId());                                               
                 blockingNumberBetBankingDao.add(currBlockingNumber);                
@@ -188,9 +188,11 @@ public class BetBankingServiceImpl implements BetBankingService {
     
     @Override
     public void deleteBlockinNumberByBetBankingId(int betBankingId) throws DeleteBetBankingBetLimitException, FindBetLimitException, FindBlockingNumberException {
+        LOG.info("init - BetBankingServiceImpl.deleteBlockinNumberByBetBankingId");
         List<BlockingNumberBetBanking> blockingNumbers = findBlokingNumbersByBetBankingId(betBankingId);
         for (BlockingNumberBetBanking currBlockingNumber : blockingNumbers) {
             blockingNumberBetBankingDao.delete(currBlockingNumber.getId());
         }
+        LOG.info("finish - BetBankingServiceImpl.deleteBlockinNumberByBetBankingId");
     }
 }

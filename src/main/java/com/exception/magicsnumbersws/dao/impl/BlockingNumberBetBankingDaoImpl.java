@@ -1,10 +1,13 @@
 package com.exception.magicsnumbersws.dao.impl;
 
 import com.exception.magicsnumbersws.dao.BlockingNumberBetBankingDao;
+import com.exception.magicsnumbersws.entities.Bet;
 import com.exception.magicsnumbersws.entities.BetBankingBetLimit;
 import com.exception.magicsnumbersws.entities.BlockingNumberBetBanking;
 import java.util.logging.Logger;
+import org.hibernate.FetchMode;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -46,8 +49,13 @@ public class BlockingNumberBetBankingDaoImpl implements BlockingNumberBetBanking
     }
 
     @Override
-    public BlockingNumberBetBanking findById(int id) {
-        return (BlockingNumberBetBanking) sessionFactory.getCurrentSession().get(BlockingNumberBetBanking.class, id);
+    public BlockingNumberBetBanking findById(int id) {                
+        BlockingNumberBetBanking blockNumberEntity = (BlockingNumberBetBanking) sessionFactory.getCurrentSession()
+                 .createCriteria(BlockingNumberBetBanking.class)
+                 .setFetchMode("betBanking", FetchMode.JOIN)                 
+                 .add(Restrictions.eq("id", id))
+                 .uniqueResult();
+        return blockNumberEntity;
     }
 
     @Override

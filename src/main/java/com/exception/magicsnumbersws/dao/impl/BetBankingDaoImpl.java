@@ -205,16 +205,15 @@ public class BetBankingDaoImpl implements BetBankingDao {
     }
 
     @Override
+    @Transactional(readOnly = true,propagation = Propagation.REQUIRES_NEW )
     public List<BlockingNumberBetBanking> findBlokingNumbersByBetBankingId(int betBankingId) throws FindBlockingNumberException {
         LOG.info("init - BetBankingDaoImpl.findBlokingNumbersByBetBankingId: " + betBankingId);
         List<BlockingNumberBetBanking> blockingNumbers = sessionFactory
                 .getCurrentSession()
-                .createCriteria(BlockingNumberBetBanking.class)                
+                .createCriteria(BlockingNumberBetBanking.class)  
+                .setFetchMode("betBanking", FetchMode.JOIN)
                 .add(Restrictions.eq("betBanking.id", betBankingId)).list();
         
-        for(BlockingNumberBetBanking blockNumber : blockingNumbers){
-            blockNumber.setBetBanking(null);            
-        }
         return blockingNumbers;
     }
 }

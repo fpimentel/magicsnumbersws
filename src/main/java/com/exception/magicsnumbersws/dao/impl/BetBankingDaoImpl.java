@@ -20,6 +20,8 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -183,6 +185,7 @@ public class BetBankingDaoImpl implements BetBankingDao {
     }
 
     @Override
+    @Transactional(readOnly = true,propagation = Propagation.REQUIRES_NEW)
     public List<BetBankingBetLimit> findBetLimitsByBetBankingId(int betBankingId) throws FindBetLimitException {
         LOG.info("init - BetBankingDaoImpl.findBetLimitsByBetBankingId(" + betBankingId);
         List<BetBankingBetLimit> betLimits = sessionFactory
@@ -194,10 +197,8 @@ public class BetBankingDaoImpl implements BetBankingDao {
         //Quitamos del json los datos innecesarios
         for (BetBankingBetLimit betLimit : betLimits) {
             betLimit.getBet().setBetType(null);
-            betLimit.getBet().setCreationDate(null);
-            betLimit.getBet().setCreationUser(null);
-            betLimit.setCreationDate(null);
-            betLimit.setCreationUser(null);
+            betLimit.getBet().setCreationDate(null);            
+            betLimit.setCreationDate(null);            
             betLimit.setBetBanking(null);
         }
         return betLimits;

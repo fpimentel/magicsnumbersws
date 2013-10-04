@@ -36,43 +36,25 @@ public class Bet implements Serializable, Comparable<Bet> {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "ID")
     private Integer id;
-    @Basic(optional = false)
-    @NotNull
     @Size(min = 1, max = 100)
     @Column(name = "NAME")
     private String name;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "LOTTERY_NUMBER_QTY")
     private int lotteryNumberQty;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "MINIMUM_BET_AMOUNT")
     private BigDecimal minimumBetAmount;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "UNIT_MULTIPLIER")
     private int unitMultiplier;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "NUMBER_QTY_TO_PLAY")
     private int numberQtyToPlay;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "NUMBER_OF_WAY_TO_WIN")
     private int numberOfWayToWin;
-    @Basic(optional = false)
-    @NotNull
     @Size(min = 1, max = 50)
     @Column(name = "CREATION_USER")
     private String creationUser;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "CREATION_DATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date creationDate;

@@ -21,6 +21,8 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import com.exception.magicsnumbersws.constants.Status;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 /**
  *
  * @author fpimentel
@@ -63,7 +65,7 @@ public class BetDaoImpl implements BetDao {
         sessionFactory.getCurrentSession().delete(findById(betId));
     }
 
-     @Override
+    @Override
     public Bet findById(int id) {
           
         //return (Bet) sessionFactory.getCurrentSession().get(Bet.class, id);
@@ -84,6 +86,8 @@ public class BetDaoImpl implements BetDao {
         LOG.info("init - findActiveBets");  
         return (List<Bet>) sessionFactory.getCurrentSession()
                 .createCriteria(Bet.class)
+                .setFetchMode("betType", FetchMode.JOIN)
+                .setFetchMode("status", FetchMode.JOIN)
                 .add(Restrictions.eq("status.id", Status.ACTIVE.getId()))
                 .list();
     }

@@ -14,6 +14,7 @@ import com.exception.magicsnumbersws.exception.FindBetLimitException;
 import com.exception.magicsnumbersws.exception.FindBlockingNumberException;
 import com.exception.magicsnumbersws.exception.SaveBetBankingBetLimitException;
 import com.exception.magicsnumbersws.exception.SaveBetBankingInfoException;
+import com.exception.magicsnumbersws.exception.SaveBlockingNumberException;
 import com.exception.magicsnumbersws.exception.SaveConsortiumDataException;
 import com.exception.magicsnumbersws.exception.SearchAllBetBankingException;
 import com.exception.magicsnumbersws.exception.SearchAllConsortiumException;
@@ -46,12 +47,11 @@ public class LookupTablesEndpointImpl implements LookupTablesEndpoint {
     @Autowired
     private ConsortiumService consortiumService;
     @Autowired
-    private BetBankingService betBankingService;    
+    private BetBankingService betBankingService;
     @Autowired
     private BetService betService;
-    
     private Logger logger = Logger.getLogger(LookupTablesEndpointImpl.class.getName());
-    
+
     @Override
     public List<Status> getAllStatus() {
         logger.log(Level.INFO, "init - getAllStatus()");
@@ -68,7 +68,7 @@ public class LookupTablesEndpointImpl implements LookupTablesEndpoint {
     public List<Consortium> findConsortiumByUserId(int userId) throws SearchAllConsortiumException {
         return consortiumService.findByUserId(userId);
     }
-    
+
     @Override
     public void saveConsortiumsData(List<Consortium> consortium) throws SaveConsortiumDataException {
         consortiumService.saveConsortiumsData(consortium);
@@ -122,13 +122,13 @@ public class LookupTablesEndpointImpl implements LookupTablesEndpoint {
 
     @Override
     public List<BetBanking> findBetBankingsToConsortiumsAssignedToUser(int userId) throws SearchAllBetBankingException {
-        logger.info("init - LookupTablesEndpointImpl.findBetBankingsToConsortiumsAssignedToUser("+userId);        
+        logger.info("init - LookupTablesEndpointImpl.findBetBankingsToConsortiumsAssignedToUser(" + userId);
         return betBankingService.findBetBankingsToConsortiumsAssignedToUser(userId);
     }
 
     @Override
     public List<Bet> findActiveBets() throws FindBetException {
-        logger.info("init - LookupTablesEndpointImpl.findActiveBets");        
+        logger.info("init - LookupTablesEndpointImpl.findActiveBets");
         return betService.findActiveBets();
     }
 
@@ -139,7 +139,7 @@ public class LookupTablesEndpointImpl implements LookupTablesEndpoint {
 
     @Override
     public List<BlockingNumberBetBanking> findBlokingNumbersByBetBankingId(int betBankingId) throws FindBlockingNumberException {
-       return betBankingService.findBlokingNumbersByBetBankingId(betBankingId);
+        return betBankingService.findBlokingNumbersByBetBankingId(betBankingId);
     }
 
     @Override
@@ -150,5 +150,11 @@ public class LookupTablesEndpointImpl implements LookupTablesEndpoint {
     @Override
     public void saveBetBankingBetLimitInformation(List<BetBankingBetLimit> betLimits) throws SaveBetBankingBetLimitException, FindBetLimitException, DeleteBetBankingBetLimitException {
         betBankingService.saveBetBankingBetLimits(betLimits);
+    }
+
+    @Override
+    public void saveBlockingNumberInformation(List<BlockingNumberBetBanking> blockingNumbers) throws SaveBlockingNumberException,DeleteBetBankingBetLimitException,FindBetLimitException,FindBlockingNumberException{
+        betBankingService.saveBlockingNumbers(blockingNumbers);
+
     }
 }

@@ -8,6 +8,7 @@ import com.exception.magicsnumbersws.exception.FindBetLimitException;
 import com.exception.magicsnumbersws.exception.FindBlockingNumberException;
 import com.exception.magicsnumbersws.exception.SaveBetBankingBetLimitException;
 import com.exception.magicsnumbersws.exception.SaveBetBankingInfoException;
+import com.exception.magicsnumbersws.exception.SaveBlockingNumberException;
 import com.exception.magicsnumbersws.exception.SearchAllBetBankingException;
 import java.util.List;
 import org.springframework.stereotype.Service;
@@ -103,4 +104,21 @@ public interface BetBankingService {
      * @throws DeleteBetBankingBetLimitException,FindBetLimitException
      */ 
     public void deleteBetLimitsByBetBankingId(int betBankingId) throws DeleteBetBankingBetLimitException, FindBetLimitException;   
+    
+    /**
+     * *
+     * Guarda la informacion de los numeros que se van a bloquear a la banca.     
+     * @param betLimits     
+     * @throws SaveBetBankingInfoException
+     */    
+    public void saveBlockingNumbers(List<BlockingNumberBetBanking> blockNumbers) throws SaveBlockingNumberException,DeleteBetBankingBetLimitException,FindBetLimitException,FindBlockingNumberException;
+    
+    /**
+     * *
+     * Elimina todas los numeros bloqueados en una banca.
+     * @param betBankingId     
+     * @throws DeleteBetBankingBetLimitException,FindBlockingNumberException
+     */ 
+    public void deleteBlockinNumberByBetBankingId(int betBankingId) throws DeleteBetBankingBetLimitException, FindBetLimitException, FindBlockingNumberException;
+    
 }

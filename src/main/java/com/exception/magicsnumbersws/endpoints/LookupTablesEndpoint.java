@@ -13,6 +13,7 @@ import com.exception.magicsnumbersws.exception.FindBetLimitException;
 import com.exception.magicsnumbersws.exception.FindBlockingNumberException;
 import com.exception.magicsnumbersws.exception.SaveBetBankingBetLimitException;
 import com.exception.magicsnumbersws.exception.SaveBetBankingInfoException;
+import com.exception.magicsnumbersws.exception.SaveBlockingNumberException;
 import com.exception.magicsnumbersws.exception.SaveConsortiumDataException;
 import com.exception.magicsnumbersws.exception.SearchAllBetBankingException;
 import com.exception.magicsnumbersws.exception.SearchAllConsortiumException;
@@ -158,4 +159,10 @@ public interface LookupTablesEndpoint {
     @Consumes("application/json")
     @Produces(value = MediaType.APPLICATION_JSON)
     public void saveBetBankingBetLimitInformation(List<BetBankingBetLimit> betLimits) throws SaveBetBankingBetLimitException, FindBetLimitException, DeleteBetBankingBetLimitException;
+    
+    @POST
+    @Path(value = "/betBanking/saveBlockingNumbers")
+    @Consumes("application/json")
+    @Produces(value = MediaType.APPLICATION_JSON)
+    public void saveBlockingNumberInformation(List<BlockingNumberBetBanking> blockingNumbers) throws SaveBlockingNumberException,DeleteBetBankingBetLimitException,FindBetLimitException,FindBlockingNumberException;
 }

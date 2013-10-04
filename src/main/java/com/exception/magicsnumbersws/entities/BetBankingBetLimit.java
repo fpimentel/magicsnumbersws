@@ -5,6 +5,8 @@ import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -26,35 +28,31 @@ public class BetBankingBetLimit implements Serializable, Comparable<BetBankingBe
 
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @NotNull
     @Column(name = "ID")
     private Integer id;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Basic(optional = false)
-    @NotNull
     @Column(name = "AMOUNT_LIMIT")
     private double amountLimit;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "COMMISSION")
     private int commission;
     //@EmbeddedId
     //protected BetBankingBetLimitPK betBankingBetLimitPK;
     @Basic(optional = false)
-    @NotNull
     @Size(min = 1, max = 50)
     @Column(name = "CREATION_USER")
     private String creationUser;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "CREATION_DATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date creationDate;
-    @JoinColumn(name = "BETBANKING_ID", referencedColumnName = "ID", insertable = false, updatable = false)
+    @JoinColumn(name = "BETBANKING_ID", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private BetBanking betBanking;
-    @JoinColumn(name = "BET_ID", referencedColumnName = "ID", insertable = false, updatable = false)
+    @JoinColumn(name = "BET_ID", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private Bet bet;
 
@@ -150,8 +148,8 @@ public class BetBankingBetLimit implements Serializable, Comparable<BetBankingBe
 
     public void setCommission(int commission) {
         this.commission = commission;
-    }   
-    
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;

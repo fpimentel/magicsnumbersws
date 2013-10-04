@@ -48,7 +48,9 @@ public class BetBankingBetLimitDaoImpl implements BetBankingBetLimitDao {
 
     @Override
     public void delete(int betBankingBetLimitId) {
-        sessionFactory.getCurrentSession().delete(findById(betBankingBetLimitId));
+        BetBankingBetLimit entity = findById(betBankingBetLimitId);
+        sessionFactory.getCurrentSession().delete(entity);
+        sessionFactory.getCurrentSession().flush();
     }
 
     @Override

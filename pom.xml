@@ -146,6 +146,7 @@
                                 <include>**/com/exception/magicsnumbersws/entities/*</include>                                
                                 <include>**/com/exception/magicsnumbersws/endpoints/*</include>
                                 <include>**/com/exception/magicsnumbersws/exception/*</include>                                
+                                <include>**/com/exception/magicsnumbersws/containers/*</include>   
                             </includes>
                         </configuration>
                     </execution>

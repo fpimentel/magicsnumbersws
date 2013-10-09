@@ -1,5 +1,6 @@
 package com.exception.magicsnumbersws.service.impl;
 
+import com.exception.magicsnumbersws.containers.BetBankingContainer;
 import com.exception.magicsnumbersws.dao.BetBankingBetLimitDao;
 import com.exception.magicsnumbersws.dao.BetBankingDao;
 import com.exception.magicsnumbersws.dao.BetDao;
@@ -42,7 +43,6 @@ public class BetBankingServiceImpl implements BetBankingService {
     private BetDao betDao;
     @Autowired
     private BlockingNumberBetBankingDao blockingNumberBetBankingDao;
-    
     private static final Logger LOG = Logger.getLogger(BetBankingServiceImpl.class.getName());
 
     public BetBankingServiceImpl() {
@@ -141,7 +141,7 @@ public class BetBankingServiceImpl implements BetBankingService {
     }
 
     @Override
-    @Transactional
+    //@Transactional
     public void saveBetBankingBetLimits(List<BetBankingBetLimit> betLimits) throws SaveBetBankingBetLimitException, FindBetLimitException, DeleteBetBankingBetLimitException {
         LOG.info("init - BetBankingServiceImpl.saveBetBankingBetLimits");
         //Se eliminan todas las jugadas asociadas a la banca.
@@ -156,36 +156,36 @@ public class BetBankingServiceImpl implements BetBankingService {
                 currBetLimit.setBetBanking(betBankingDao.findById(betBanking.getId()));
                 betBankingBetLimitDao.add(currBetLimit);
             }
-        } 
-        LOG.info("finish - BetBankingServiceImpl.saveBetBankingBetLimits");
+        }
+        LOG.info("finish - BetBankingServiceImpl.saveBetBankingBetLimits");        
     }
 
     @Override
     public void deleteBetLimitsByBetBankingId(int betBankingId) throws DeleteBetBankingBetLimitException, FindBetLimitException {
-        List<BetBankingBetLimit> betLimits = betBankingDao.findBetLimitsByBetBankingId(betBankingId);
+        List<BetBankingBetLimit> betLimits = betBankingDao.findBetLimitsByBetBankingId(betBankingId);        
         for (BetBankingBetLimit currBetLimit : betLimits) {
             betBankingBetLimitDao.delete(currBetLimit.getId());
         }
     }
 
     @Override
-    @Transactional
-    public void saveBlockingNumbers(List<BlockingNumberBetBanking> blockNumbers) throws SaveBlockingNumberException,DeleteBetBankingBetLimitException,FindBetLimitException,FindBlockingNumberException {
+    //@Transactional
+    public void saveBlockingNumbers(List<BlockingNumberBetBanking> blockNumbers) throws SaveBlockingNumberException, DeleteBetBankingBetLimitException, FindBetLimitException, FindBlockingNumberException {
         LOG.info("init - BetBankingServiceImpl.saveBlockingNumbers");
         //Se eliminan todos los numeros bloqueados de la banca.
-        BetBanking betBanking = blockNumbers.get(0).getBetBanking();        
+        BetBanking betBanking = blockNumbers.get(0).getBetBanking();
         deleteBlockinNumberByBetBankingId(betBanking.getId());
-        
+
         //Se insertan los numeros a bloquear enviados como parametro.
         if (blockNumbers.get(0).getCreationUser() != null) {
             for (BlockingNumberBetBanking currBlockingNumber : blockNumbers) {
-               // BetBanking bet = betBankingDao.findById(currBlockingNumber.getBetBanking().getId());                                               
-                blockingNumberBetBankingDao.add(currBlockingNumber);                
+                // BetBanking bet = betBankingDao.findById(currBlockingNumber.getBetBanking().getId());                                               
+                blockingNumberBetBankingDao.add(currBlockingNumber);
             }
-        } 
+        }
         LOG.info("finish - BetBankingServiceImpl.saveBlockingNumbers");
     }
-    
+
     @Override
     public void deleteBlockinNumberByBetBankingId(int betBankingId) throws DeleteBetBankingBetLimitException, FindBetLimitException, FindBlockingNumberException {
         LOG.info("init - BetBankingServiceImpl.deleteBlockinNumberByBetBankingId");
@@ -194,5 +194,21 @@ public class BetBankingServiceImpl implements BetBankingService {
             blockingNumberBetBankingDao.delete(currBlockingNumber.getId());
         }
         LOG.info("finish - BetBankingServiceImpl.deleteBlockinNumberByBetBankingId");
+    }
+
+    @Override
+    @Transactional
+    public void saveBetBankingInformation(BetBankingContainer betBankingContainer) throws FindBlockingNumberException, SaveBlockingNumberException, SaveBetBankingInfoException, FindBetLimitException, DeleteBetBankingBetLimitException, SaveBetBankingBetLimitException {
+        saveBetBankingInformation(betBankingContainer.getBetBanking());        
+        if (betBankingContainer.getBetBankingBetLimits() != null && betBankingContainer.getBetBankingBetLimits().size() > 0) {            
+            betBankingContainer.getBetBankingBetLimits().get(0).setBetBanking(betBankingContainer.getBetBanking());
+            saveBetBankingBetLimits(betBankingContainer.getBetBankingBetLimits());
+        }
+        
+        if (betBankingContainer.getBlockingNumbers() != null && betBankingContainer.getBlockingNumbers().size() > 0) {
+            betBankingContainer.getBlockingNumbers().get(0).setBetBanking(betBankingContainer.getBetBanking());
+            saveBlockingNumbers(betBankingContainer.getBlockingNumbers());
+
+        }
     }
 }

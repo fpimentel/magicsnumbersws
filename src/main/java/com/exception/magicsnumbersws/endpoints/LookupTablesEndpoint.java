@@ -1,5 +1,6 @@
 package com.exception.magicsnumbersws.endpoints;
 
+import com.exception.magicsnumbersws.containers.BetBankingContainer;
 import com.exception.magicsnumbersws.entities.Bet;
 import com.exception.magicsnumbersws.entities.BetBanking;
 import com.exception.magicsnumbersws.entities.BetBankingBetLimit;
@@ -165,4 +166,10 @@ public interface LookupTablesEndpoint {
     @Consumes("application/json")
     @Produces(value = MediaType.APPLICATION_JSON)
     public void saveBlockingNumberInformation(List<BlockingNumberBetBanking> blockingNumbers) throws SaveBlockingNumberException,DeleteBetBankingBetLimitException,FindBetLimitException,FindBlockingNumberException;
+    
+    @POST
+    @Path(value = "/betBanking/saveBetBankingContainer")
+    @Consumes("application/json")
+    @Produces(value = MediaType.APPLICATION_JSON)
+    public void saveBetBankingInformation(BetBankingContainer betBankingContainer) throws FindBlockingNumberException, SaveBlockingNumberException, SaveBetBankingInfoException, FindBetLimitException, DeleteBetBankingBetLimitException, SaveBetBankingBetLimitException;
 }

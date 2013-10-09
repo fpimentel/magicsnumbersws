@@ -1,5 +1,6 @@
 package com.exception.magicsnumbersws.endpoints.impl;
 
+import com.exception.magicsnumbersws.containers.BetBankingContainer;
 import com.exception.magicsnumbersws.endpoints.LookupTablesEndpoint;
 import com.exception.magicsnumbersws.entities.Bet;
 import com.exception.magicsnumbersws.entities.BetBanking;
@@ -156,5 +157,10 @@ public class LookupTablesEndpointImpl implements LookupTablesEndpoint {
     public void saveBlockingNumberInformation(List<BlockingNumberBetBanking> blockingNumbers) throws SaveBlockingNumberException,DeleteBetBankingBetLimitException,FindBetLimitException,FindBlockingNumberException{
         betBankingService.saveBlockingNumbers(blockingNumbers);
 
+    }
+
+    @Override
+    public void saveBetBankingInformation(BetBankingContainer betBankingContainer) throws FindBlockingNumberException, SaveBlockingNumberException, SaveBetBankingInfoException, FindBetLimitException, DeleteBetBankingBetLimitException, SaveBetBankingBetLimitException {
+        betBankingService.saveBetBankingInformation(betBankingContainer);
     }
 }

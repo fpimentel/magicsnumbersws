@@ -1,6 +1,7 @@
 package com.exception.magicsnumbersws.dao.impl;
 
 import com.exception.magicsnumbersws.dao.BetBankingDao;
+import com.exception.magicsnumbersws.entities.Bet;
 import com.exception.magicsnumbersws.entities.BetBanking;
 import com.exception.magicsnumbersws.entities.BetBankingBetLimit;
 import com.exception.magicsnumbersws.entities.BlockingNumberBetBanking;
@@ -63,6 +64,7 @@ public class BetBankingDaoImpl implements BetBankingDao {
     @Override
     public void update(BetBanking betBanking) {
         sessionFactory.getCurrentSession().update(betBanking);
+        //sessionFactory.getCurrentSession().flush();
     }
 
     @Override
@@ -72,8 +74,17 @@ public class BetBankingDaoImpl implements BetBankingDao {
     }
 
     @Override
+    @Transactional(readOnly = true,propagation = Propagation.REQUIRES_NEW)
     public BetBanking findById(int id) {
-        return (BetBanking) sessionFactory.getCurrentSession().get(BetBanking.class, id);
+       // BetBanking betBanking = (BetBanking) sessionFactory.getCurrentSession().get(BetBanking.class, id);
+        BetBanking betBanking = (BetBanking) sessionFactory.getCurrentSession()
+                 .createCriteria(BetBanking.class)
+                 //.setFetchMode("consortium", FetchMode.JOIN)
+                 //.setFetchMode("status", FetchMode.JOIN)
+                 .add(Restrictions.eq("id", id))
+                 .uniqueResult();
+        return betBanking;
+
     }
 
     @Override
@@ -184,8 +195,10 @@ public class BetBankingDaoImpl implements BetBankingDao {
         return betBankings;
     }
 
+    
+    
     @Override
-    @Transactional(readOnly = true,propagation = Propagation.REQUIRES_NEW)
+    @Transactional(readOnly = true, propagation = Propagation.REQUIRES_NEW)
     public List<BetBankingBetLimit> findBetLimitsByBetBankingId(int betBankingId) throws FindBetLimitException {
         LOG.info("init - BetBankingDaoImpl.findBetLimitsByBetBankingId(" + betBankingId);
         List<BetBankingBetLimit> betLimits = sessionFactory
@@ -197,23 +210,26 @@ public class BetBankingDaoImpl implements BetBankingDao {
         //Quitamos del json los datos innecesarios
         for (BetBankingBetLimit betLimit : betLimits) {
             betLimit.getBet().setBetType(null);
-            betLimit.getBet().setCreationDate(null);            
-            betLimit.setCreationDate(null);            
+            betLimit.getBet().setCreationDate(null);
+            betLimit.setCreationDate(null);
             betLimit.setBetBanking(null);
         }
         return betLimits;
     }
 
     @Override
-    @Transactional(readOnly = true,propagation = Propagation.REQUIRES_NEW )
+    @Transactional(readOnly = true, propagation = Propagation.REQUIRES_NEW)
     public List<BlockingNumberBetBanking> findBlokingNumbersByBetBankingId(int betBankingId) throws FindBlockingNumberException {
         LOG.info("init - BetBankingDaoImpl.findBlokingNumbersByBetBankingId: " + betBankingId);
         List<BlockingNumberBetBanking> blockingNumbers = sessionFactory
                 .getCurrentSession()
-                .createCriteria(BlockingNumberBetBanking.class)  
+                .createCriteria(BlockingNumberBetBanking.class)
                 .setFetchMode("betBanking", FetchMode.JOIN)
                 .add(Restrictions.eq("betBanking.id", betBankingId)).list();
-        
+
+        for(BlockingNumberBetBanking blockNumber : blockingNumbers){
+            blockNumber.getBetBanking().setConsortium(null);
+        }
         return blockingNumbers;
     }
 }

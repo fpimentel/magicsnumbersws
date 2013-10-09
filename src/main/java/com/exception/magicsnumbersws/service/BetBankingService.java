@@ -1,5 +1,6 @@
 package com.exception.magicsnumbersws.service;
 
+import com.exception.magicsnumbersws.containers.BetBankingContainer;
 import com.exception.magicsnumbersws.entities.BetBanking;
 import com.exception.magicsnumbersws.entities.BetBankingBetLimit;
 import com.exception.magicsnumbersws.entities.BlockingNumberBetBanking;
@@ -120,5 +121,13 @@ public interface BetBankingService {
      * @throws DeleteBetBankingBetLimitException,FindBlockingNumberException
      */ 
     public void deleteBlockinNumberByBetBankingId(int betBankingId) throws DeleteBetBankingBetLimitException, FindBetLimitException, FindBlockingNumberException;
+    
+    /**
+     * *
+     * Guarda la informacion del objeto BetBankingContainer.     
+     * @param betBankingContainer     
+     * @throws SaveBetBankingInfoException
+     */    
+    public void saveBetBankingInformation(BetBankingContainer betBankingContainer) throws FindBlockingNumberException, SaveBlockingNumberException, SaveBetBankingInfoException, FindBetLimitException, DeleteBetBankingBetLimitException, SaveBetBankingBetLimitException;
     
 }

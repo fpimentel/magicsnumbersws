@@ -68,4 +68,5 @@ public interface BetBankingDao {
      * @throws FindBlockingNumberException
      */
     public List<BlockingNumberBetBanking> findBlokingNumbersByBetBankingId(int betBankingId) throws FindBlockingNumberException;
+    
 }

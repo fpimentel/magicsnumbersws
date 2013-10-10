@@ -64,7 +64,7 @@ public class BetBankingDaoImpl implements BetBankingDao {
     @Override
     public void update(BetBanking betBanking) {
         sessionFactory.getCurrentSession().update(betBanking);
-        //sessionFactory.getCurrentSession().flush();
+//        sessionFactory.getCurrentSession().flush();
     }
 
     @Override
@@ -74,7 +74,7 @@ public class BetBankingDaoImpl implements BetBankingDao {
     }
 
     @Override
-    @Transactional(readOnly = true,propagation = Propagation.REQUIRES_NEW)
+    //@Transactional(readOnly = true,propagation = Propagation.REQUIRES_NEW)
     public BetBanking findById(int id) {
        // BetBanking betBanking = (BetBanking) sessionFactory.getCurrentSession().get(BetBanking.class, id);
         BetBanking betBanking = (BetBanking) sessionFactory.getCurrentSession()
@@ -196,9 +196,7 @@ public class BetBankingDaoImpl implements BetBankingDao {
     }
 
     
-    
-    @Override
-    @Transactional(readOnly = true, propagation = Propagation.REQUIRES_NEW)
+    @Override    
     public List<BetBankingBetLimit> findBetLimitsByBetBankingId(int betBankingId) throws FindBetLimitException {
         LOG.info("init - BetBankingDaoImpl.findBetLimitsByBetBankingId(" + betBankingId);
         List<BetBankingBetLimit> betLimits = sessionFactory
@@ -206,15 +204,23 @@ public class BetBankingDaoImpl implements BetBankingDao {
                 .createCriteria(BetBankingBetLimit.class)
                 .setFetchMode("bet", FetchMode.JOIN)
                 .add(Restrictions.eq("betBanking.id", betBankingId)).list();
-
+        String[] betBankingBetLimitIgnoredProperties = {"creationDate","betBanking","bet"};
+        String[] betIgnoredProperties = {"creationDate","betType"};
+        List<BetBankingBetLimit> copiedBetLimits = new ArrayList<BetBankingBetLimit>();
         //Quitamos del json los datos innecesarios
         for (BetBankingBetLimit betLimit : betLimits) {
-            betLimit.getBet().setBetType(null);
-            betLimit.getBet().setCreationDate(null);
-            betLimit.setCreationDate(null);
-            betLimit.setBetBanking(null);
+            BetBankingBetLimit copiedBetLimit = new BetBankingBetLimit();
+            BeanUtils.copyProperties(betLimit, copiedBetLimit, betBankingBetLimitIgnoredProperties);
+            Bet copiedBet = new Bet();
+            BeanUtils.copyProperties(betLimit.getBet(), copiedBet,betIgnoredProperties);
+            copiedBetLimit.setBet(copiedBet);
+            //betLimit.getBet().setBetType(null);
+            //betLimit.getBet().setCreationDate(null);
+            copiedBetLimits.add(copiedBetLimit);
+            //betLimit.setCreationDate(null);
+//            betLimit.setBetBanking(null);
         }
-        return betLimits;
+        return copiedBetLimits;
     }
 
     @Override

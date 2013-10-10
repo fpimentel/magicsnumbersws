@@ -86,7 +86,8 @@ public interface BetBankingService {
      * Guarda la informacion del objeto BetBanking.     
      * @param betBanking     
      * @throws SaveBetBankingInfoException
-     */    
+     */   
+    @Transactional
     public void saveBetBankingInformation(BetBanking betBanking) throws SaveBetBankingInfoException;
     
     /**
@@ -95,6 +96,7 @@ public interface BetBankingService {
      * @param betLimits     
      * @throws SaveBetBankingInfoException
      */    
+    @Transactional
     public void saveBetBankingBetLimits(List<BetBankingBetLimit> betLimits) throws SaveBetBankingBetLimitException, FindBetLimitException, DeleteBetBankingBetLimitException;
     
     
@@ -127,7 +129,8 @@ public interface BetBankingService {
      * Guarda la informacion del objeto BetBankingContainer.     
      * @param betBankingContainer     
      * @throws SaveBetBankingInfoException
-     */    
+     */
+    @Transactional
     public void saveBetBankingInformation(BetBankingContainer betBankingContainer) throws FindBlockingNumberException, SaveBlockingNumberException, SaveBetBankingInfoException, FindBetLimitException, DeleteBetBankingBetLimitException, SaveBetBankingBetLimitException;
     
 }

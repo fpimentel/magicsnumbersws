@@ -1,5 +1,6 @@
 package com.exception.magicsnumbersws.dao;
 import com.exception.magicsnumbersws.entities.BlockingNumberBetBanking;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -12,7 +13,10 @@ public interface BlockingNumberBetBankingDao {
 
     public void update(BlockingNumberBetBanking blockinNumber);
 
+    //@Transactional
     public void delete(int blockingNumberId);
         
     public BlockingNumberBetBanking findById(int id);
+    
+    public void deleteByBetBanking(int betBankingId);
 }

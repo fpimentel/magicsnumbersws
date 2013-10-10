@@ -1,11 +1,11 @@
 package com.exception.magicsnumbersws.dao.impl;
 
 import com.exception.magicsnumbersws.dao.BlockingNumberBetBankingDao;
-import com.exception.magicsnumbersws.entities.Bet;
-import com.exception.magicsnumbersws.entities.BetBankingBetLimit;
 import com.exception.magicsnumbersws.entities.BlockingNumberBetBanking;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.hibernate.FetchMode;
+import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,6 +62,16 @@ public class BlockingNumberBetBankingDaoImpl implements BlockingNumberBetBanking
     public void delete(int blockingNumberId) {
         BlockingNumberBetBanking entity = findById(blockingNumberId);
         sessionFactory.getCurrentSession().delete(entity);
-        sessionFactory.getCurrentSession().flush();
+        //sessionFactory.getCurrentSession().flush();
+    }
+    
+     public void deleteByBetBanking(int betBankingId) {
+//        BetBankingBetLimit entity = findById(betBankingBetLimitId);
+        Query query = sessionFactory.getCurrentSession().createQuery("delete from BlockingNumberBetBanking bbl where bbl.betBanking.id = :id");
+        query.setParameter("id", betBankingId);
+        int rows = query.executeUpdate();
+        LOG.log(Level.INFO, "{0} rows deleted.", rows);
+//          sessionFactory.getCurrentSession().delete(entity);
+//        sessionFactory.getCurrentSession().flush();
     }
 }

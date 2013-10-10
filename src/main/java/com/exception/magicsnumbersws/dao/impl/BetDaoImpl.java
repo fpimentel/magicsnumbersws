@@ -1,28 +1,16 @@
 package com.exception.magicsnumbersws.dao.impl;
 
-import com.exception.magicsnumbersws.dao.BetBankingDao;
 import com.exception.magicsnumbersws.dao.BetDao;
 import com.exception.magicsnumbersws.entities.Bet;
-import com.exception.magicsnumbersws.entities.BetBanking;
-import com.exception.magicsnumbersws.entities.Category;
-import com.exception.magicsnumbersws.entities.Consortium;
-import com.exception.magicsnumbersws.entities.User;
 import com.exception.magicsnumbersws.exception.FindBetException;
-import com.exception.magicsnumbersws.exception.SearchAllBetBankingException;
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.logging.Logger;
 import org.hibernate.FetchMode;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import com.exception.magicsnumbersws.constants.Status;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 /**
  *
  * @author fpimentel

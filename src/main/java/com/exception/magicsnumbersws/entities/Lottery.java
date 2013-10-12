@@ -1,27 +1,25 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.exception.magicsnumbersws.entities;
-
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -44,19 +42,22 @@ public class Lottery implements Serializable {
     private String name;
     @Basic(optional = false)
     @NotNull
-    @Lob
     @Column(name = "USER_CREATION")
-    private byte[] userCreation;
+    private String userCreation;
     @Basic(optional = false)
     @NotNull
     @Column(name = "CREATION_DATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date creationDate;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "STATUS_ID")
-    private int statusId;
+    
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "STATUS_ID", nullable = false)
+    private Status status;
 
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(name = "LOTTERIES_BETS", joinColumns = { @JoinColumn(name = "LOTTERY_ID") }, inverseJoinColumns = { @JoinColumn(name = "BET_ID") })
+    private Set<Bet> bets = new HashSet<Bet>(0);    
+    
     public Lottery() {
     }
 
@@ -64,12 +65,12 @@ public class Lottery implements Serializable {
         this.id = id;
     }
 
-    public Lottery(Integer id, String name, byte[] userCreation, Date creationDate, int statusId) {
+    public Lottery(Integer id, String name, String userCreation, Date creationDate, Status status) {
         this.id = id;
         this.name = name;
         this.userCreation = userCreation;
         this.creationDate = creationDate;
-        this.statusId = statusId;
+        this.status = status;
     }
 
     public Integer getId() {
@@ -88,11 +89,11 @@ public class Lottery implements Serializable {
         this.name = name;
     }
 
-    public byte[] getUserCreation() {
+    public String getUserCreation() {
         return userCreation;
     }
 
-    public void setUserCreation(byte[] userCreation) {
+    public void setUserCreation(String userCreation) {
         this.userCreation = userCreation;
     }
 
@@ -104,15 +105,23 @@ public class Lottery implements Serializable {
         this.creationDate = creationDate;
     }
 
-    public int getStatusId() {
-        return statusId;
+    public Status getStatus() {
+        return status;
     }
 
-    public void setStatusId(int statusId) {
-        this.statusId = statusId;
+    public void setStatus(Status status) {
+        this.status = status;
     }
-   
 
+    
+    public Set<Bet> getBets() {
+        return bets;
+    }
+
+    public void setBets(Set<Bet> bets) {
+        this.bets = bets;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 5;
@@ -134,8 +143,6 @@ public class Lottery implements Serializable {
         }
         return true;
     }
-
-
 
     @Override
     public String toString() {

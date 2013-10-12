@@ -7,11 +7,13 @@ import com.exception.magicsnumbersws.entities.BetBankingBetLimit;
 import com.exception.magicsnumbersws.entities.BlockingNumberBetBanking;
 import com.exception.magicsnumbersws.entities.Category;
 import com.exception.magicsnumbersws.entities.Consortium;
+import com.exception.magicsnumbersws.entities.Lottery;
 import com.exception.magicsnumbersws.entities.Status;
 import com.exception.magicsnumbersws.exception.DeleteBetBankingBetLimitException;
 import com.exception.magicsnumbersws.exception.FindBetException;
 import com.exception.magicsnumbersws.exception.FindBetLimitException;
 import com.exception.magicsnumbersws.exception.FindBlockingNumberException;
+import com.exception.magicsnumbersws.exception.FindLotteryException;
 import com.exception.magicsnumbersws.exception.SaveBetBankingBetLimitException;
 import com.exception.magicsnumbersws.exception.SaveBetBankingInfoException;
 import com.exception.magicsnumbersws.exception.SaveBlockingNumberException;
@@ -172,4 +174,19 @@ public interface LookupTablesEndpoint {
     @Consumes("application/json")
     @Produces(value = MediaType.APPLICATION_JSON)
     public void saveBetBankingInformation(BetBankingContainer betBankingContainer) throws FindBlockingNumberException, SaveBlockingNumberException, SaveBetBankingInfoException, FindBetLimitException, DeleteBetBankingBetLimitException, SaveBetBankingBetLimitException;
+    
+    @GET
+    @Path("/lottery/active")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Lottery> findActiveLottery() throws FindLotteryException;
+    
+    @GET
+    @Path("/lottery/findById/{lotteryId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Lottery findLotteryById(@PathParam("lotteryId") int lotteryId) throws FindLotteryException;
+    
+    @GET
+    @Path("/lottery/findBetsByLotteryId/{lotteryId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Bet> findBetsByLotteryId(@PathParam("lotteryId") int lotteryId) throws FindLotteryException;
 }

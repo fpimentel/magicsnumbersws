@@ -8,11 +8,13 @@ import com.exception.magicsnumbersws.entities.BetBankingBetLimit;
 import com.exception.magicsnumbersws.entities.BlockingNumberBetBanking;
 import com.exception.magicsnumbersws.entities.Category;
 import com.exception.magicsnumbersws.entities.Consortium;
+import com.exception.magicsnumbersws.entities.Lottery;
 import com.exception.magicsnumbersws.entities.Status;
 import com.exception.magicsnumbersws.exception.DeleteBetBankingBetLimitException;
 import com.exception.magicsnumbersws.exception.FindBetException;
 import com.exception.magicsnumbersws.exception.FindBetLimitException;
 import com.exception.magicsnumbersws.exception.FindBlockingNumberException;
+import com.exception.magicsnumbersws.exception.FindLotteryException;
 import com.exception.magicsnumbersws.exception.SaveBetBankingBetLimitException;
 import com.exception.magicsnumbersws.exception.SaveBetBankingInfoException;
 import com.exception.magicsnumbersws.exception.SaveBlockingNumberException;
@@ -23,6 +25,7 @@ import com.exception.magicsnumbersws.service.BetBankingService;
 import com.exception.magicsnumbersws.service.BetService;
 import com.exception.magicsnumbersws.service.CategoryService;
 import com.exception.magicsnumbersws.service.ConsortiumService;
+import com.exception.magicsnumbersws.service.LotteryService;
 import com.exception.magicsnumbersws.service.StatusService;
 import java.util.List;
 import java.util.logging.Level;
@@ -51,6 +54,9 @@ public class LookupTablesEndpointImpl implements LookupTablesEndpoint {
     private BetBankingService betBankingService;
     @Autowired
     private BetService betService;
+    @Autowired
+    private LotteryService lotteryService;
+    
     private Logger logger = Logger.getLogger(LookupTablesEndpointImpl.class.getName());
 
     @Override
@@ -162,5 +168,23 @@ public class LookupTablesEndpointImpl implements LookupTablesEndpoint {
     @Override
     public void saveBetBankingInformation(BetBankingContainer betBankingContainer) throws FindBlockingNumberException, SaveBlockingNumberException, SaveBetBankingInfoException, FindBetLimitException, DeleteBetBankingBetLimitException, SaveBetBankingBetLimitException {
         betBankingService.saveBetBankingInformation(betBankingContainer);
+    }
+
+    @Override
+    public List<Lottery> findActiveLottery() throws FindLotteryException {
+        logger.entering("LookupTablesEndpointImpl", "findActiveLottery");
+        return this.lotteryService.findActiveLottery();
+    }
+
+    @Override
+    public Lottery findLotteryById(int lotteryId) throws FindLotteryException {
+        logger.entering("LookupTablesEndpointImpl", "findLotteryById");
+        return this.lotteryService.findById(lotteryId);
+    }
+
+    @Override
+    public List<Bet> findBetsByLotteryId(int lotteryId) throws FindLotteryException {
+        logger.entering("LookupTablesEndpointImpl", "findBetsByLotteryId");
+        return this.lotteryService.findBetsByLotteryId(lotteryId);
     }
 }

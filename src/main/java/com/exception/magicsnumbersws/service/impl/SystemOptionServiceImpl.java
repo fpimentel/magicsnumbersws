@@ -1,6 +1,4 @@
 package com.exception.magicsnumbersws.service.impl;
-
-import com.exception.magicsnumbersws.dao.StatusDao;
 import com.exception.magicsnumbersws.dao.SystemOptionDao;
 import com.exception.magicsnumbersws.entities.SystemOption;
 import com.exception.magicsnumbersws.exception.SaveSystemOptionsDataException;
@@ -69,7 +67,6 @@ public class SystemOptionServiceImpl implements SystemOptionService {
      }
      catch(Exception ex){
          throw new SaveSystemOptionsDataException("",ex);
-     }
-     
+     }     
     }
 }

@@ -1,5 +1,4 @@
 package com.exception.magicsnumbersws.service.impl;
-
 import com.exception.magicsnumbersws.dao.BetDao;
 import com.exception.magicsnumbersws.entities.Bet;
 import com.exception.magicsnumbersws.exception.FindBetException;

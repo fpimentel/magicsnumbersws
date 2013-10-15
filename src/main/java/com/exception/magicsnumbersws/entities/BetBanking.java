@@ -1,10 +1,8 @@
 package com.exception.magicsnumbersws.entities;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -18,14 +16,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -70,7 +66,12 @@ public class BetBanking implements Serializable, Comparable<BetBanking> {
     @JoinColumn(name = "CONSORTIUM_ID", referencedColumnName = "ID")
     @ManyToOne(fetch = FetchType.EAGER, optional = true)
     private Consortium consortium;    
-
+    
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(name = "BETS_BANKINGS_LOTTERIES", joinColumns = { @JoinColumn(name = "BETBANKING_ID") }, 
+                                    inverseJoinColumns = { @JoinColumn(name = "LOTTERY_ID") })
+    private Set<Lottery> lotteries = new HashSet<Lottery>(0);
+    
     public BetBanking() {
     }
 
@@ -150,7 +151,16 @@ public class BetBanking implements Serializable, Comparable<BetBanking> {
     public void setContact(String contact) {
         this.contact = contact;
     }
-   
+
+    public Set<Lottery> getLotteries() {
+        return lotteries;
+    }
+
+    public void setLotteries(Set<Lottery> lotteries) {
+        this.lotteries = lotteries;
+    }
+
+    
     @Override
     public int hashCode() {
         int hash = 3;

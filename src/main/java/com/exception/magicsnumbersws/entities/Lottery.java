@@ -54,7 +54,7 @@ public class Lottery implements Serializable {
     @JoinColumn(name = "STATUS_ID", nullable = false)
     private Status status;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "LOTTERIES_BETS", joinColumns = { @JoinColumn(name = "LOTTERY_ID") }, inverseJoinColumns = { @JoinColumn(name = "BET_ID") })
     private Set<Bet> bets = new HashSet<Bet>(0);    
     

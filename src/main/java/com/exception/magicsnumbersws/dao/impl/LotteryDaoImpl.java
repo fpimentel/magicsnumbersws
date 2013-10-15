@@ -11,7 +11,9 @@ import com.exception.magicsnumbersws.dao.LotteryDao;
 import com.exception.magicsnumbersws.entities.Bet;
 import com.exception.magicsnumbersws.entities.Lottery;
 import com.exception.magicsnumbersws.exception.FindLotteryException;
+import com.mchange.v2.beans.BeansUtils;
 import java.util.ArrayList;
+import org.hibernate.Criteria;
 import org.springframework.beans.BeanUtils;
 /**
  *
@@ -64,7 +66,19 @@ public class LotteryDaoImpl implements LotteryDao {
                           .add(Restrictions.eq("id", id))
                           .add(Restrictions.eq("status.id", Status.ACTIVE.getId()))
                           .uniqueResult();
-         return lottery;
+         
+         Lottery copyLottery = new Lottery();                  
+         String[] lotteryIgnoredProperties = {"bets"};
+         String[] betIgnoreProperties = {"status","betType"};
+         
+         BeanUtils.copyProperties(lottery, copyLottery,lotteryIgnoredProperties);                           
+         
+         for(Bet currBet : lottery.getBets()){
+             Bet copyBet = new Bet();
+             BeanUtils.copyProperties(currBet, copyBet,betIgnoreProperties);
+             copyLottery.getBets().add(copyBet);
+         }
+         return copyLottery;
     }
 
     @Override
@@ -72,7 +86,8 @@ public class LotteryDaoImpl implements LotteryDao {
         LOG.entering("LotteryDaoImpl","findActiveLottery"); 
         
         List<Lottery> lotteries =  (List<Lottery>) sessionFactory.getCurrentSession()
-                .createCriteria(Lottery.class)                
+                .createCriteria(Lottery.class)  
+                .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)
                 .setFetchMode("status", FetchMode.JOIN)
                 .setFetchMode("bets", FetchMode.JOIN) 
                 .add(Restrictions.eq("status.id", Status.ACTIVE.getId()))

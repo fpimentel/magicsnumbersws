@@ -6,6 +6,7 @@ import com.exception.magicsnumbersws.entities.BetBanking;
 import com.exception.magicsnumbersws.entities.BetBankingBetLimit;
 import com.exception.magicsnumbersws.entities.BlockingNumberBetBanking;
 import com.exception.magicsnumbersws.entities.Consortium;
+import com.exception.magicsnumbersws.entities.Lottery;
 import com.exception.magicsnumbersws.entities.User;
 import com.exception.magicsnumbersws.exception.FindBetLimitException;
 import com.exception.magicsnumbersws.exception.FindBlockingNumberException;
@@ -97,6 +98,7 @@ public class BetBankingDaoImpl implements BetBankingDao {
             copiedBetBanking = new BetBanking();
             BeanUtils.copyProperties(currBetBanking, copiedBetBanking);
             copiedBetBanking.setConsortium(null);
+            copiedBetBanking.setLotteries(null);
             finalBetBankings.add(copiedBetBanking);
         }
         return finalBetBankings;
@@ -148,6 +150,7 @@ public class BetBankingDaoImpl implements BetBankingDao {
                     currBetBanking.getConsortium().setStatus(null);
                 }
             }
+            currBetBanking.setLotteries(null);
         }
         return result;
     }
@@ -203,22 +206,27 @@ public class BetBankingDaoImpl implements BetBankingDao {
                 .getCurrentSession()
                 .createCriteria(BetBankingBetLimit.class)
                 .setFetchMode("bet", FetchMode.JOIN)
+                .setFetchMode("lottery", FetchMode.JOIN)
                 .add(Restrictions.eq("betBanking.id", betBankingId)).list();
+        
         String[] betBankingBetLimitIgnoredProperties = {"creationDate","betBanking","bet"};
         String[] betIgnoredProperties = {"creationDate","betType"};
+        String[] lotteryIgnoredProperties = {"bets"};
         List<BetBankingBetLimit> copiedBetLimits = new ArrayList<BetBankingBetLimit>();
+        
         //Quitamos del json los datos innecesarios
         for (BetBankingBetLimit betLimit : betLimits) {
             BetBankingBetLimit copiedBetLimit = new BetBankingBetLimit();
             BeanUtils.copyProperties(betLimit, copiedBetLimit, betBankingBetLimitIgnoredProperties);
-            Bet copiedBet = new Bet();
+            Bet copiedBet = new Bet();            
             BeanUtils.copyProperties(betLimit.getBet(), copiedBet,betIgnoredProperties);
             copiedBetLimit.setBet(copiedBet);
-            //betLimit.getBet().setBetType(null);
-            //betLimit.getBet().setCreationDate(null);
+                        
+            Lottery copyLottery = new Lottery();
+            BeanUtils.copyProperties(betLimit.getLottery(), copyLottery,lotteryIgnoredProperties);
+            copiedBetLimit.setLottery(copyLottery);
+            
             copiedBetLimits.add(copiedBetLimit);
-            //betLimit.setCreationDate(null);
-//            betLimit.setBetBanking(null);
         }
         return copiedBetLimits;
     }
@@ -235,6 +243,7 @@ public class BetBankingDaoImpl implements BetBankingDao {
 
         for(BlockingNumberBetBanking blockNumber : blockingNumbers){
             blockNumber.getBetBanking().setConsortium(null);
+            blockNumber.getBetBanking().setLotteries(null);
         }
         return blockingNumbers;
     }

@@ -56,12 +56,13 @@ public class BetBankingBetLimit implements Serializable, Comparable<BetBankingBe
     @ManyToOne(optional = false)
     private Bet bet;
 
+    @JoinColumn(name = "LOTTERY_ID", referencedColumnName = "ID")
+    @ManyToOne(optional = false )
+    private Lottery lottery;
+    
     public BetBankingBetLimit() {
     }
 
-    /*public BetBankingBetLimit(BetBankingBetLimitPK betBankingBetLimitPK) {
-     this.betBankingBetLimitPK = betBankingBetLimitPK;
-     }*/
     public BetBankingBetLimit(BetBankingBetLimitPK betBankingBetLimitPK, double amountLimit, String creationUser, Date creationDate) {
         // this.betBankingBetLimitPK = betBankingBetLimitPK;
         this.amountLimit = amountLimit;
@@ -150,6 +151,16 @@ public class BetBankingBetLimit implements Serializable, Comparable<BetBankingBe
         this.commission = commission;
     }
 
+    public Lottery getLottery() {
+        return lottery;
+    }
+
+    public void setLottery(Lottery lottery) {
+        this.lottery = lottery;
+    }
+
+    
+    
     @Override
     public int hashCode() {
         int hash = 0;

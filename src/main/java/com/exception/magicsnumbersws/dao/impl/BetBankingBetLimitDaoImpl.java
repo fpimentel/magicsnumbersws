@@ -48,23 +48,17 @@ public class BetBankingBetLimitDaoImpl implements BetBankingBetLimitDao {
 
     @Override
     public void delete(int betBankingBetLimitId) {
-//        BetBankingBetLimit entity = findById(betBankingBetLimitId);
         Query query = sessionFactory.getCurrentSession().createQuery("delete from BetBankingBetLimit bbl where bbl.id = :id");
         query.setParameter("id", betBankingBetLimitId);
         int rows = query.executeUpdate();
         LOG.log(Level.INFO, "{0} rows deleted.", rows);
-//          sessionFactory.getCurrentSession().delete(entity);
-//        sessionFactory.getCurrentSession().flush();
     }
 
     public void deleteByBetBanking(int betBankingId) {
-//        BetBankingBetLimit entity = findById(betBankingBetLimitId);
         Query query = sessionFactory.getCurrentSession().createQuery("delete from BetBankingBetLimit bbl where bbl.betBanking.id = :id");
         query.setParameter("id", betBankingId);
         int rows = query.executeUpdate();
         LOG.log(Level.INFO, "{0} rows deleted.", rows);
-//          sessionFactory.getCurrentSession().delete(entity);
-//        sessionFactory.getCurrentSession().flush();
     }
     
     @Override

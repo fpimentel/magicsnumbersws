@@ -101,8 +101,7 @@ public class ConsortiumDaoImpl implements ConsortiumDao {
             for (Consortium currConsortium : userResult.getConsortiums()) {
                 copiedConsortium = new Consortium();
                 BeanUtils.copyProperties(currConsortium, copiedConsortium, ignoredProperties);
-                copiedConsortium.setBetBankings(null);
-                //copiedConsortium.setStatus(null);
+                copiedConsortium.setBetBankings(null);                
                 finalConsortiums.add(copiedConsortium);
             }
         }

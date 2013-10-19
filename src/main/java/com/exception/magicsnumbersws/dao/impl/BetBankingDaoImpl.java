@@ -16,6 +16,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
+import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
@@ -65,27 +66,31 @@ public class BetBankingDaoImpl implements BetBankingDao {
     @Override
     public void update(BetBanking betBanking) {
         sessionFactory.getCurrentSession().update(betBanking);
-//        sessionFactory.getCurrentSession().flush();
     }
 
     @Override
     public List<BetBanking> findAvailable() throws SearchAllBetBankingException {
-        return (List<BetBanking>) sessionFactory.getCurrentSession().createCriteria(BetBanking.class)
+        List<BetBanking> betBankings = (List<BetBanking>) sessionFactory                                
+                .getCurrentSession().createCriteria(BetBanking.class)
                 .add(Restrictions.isNull("consortium")).list();
+        
+        String [] betBankingIgnoredProperties = {"lotteries"};
+        List<BetBanking> copyBetBakings = new ArrayList<BetBanking>();
+        for(BetBanking currBetBanking : betBankings){
+            BetBanking copyBetBanking = new BetBanking();
+            BeanUtils.copyProperties(currBetBanking, copyBetBanking,betBankingIgnoredProperties);
+            copyBetBakings.add(copyBetBanking);
+        }
+        return copyBetBakings;
     }
 
-    @Override
-    //@Transactional(readOnly = true,propagation = Propagation.REQUIRES_NEW)
-    public BetBanking findById(int id) {
-       // BetBanking betBanking = (BetBanking) sessionFactory.getCurrentSession().get(BetBanking.class, id);
+    @Override    
+    public BetBanking findById(int id) {       
         BetBanking betBanking = (BetBanking) sessionFactory.getCurrentSession()
-                 .createCriteria(BetBanking.class)
-                 //.setFetchMode("consortium", FetchMode.JOIN)
-                 //.setFetchMode("status", FetchMode.JOIN)
+                 .createCriteria(BetBanking.class)                 
                  .add(Restrictions.eq("id", id))
                  .uniqueResult();
         return betBanking;
-
     }
 
     @Override
@@ -202,11 +207,13 @@ public class BetBankingDaoImpl implements BetBankingDao {
     @Override    
     public List<BetBankingBetLimit> findBetLimitsByBetBankingId(int betBankingId) throws FindBetLimitException {
         LOG.info("init - BetBankingDaoImpl.findBetLimitsByBetBankingId(" + betBankingId);
-        List<BetBankingBetLimit> betLimits = sessionFactory
-                .getCurrentSession()
+        List<BetBankingBetLimit> betLimits = sessionFactory                
+                .getCurrentSession()                
                 .createCriteria(BetBankingBetLimit.class)
+                .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)
                 .setFetchMode("bet", FetchMode.JOIN)
                 .setFetchMode("lottery", FetchMode.JOIN)
+                .setFetchMode("lottery.bets", FetchMode.JOIN)
                 .add(Restrictions.eq("betBanking.id", betBankingId)).list();
         
         String[] betBankingBetLimitIgnoredProperties = {"creationDate","betBanking","bet"};
@@ -223,9 +230,17 @@ public class BetBankingDaoImpl implements BetBankingDao {
             copiedBetLimit.setBet(copiedBet);
                         
             Lottery copyLottery = new Lottery();
-            BeanUtils.copyProperties(betLimit.getLottery(), copyLottery,lotteryIgnoredProperties);
-            copiedBetLimit.setLottery(copyLottery);
-            
+            BeanUtils.copyProperties(betLimit.getLottery(), copyLottery);
+            //Detaching bets collections
+            Set<Bet> copiedBets = new HashSet<Bet>();
+            for(Bet currBet : copyLottery.getBets()){
+                Bet betCopy = new Bet();
+                BeanUtils.copyProperties(currBet, betCopy,betIgnoredProperties);
+                
+                copiedBets.add(betCopy);
+            }   
+            copyLottery.setBets(copiedBets);
+            copiedBetLimit.setLottery(copyLottery);            
             copiedBetLimits.add(copiedBetLimit);
         }
         return copiedBetLimits;

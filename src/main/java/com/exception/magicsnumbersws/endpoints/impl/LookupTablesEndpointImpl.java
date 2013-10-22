@@ -9,11 +9,13 @@ import com.exception.magicsnumbersws.entities.BlockingNumberBetBanking;
 import com.exception.magicsnumbersws.entities.Category;
 import com.exception.magicsnumbersws.entities.Consortium;
 import com.exception.magicsnumbersws.entities.Lottery;
+import com.exception.magicsnumbersws.entities.LotteryCloseHour;
 import com.exception.magicsnumbersws.entities.Status;
 import com.exception.magicsnumbersws.exception.DeleteBetBankingBetLimitException;
 import com.exception.magicsnumbersws.exception.FindBetException;
 import com.exception.magicsnumbersws.exception.FindBetLimitException;
 import com.exception.magicsnumbersws.exception.FindBlockingNumberException;
+import com.exception.magicsnumbersws.exception.FindLotteryCloseHourException;
 import com.exception.magicsnumbersws.exception.FindLotteryException;
 import com.exception.magicsnumbersws.exception.SaveBetBankingBetLimitException;
 import com.exception.magicsnumbersws.exception.SaveBetBankingInfoException;
@@ -25,6 +27,7 @@ import com.exception.magicsnumbersws.service.BetBankingService;
 import com.exception.magicsnumbersws.service.BetService;
 import com.exception.magicsnumbersws.service.CategoryService;
 import com.exception.magicsnumbersws.service.ConsortiumService;
+import com.exception.magicsnumbersws.service.LotteryCloseHourService;
 import com.exception.magicsnumbersws.service.LotteryService;
 import com.exception.magicsnumbersws.service.StatusService;
 import java.util.List;
@@ -44,6 +47,7 @@ import org.springframework.stereotype.Component;
 @Path("lookuptables")
 public class LookupTablesEndpointImpl implements LookupTablesEndpoint {
 
+    private Logger logger = Logger.getLogger(LookupTablesEndpointImpl.class.getName());
     @Autowired
     private StatusService statusService;
     @Autowired
@@ -56,8 +60,8 @@ public class LookupTablesEndpointImpl implements LookupTablesEndpoint {
     private BetService betService;
     @Autowired
     private LotteryService lotteryService;
-    
-    private Logger logger = Logger.getLogger(LookupTablesEndpointImpl.class.getName());
+    @Autowired
+    private LotteryCloseHourService lotteryCloseHourService;
 
     @Override
     public List<Status> getAllStatus() {
@@ -160,7 +164,7 @@ public class LookupTablesEndpointImpl implements LookupTablesEndpoint {
     }
 
     @Override
-    public void saveBlockingNumberInformation(List<BlockingNumberBetBanking> blockingNumbers) throws SaveBlockingNumberException,DeleteBetBankingBetLimitException,FindBetLimitException,FindBlockingNumberException{
+    public void saveBlockingNumberInformation(List<BlockingNumberBetBanking> blockingNumbers) throws SaveBlockingNumberException, DeleteBetBankingBetLimitException, FindBetLimitException, FindBlockingNumberException {
         betBankingService.saveBlockingNumbers(blockingNumbers);
 
     }
@@ -186,5 +190,10 @@ public class LookupTablesEndpointImpl implements LookupTablesEndpoint {
     public List<Bet> findBetsByLotteryId(int lotteryId) throws FindLotteryException {
         logger.entering("LookupTablesEndpointImpl", "findBetsByLotteryId");
         return this.lotteryService.findBetsByLotteryId(lotteryId);
+    }
+
+    @Override
+    public List<LotteryCloseHour> findAvailableTimesByLotteryId(int lotteryId) throws FindLotteryCloseHourException {
+        return this.lotteryCloseHourService.findAvailableTimesByLotteryId(lotteryId);
     }
 }

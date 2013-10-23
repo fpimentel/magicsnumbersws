@@ -11,6 +11,8 @@ import com.exception.magicsnumbersws.entities.Consortium;
 import com.exception.magicsnumbersws.entities.Lottery;
 import com.exception.magicsnumbersws.entities.LotteryCloseHour;
 import com.exception.magicsnumbersws.entities.Status;
+import com.exception.magicsnumbersws.entities.Time;
+import com.exception.magicsnumbersws.exception.CloseHourLotteryConfigNotFoundtException;
 import com.exception.magicsnumbersws.exception.DeleteBetBankingBetLimitException;
 import com.exception.magicsnumbersws.exception.FindBetException;
 import com.exception.magicsnumbersws.exception.FindBetLimitException;
@@ -193,7 +195,9 @@ public class LookupTablesEndpointImpl implements LookupTablesEndpoint {
     }
 
     @Override
-    public List<LotteryCloseHour> findAvailableTimesByLotteryId(int lotteryId) throws FindLotteryCloseHourException {
+    public List<Time> findAvailableTimesByLotteryId(int lotteryId) throws FindLotteryCloseHourException, CloseHourLotteryConfigNotFoundtException {
+        logger.entering("LookupTablesEndpointImpl", "findAvailableTimesByLotteryId");
         return this.lotteryCloseHourService.findAvailableTimesByLotteryId(lotteryId);
     }
+
 }

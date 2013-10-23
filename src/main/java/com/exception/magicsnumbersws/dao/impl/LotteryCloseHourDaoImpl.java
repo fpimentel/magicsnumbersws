@@ -2,16 +2,17 @@ package com.exception.magicsnumbersws.dao.impl;
 
 import com.exception.magicsnumbersws.dao.LotteryCloseHourDao;
 import com.exception.magicsnumbersws.entities.LotteryCloseHour;
+import com.exception.magicsnumbersws.entities.Time;
+import com.exception.magicsnumbersws.exception.CloseHourLotteryConfigNotFoundtException;
 import com.exception.magicsnumbersws.exception.FindLotteryCloseHourException;
+import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import org.hibernate.FetchMode;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -19,8 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Repository
 public class LotteryCloseHourDaoImpl implements LotteryCloseHourDao {
-
-    private static int ACTIVO = 1;
+    
     @Autowired
     private SessionFactory sessionFactory;
 
@@ -65,18 +65,36 @@ public class LotteryCloseHourDaoImpl implements LotteryCloseHourDao {
     }
 
     @Override
-    public List<LotteryCloseHour> findAvailableTimesByLotteryId(int lotteryId) throws FindLotteryCloseHourException {
-        final Calendar cal = Calendar.getInstance();        
+    public List<Time> findAvailableTimesByLotteryId(int lotteryId) throws FindLotteryCloseHourException,CloseHourLotteryConfigNotFoundtException {
+        
+        final Calendar cal = Calendar.getInstance();         
+        final int hour = cal.get(Calendar.HOUR_OF_DAY);
+        final int minute = cal.get(Calendar.HOUR_OF_DAY);
+        final String currHourAndMinute = hour + "" + minute;
+        final int currentHourAndMinuteInt = Integer.parseInt(currHourAndMinute);
         final int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK);
         
         List<LotteryCloseHour> lotteryCloseHours = sessionFactory.getCurrentSession()
                 .createCriteria(LotteryCloseHour.class)
                 .setFetchMode("lottery", FetchMode.JOIN)
                 .setFetchMode("day", FetchMode.JOIN)
+                .createAlias("day", "d")
                 .add(Restrictions.eq("lottery.id", lotteryId))
-                .add(Restrictions.eq("day.id", dayOfWeek))
+                .add(Restrictions.eq("d.dayOfWeek", dayOfWeek))
                 .list();
+        if(lotteryCloseHours.isEmpty()){
+              throw new CloseHourLotteryConfigNotFoundtException("No existen configuraciones de hora de cierre para esa loteria(" + lotteryId + ")" + " y dia");
+        }
+        List<Time> availableTimes = new ArrayList<Time>();
         
-        return lotteryCloseHours;
+        for(LotteryCloseHour currCloseHour : lotteryCloseHours){
+           String hourMinute[]= currCloseHour.getHour().split(":");
+           final String hourAndMinute = hourMinute[0] + "" + hourMinute[1];
+           final int hourAndMinuteInt = Integer.parseInt(hourAndMinute);
+           if(hourAndMinuteInt > currentHourAndMinuteInt){
+               availableTimes.add(currCloseHour.getTime());
+           }
+        }
+        return availableTimes;
     }
 }

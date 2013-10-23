@@ -2,6 +2,8 @@ package com.exception.magicsnumbersws.service.impl;
 
 import com.exception.magicsnumbersws.dao.LotteryCloseHourDao;
 import com.exception.magicsnumbersws.entities.LotteryCloseHour;
+import com.exception.magicsnumbersws.entities.Time;
+import com.exception.magicsnumbersws.exception.CloseHourLotteryConfigNotFoundtException;
 import com.exception.magicsnumbersws.exception.FindLotteryCloseHourException;
 import com.exception.magicsnumbersws.service.LotteryCloseHourService;
 import java.util.List;
@@ -15,20 +17,18 @@ import org.springframework.transaction.annotation.Transactional;
  * @author fpimentel
  * @since 31-agosto-2013
  */
-@Transactional
 @Service
 public class LotteryCloseHourServiceImpl implements LotteryCloseHourService {
 
     @Autowired
     private LotteryCloseHourDao lotteryCloseHourDao;
-    
     private static final Logger LOG = Logger.getLogger(LotteryCloseHourServiceImpl.class.getName());
 
     public LotteryCloseHourServiceImpl() {
     }
 
     public LotteryCloseHourServiceImpl(LotteryCloseHourDao lotteryCloseHourDao) {
-        this.lotteryCloseHourDao= lotteryCloseHourDao;
+        this.lotteryCloseHourDao = lotteryCloseHourDao;
     }
 
     public LotteryCloseHourDao getLotteryCloseHourDao() {
@@ -37,7 +37,7 @@ public class LotteryCloseHourServiceImpl implements LotteryCloseHourService {
 
     public void setLotteryCloseHourDao(LotteryCloseHourDao lotteryCloseHourDao) {
         this.lotteryCloseHourDao = lotteryCloseHourDao;
-    }         
+    }
 
     @Override
     public void add(LotteryCloseHour lotteryCloseHour) {
@@ -64,8 +64,9 @@ public class LotteryCloseHourServiceImpl implements LotteryCloseHourService {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    @Transactional
     @Override
-    public List<LotteryCloseHour> findAvailableTimesByLotteryId(int lotteryId) throws FindLotteryCloseHourException {
+    public List<Time> findAvailableTimesByLotteryId(int lotteryId) throws FindLotteryCloseHourException, CloseHourLotteryConfigNotFoundtException {
         return lotteryCloseHourDao.findAvailableTimesByLotteryId(lotteryId);
     }
 }

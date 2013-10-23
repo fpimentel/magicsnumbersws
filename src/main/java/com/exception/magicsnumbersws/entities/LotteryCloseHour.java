@@ -77,11 +77,11 @@ public class LotteryCloseHour implements Serializable {
         this.hour = hour;
     }
 
-    public Time getIdTime() {
+    public Time getTime() {
         return time;
     }
 
-    public void setIdTime(Time time) {
+    public void setTime(Time time) {
         this.time = time;
     }
 

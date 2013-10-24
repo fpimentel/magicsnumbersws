@@ -7,7 +7,6 @@ import com.exception.magicsnumbersws.exception.CloseHourLotteryConfigNotFoundtEx
 import com.exception.magicsnumbersws.exception.FindLotteryCloseHourException;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import org.hibernate.FetchMode;
 import org.hibernate.SessionFactory;

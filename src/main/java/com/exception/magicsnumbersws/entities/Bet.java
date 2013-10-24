@@ -1,9 +1,4 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.exception.magicsnumbersws.entities;
-
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -18,7 +13,6 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-
 /**
  *
  * @author fpimentel
@@ -26,8 +20,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Entity
 @Table(name = "BET")
 @XmlRootElement
-public class Bet implements Serializable, Comparable<Bet> {  
-
+public class Bet implements Serializable, Comparable<Bet> {              
     private static final long serialVersionUID = 1L;
     @Id
     @Column(name = "ID")
@@ -160,6 +153,14 @@ public class Bet implements Serializable, Comparable<Bet> {
         this.betType = betType;
     }
 
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
     
     @Override
     public int hashCode() {
@@ -186,5 +187,5 @@ public class Bet implements Serializable, Comparable<Bet> {
     @Override
     public int compareTo(Bet that) {
         return this.id - that.id;
-    }
+    }    
 }

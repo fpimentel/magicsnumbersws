@@ -1,29 +1,18 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.exception.magicsnumbersws.entities;
-
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -32,9 +21,12 @@ import javax.xml.bind.annotation.XmlTransient;
 @Entity
 @Table(name = "TICKETS")
 @XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Ticket.findAll", query = "SELECT t FROM Ticket t")})
 public class Ticket implements Serializable {
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 50)
+    @Column(name = "CREATION_USER")
+    private String creationUser;
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -62,9 +54,7 @@ public class Ticket implements Serializable {
     private String modificationUser;
     @JoinColumn(name = "USER_ID", referencedColumnName = "ID")
     @ManyToOne(optional = false)
-    private User userId;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "ticketId")
-    private Collection<TicketDetail> ticketDetailCollection;
+    private User userId;    
 
     public Ticket() {
     }
@@ -136,15 +126,6 @@ public class Ticket implements Serializable {
         this.userId = userId;
     }
 
-    @XmlTransient
-    public Collection<TicketDetail> getTicketDetailCollection() {
-        return ticketDetailCollection;
-    }
-
-    public void setTicketDetailCollection(Collection<TicketDetail> ticketDetailCollection) {
-        this.ticketDetailCollection = ticketDetailCollection;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -168,6 +149,14 @@ public class Ticket implements Serializable {
     @Override
     public String toString() {
         return "com.exception.magicsnumbersws.entities.Ticket[ id=" + id + " ]";
+    }
+
+    public String getCreationUser() {
+        return creationUser;
+    }
+
+    public void setCreationUser(String creationUser) {
+        this.creationUser = creationUser;
     }
     
 }

@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.exception.magicsnumbersws.entities;
 
 import java.io.Serializable;
@@ -9,11 +5,10 @@ import java.math.BigDecimal;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -26,10 +21,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Entity
 @Table(name = "TICKET_DETAILS")
 @XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "TicketDetail.findAll", query = "SELECT t FROM TicketDetail t")})
 public class TicketDetail implements Serializable {
+
     private static final long serialVersionUID = 1L;
+    @JoinColumn(name = "TIME_ID", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private Time time;
     @Id
     @Basic(optional = false)
     @NotNull
@@ -45,19 +42,18 @@ public class TicketDetail implements Serializable {
     @NotNull
     @Column(name = "AMOUNT_TO_WIN")
     private BigDecimal amountToWin;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "STATUS_ID")
-    private int statusId;
     @JoinColumn(name = "TICKET_ID", referencedColumnName = "ID")
     @ManyToOne(optional = false)
-    private Ticket ticketId;
+    private Ticket ticket;
     @JoinColumn(name = "LOTTERY_ID", referencedColumnName = "ID")
     @ManyToOne(optional = false)
-    private Lottery lotteryId;
+    private Lottery lottery;
     @JoinColumn(name = "BET_ID", referencedColumnName = "ID")
     @ManyToOne(optional = false)
-    private Bet betId;
+    private Bet bet;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "STATUS_ID", nullable = false)
+    private Status status;
 
     public TicketDetail() {
     }
@@ -66,11 +62,11 @@ public class TicketDetail implements Serializable {
         this.id = id;
     }
 
-    public TicketDetail(Integer id, String numbersPlayed, BigDecimal amountToWin, int statusId) {
+    public TicketDetail(Integer id, String numbersPlayed, BigDecimal amountToWin, Status status) {
         this.id = id;
         this.numbersPlayed = numbersPlayed;
         this.amountToWin = amountToWin;
-        this.statusId = statusId;
+        this.status = status;
     }
 
     public Integer getId() {
@@ -97,36 +93,36 @@ public class TicketDetail implements Serializable {
         this.amountToWin = amountToWin;
     }
 
-    public int getStatusId() {
-        return statusId;
+    public Status getStatus() {
+        return status;
     }
 
-    public void setStatusId(int statusId) {
-        this.statusId = statusId;
+    public void setStatus(Status status) {
+        this.status = status;
     }
 
-    public Ticket getTicketId() {
-        return ticketId;
+    public Ticket getTicket() {
+        return ticket;
     }
 
-    public void setTicketId(Ticket ticketId) {
-        this.ticketId = ticketId;
+    public void setTicket(Ticket ticket) {
+        this.ticket = ticket;
     }
 
-    public Lottery getLotteryId() {
-        return lotteryId;
+    public Lottery getLottery() {
+        return lottery;
     }
 
-    public void setLotteryId(Lottery lotteryId) {
-        this.lotteryId = lotteryId;
+    public void setLotteryId(Lottery lottery) {
+        this.lottery = lottery;
     }
 
-    public Bet getBetId() {
-        return betId;
+    public Bet getBet() {
+        return bet;
     }
 
-    public void setBetId(Bet betId) {
-        this.betId = betId;
+    public void setBet(Bet bet) {
+        this.bet = bet;
     }
 
     @Override
@@ -153,5 +149,12 @@ public class TicketDetail implements Serializable {
     public String toString() {
         return "com.exception.magicsnumbersws.entities.TicketDetail[ id=" + id + " ]";
     }
-    
+
+    public Time getTime() {
+        return time;
+    }
+
+    public void setTime(Time time) {
+        this.time = time;
+    }
 }

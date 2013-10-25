@@ -1,5 +1,4 @@
 package com.exception.magicsnumbersws.entities;
-
 import java.io.Serializable;
 import java.math.BigDecimal;
 import javax.persistence.Basic;
@@ -21,8 +20,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Entity
 @Table(name = "TICKET_DETAILS")
 @XmlRootElement
-public class TicketDetail implements Serializable {
-
+public class TicketDetail implements Serializable, Comparable<TicketDetail> {        
     private static final long serialVersionUID = 1L;
     @JoinColumn(name = "TIME_ID", referencedColumnName = "id")
     @ManyToOne(optional = false)
@@ -42,6 +40,10 @@ public class TicketDetail implements Serializable {
     @NotNull
     @Column(name = "AMOUNT_TO_WIN")
     private BigDecimal amountToWin;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "BET_AMOUNT")
+    private BigDecimal betAmount;
     @JoinColumn(name = "TICKET_ID", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private Ticket ticket;
@@ -113,7 +115,7 @@ public class TicketDetail implements Serializable {
         return lottery;
     }
 
-    public void setLotteryId(Lottery lottery) {
+    public void setLottery(Lottery lottery) {
         this.lottery = lottery;
     }
 
@@ -156,5 +158,18 @@ public class TicketDetail implements Serializable {
 
     public void setTime(Time time) {
         this.time = time;
+    }
+
+    public BigDecimal getBetAmount() {
+        return betAmount;
+    }
+
+    public void setBetAmount(BigDecimal betAmount) {
+        this.betAmount = betAmount;
+    }   
+
+    @Override
+    public int compareTo(TicketDetail that) {
+        return this.id - that.id;
     }
 }

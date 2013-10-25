@@ -8,6 +8,7 @@ import com.exception.magicsnumbersws.exception.FindLotteryCloseHourException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import org.apache.maven.doxia.util.StringUtil;
 import org.hibernate.FetchMode;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
@@ -68,8 +69,8 @@ public class LotteryCloseHourDaoImpl implements LotteryCloseHourDao {
     public List<Time> findAvailableTimesByLotteryId(int lotteryId) throws FindLotteryCloseHourException,CloseHourLotteryConfigNotFoundtException {
         
         final Calendar cal = Calendar.getInstance();        
-        final int hour = cal.get(Calendar.HOUR_OF_DAY);
-        final int minute = cal.get(Calendar.MINUTE);
+        final int hour = cal.get(Calendar.HOUR_OF_DAY);        
+        String  minute = String.format("%02d", cal.get(Calendar.MINUTE));
         final String currHourAndMinute = hour + "" + minute;
         final int currentHourAndMinuteInt = Integer.parseInt(currHourAndMinute);
         final int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK);

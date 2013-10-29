@@ -8,7 +8,6 @@ import com.exception.magicsnumbersws.exception.FindLotteryCloseHourException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import org.apache.maven.doxia.util.StringUtil;
 import org.hibernate.FetchMode;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;

@@ -8,8 +8,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -17,7 +15,6 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-
 /**
  *
  * @author fpimentel
@@ -55,10 +52,7 @@ public class Ticket implements Serializable {
     private Date modificationDate;
     @Size(max = 50)
     @Column(name = "MODIFICATION_USER")
-    private String modificationUser;
-    @JoinColumn(name = "USER_ID", referencedColumnName = "ID")
-    @ManyToOne(optional = false)
-    private User userId;    
+    private String modificationUser;     
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "ticket")
     private Set<TicketDetail> ticketDetails= new HashSet<TicketDetail>(0);   
@@ -123,14 +117,6 @@ public class Ticket implements Serializable {
 
     public void setModificationUser(String modificationUser) {
         this.modificationUser = modificationUser;
-    }
-
-    public User getUserId() {
-        return userId;
-    }
-
-    public void setUserId(User userId) {
-        this.userId = userId;
     }
 
     @Override

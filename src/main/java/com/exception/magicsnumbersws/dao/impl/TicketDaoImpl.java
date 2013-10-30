@@ -2,6 +2,7 @@ package com.exception.magicsnumbersws.dao.impl;
 
 import com.exception.magicsnumbersws.dao.TicketDao;
 import com.exception.magicsnumbersws.entities.Ticket;
+import com.exception.magicsnumbersws.exception.SaveTicketException;
 import java.util.logging.Logger;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +36,7 @@ public class TicketDaoImpl implements TicketDao {
     }
 
     @Override
-    public void add(Ticket ticket) {
+    public void add(Ticket ticket) throws SaveTicketException{
         sessionFactory.getCurrentSession().save(ticket);
     }
 

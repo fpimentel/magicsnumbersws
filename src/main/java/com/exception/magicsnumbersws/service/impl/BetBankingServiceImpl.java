@@ -11,6 +11,7 @@ import com.exception.magicsnumbersws.entities.BetBankingBetLimit;
 import com.exception.magicsnumbersws.entities.BlockingNumberBetBanking;
 import com.exception.magicsnumbersws.entities.Lottery;
 import com.exception.magicsnumbersws.exception.DeleteBetBankingBetLimitException;
+import com.exception.magicsnumbersws.exception.FindBetException;
 import com.exception.magicsnumbersws.exception.FindBetLimitException;
 import com.exception.magicsnumbersws.exception.FindBlockingNumberException;
 import com.exception.magicsnumbersws.exception.SaveBetBankingBetLimitException;
@@ -20,7 +21,6 @@ import com.exception.magicsnumbersws.exception.SearchAllBetBankingException;
 import com.exception.magicsnumbersws.service.BetBankingService;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -215,5 +215,11 @@ public class BetBankingServiceImpl implements BetBankingService {
         } else {//Se eliminan todos los numeros bloqueados en la banca.
             deleteBlockinNumberByBetBankingId(betBankingContainer.getBetBanking().getId());            
         }
+    }
+
+    @Transactional
+    @Override
+    public List<Bet> findBetsByLotteryAndBetBanking(int lotteryId, int betBankingId) throws FindBetException {
+       return betBankingDao.findBetsByLotteryAndBetBanking(lotteryId, betBankingId);
     }
 }

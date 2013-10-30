@@ -1,12 +1,16 @@
 package com.exception.magicsnumbersws.entities;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -56,6 +60,9 @@ public class Ticket implements Serializable {
     @ManyToOne(optional = false)
     private User userId;    
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "ticket")
+    private Set<TicketDetail> ticketDetails= new HashSet<TicketDetail>(0);   
+    
     public Ticket() {
     }
 
@@ -158,5 +165,12 @@ public class Ticket implements Serializable {
     public void setCreationUser(String creationUser) {
         this.creationUser = creationUser;
     }
-    
+
+    public Set<TicketDetail> getTicketDetails() {
+        return ticketDetails;
+    }
+
+    public void setTicketDetails(Set<TicketDetail> ticketDetails) {
+        this.ticketDetails = ticketDetails;
+    }            
 }

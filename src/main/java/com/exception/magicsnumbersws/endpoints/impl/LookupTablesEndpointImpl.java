@@ -9,7 +9,6 @@ import com.exception.magicsnumbersws.entities.BlockingNumberBetBanking;
 import com.exception.magicsnumbersws.entities.Category;
 import com.exception.magicsnumbersws.entities.Consortium;
 import com.exception.magicsnumbersws.entities.Lottery;
-import com.exception.magicsnumbersws.entities.LotteryCloseHour;
 import com.exception.magicsnumbersws.entities.Status;
 import com.exception.magicsnumbersws.entities.Time;
 import com.exception.magicsnumbersws.exception.CloseHourLotteryConfigNotFoundtException;
@@ -198,6 +197,12 @@ public class LookupTablesEndpointImpl implements LookupTablesEndpoint {
     public List<Time> findAvailableTimesByLotteryId(int lotteryId) throws FindLotteryCloseHourException, CloseHourLotteryConfigNotFoundtException {
         logger.entering("LookupTablesEndpointImpl", "findAvailableTimesByLotteryId");
         return this.lotteryCloseHourService.findAvailableTimesByLotteryId(lotteryId);
+    }
+
+    @Override
+    public List<Bet> findBetsByLotteryAndBetBanking(int lotteryId, int betBankingId) throws FindBetException{
+        logger.entering("LookupTablesEndpointImpl", "findBetsByLotteryAndBetBanking");
+        return this.betBankingService.findBetsByLotteryAndBetBanking(lotteryId, betBankingId);
     }
 
 }

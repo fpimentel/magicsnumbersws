@@ -198,4 +198,9 @@ public interface LookupTablesEndpoint {
     @Path("/lottery/availableTimes/{lotteryId}")
     @Produces(MediaType.APPLICATION_JSON)
     public List<Time> findAvailableTimesByLotteryId(@PathParam("lotteryId") int lotteryId) throws FindLotteryCloseHourException, CloseHourLotteryConfigNotFoundtException;
+        
+    @GET
+    @Path("/findBetsByLotteryAndBetBanking/{lotteryId}/{betBankingId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Bet> findBetsByLotteryAndBetBanking(@PathParam("lotteryId") int lotteryId, @PathParam("betBankingId") int betBankingId) throws FindBetException;
 }

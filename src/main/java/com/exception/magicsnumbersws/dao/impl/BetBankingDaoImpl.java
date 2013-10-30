@@ -8,6 +8,7 @@ import com.exception.magicsnumbersws.entities.BlockingNumberBetBanking;
 import com.exception.magicsnumbersws.entities.Consortium;
 import com.exception.magicsnumbersws.entities.Lottery;
 import com.exception.magicsnumbersws.entities.User;
+import com.exception.magicsnumbersws.exception.FindBetException;
 import com.exception.magicsnumbersws.exception.FindBetLimitException;
 import com.exception.magicsnumbersws.exception.FindBlockingNumberException;
 import com.exception.magicsnumbersws.exception.SearchAllBetBankingException;
@@ -261,5 +262,29 @@ public class BetBankingDaoImpl implements BetBankingDao {
             blockNumber.getBetBanking().setLotteries(null);
         }
         return blockingNumbers;
+    }
+
+    @Override
+    public List<Bet> findBetsByLotteryAndBetBanking(int lotteryId, int betBankingId) throws FindBetException {
+        LOG.info("init - BetBankingDaoImpl.findBetsByLotteryAndBetBanking(: "+ lotteryId +" " + betBankingId);
+        List<BetBankingBetLimit> betLimits = sessionFactory                
+                .getCurrentSession()                
+                .createCriteria(BetBankingBetLimit.class)
+                .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)
+                .setFetchMode("bet", FetchMode.JOIN)
+                .setFetchMode("lottery", FetchMode.JOIN)     
+                .setFetchMode("betBanking", FetchMode.JOIN)                     
+                .add(Restrictions.eq("betBanking.id", betBankingId))
+                .add(Restrictions.eq("lottery.id", lotteryId))
+                .list();            
+        List<Bet> bets = new ArrayList<Bet>();
+        String[] betIgnoredProperties = {"status","betType","creationDate","creationUser"};
+        for(BetBankingBetLimit currBetLimit : betLimits){
+            Bet betObj = new Bet();
+            BeanUtils.copyProperties(currBetLimit.getBet(), betObj,betIgnoredProperties);            
+            bets.add(betObj);
+        }
+        LOG.info("finish - BetBankingDaoImpl.findBetsByLotteryAndBetBanking(: "+ lotteryId +" " + betBankingId);
+        return bets;    
     }
 }

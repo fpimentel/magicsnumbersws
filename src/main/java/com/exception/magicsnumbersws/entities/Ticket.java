@@ -3,11 +3,16 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -23,30 +28,30 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "TICKETS")
 @XmlRootElement
 public class Ticket implements Serializable {
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 50)
-    @Column(name = "CREATION_USER")
-    private String creationUser;
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;    
     @Id
-    @Basic(optional = false)
-    @NotNull
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private Integer id;
     @Basic(optional = false)
     @NotNull
+    @Size(min = 1, max = 50)
+    @Column(name = "CREATION_USER")
+    private String creationUser;    
+    @Basic(optional = false)
+    @NotNull
     @Column(name = "SECURITY_CODE")
-    private int securityCode;
+    private String securityCode;
     @Basic(optional = false)
     @NotNull
     @Column(name = "CREATION_DATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date creationDate;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "STATUS_ID")
-    private int statusId;
+    
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "STATUS_ID", nullable = false)
+    private Status status;
+    
     @Column(name = "MODIFICATION_DATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date modificationDate;
@@ -64,11 +69,11 @@ public class Ticket implements Serializable {
         this.id = id;
     }
 
-    public Ticket(Integer id, int securityCode, Date creationDate, int statusId) {
+    public Ticket(Integer id, String securityCode, Date creationDate, Status status) {
         this.id = id;
         this.securityCode = securityCode;
         this.creationDate = creationDate;
-        this.statusId = statusId;
+        this.status = status;
     }
 
     public Integer getId() {
@@ -79,11 +84,11 @@ public class Ticket implements Serializable {
         this.id = id;
     }
 
-    public int getSecurityCode() {
+    public String getSecurityCode() {
         return securityCode;
     }
 
-    public void setSecurityCode(int securityCode) {
+    public void setSecurityCode(String securityCode) {
         this.securityCode = securityCode;
     }
 
@@ -95,12 +100,12 @@ public class Ticket implements Serializable {
         this.creationDate = creationDate;
     }
 
-    public int getStatusId() {
-        return statusId;
+    public Status getStatus() {
+        return status;
     }
 
-    public void setStatusId(int statusId) {
-        this.statusId = statusId;
+    public void setStatus(Status status) {
+        this.status = status;
     }
 
     public Date getModificationDate() {
@@ -123,9 +128,10 @@ public class Ticket implements Serializable {
     public int hashCode() {
         int hash = 0;
         hash += (id != null ? id.hashCode() : 0);
-        return hash;
+        return hash;        
     }
 
+    
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
@@ -144,6 +150,11 @@ public class Ticket implements Serializable {
         return "com.exception.magicsnumbersws.entities.Ticket[ id=" + id + " ]";
     }
 
+    public String getRandomSecurityCode(){
+        String securityCode = UUID.randomUUID().toString();
+        securityCode = securityCode.substring(0,6);
+        return securityCode;
+    }
     public String getCreationUser() {
         return creationUser;
     }

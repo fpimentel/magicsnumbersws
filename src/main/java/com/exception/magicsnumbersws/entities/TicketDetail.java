@@ -5,6 +5,8 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -26,9 +28,7 @@ public class TicketDetail implements Serializable, Comparable<TicketDetail> {
     @ManyToOne(optional = false)
     private Time time;
     @Id
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "ID")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @Basic(optional = false)
     @NotNull
@@ -39,7 +39,7 @@ public class TicketDetail implements Serializable, Comparable<TicketDetail> {
     @Basic(optional = false)
     @NotNull
     @Column(name = "AMOUNT_TO_WIN")
-    private BigDecimal amountToWin;
+    private float amountToWin;
     @Basic(optional = false)
     @NotNull
     @Column(name = "BET_AMOUNT")
@@ -64,7 +64,7 @@ public class TicketDetail implements Serializable, Comparable<TicketDetail> {
         this.id = id;
     }
 
-    public TicketDetail(Integer id, String numbersPlayed, BigDecimal amountToWin, Status status) {
+    public TicketDetail(Integer id, String numbersPlayed, float amountToWin, Status status) {
         this.id = id;
         this.numbersPlayed = numbersPlayed;
         this.amountToWin = amountToWin;
@@ -87,11 +87,11 @@ public class TicketDetail implements Serializable, Comparable<TicketDetail> {
         this.numbersPlayed = numbersPlayed;
     }
 
-    public BigDecimal getAmountToWin() {
+    public float getAmountToWin() {
         return amountToWin;
     }
 
-    public void setAmountToWin(BigDecimal amountToWin) {
+    public void setAmountToWin(float amountToWin) {
         this.amountToWin = amountToWin;
     }
 

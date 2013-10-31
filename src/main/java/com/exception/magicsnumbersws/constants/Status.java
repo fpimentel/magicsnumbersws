@@ -10,7 +10,8 @@ package com.exception.magicsnumbersws.constants;
  */
 public enum Status {
 
-    ACTIVE(1, "ACTIVO", 1);
+    ACTIVE(1, "ACTIVO", 1),
+    TICKET_PENDIENTE(3, "PENDIENTE", 2);
     private int id;
     private String name;
     private int statusTypeId;

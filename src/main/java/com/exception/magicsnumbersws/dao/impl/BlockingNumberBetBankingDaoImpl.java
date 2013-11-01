@@ -1,5 +1,4 @@
 package com.exception.magicsnumbersws.dao.impl;
-
 import com.exception.magicsnumbersws.dao.BlockingNumberBetBankingDao;
 import com.exception.magicsnumbersws.entities.BlockingNumberBetBanking;
 import com.exception.magicsnumbersws.exception.FindBlockingNumberException;
@@ -9,7 +8,6 @@ import org.hibernate.FetchMode;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
-import org.hibernate.sql.JoinType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -66,6 +64,7 @@ public class BlockingNumberBetBankingDaoImpl implements BlockingNumberBetBanking
         sessionFactory.getCurrentSession().delete(entity);
     }
 
+    @Override
     public void deleteByBetBanking(int betBankingId) {
         Query query = sessionFactory.getCurrentSession().createQuery("delete from BlockingNumberBetBanking bbl where bbl.betBanking.id = :id");
         query.setParameter("id", betBankingId);
@@ -75,7 +74,7 @@ public class BlockingNumberBetBankingDaoImpl implements BlockingNumberBetBanking
 
     @Override
     public boolean isNumberBlock(int betBankingId, int number) throws FindBlockingNumberException {
-        LOG.log(Level.INFO, "Init - BlockingNumberBetBankingDaoImpl.isNumberBlock: " + betBankingId + ", " +  number);
+        LOG.log(Level.INFO, "Init - BlockingNumberBetBankingDaoImpl.isNumberBlock: " + betBankingId + ", " + number);
         boolean isBlock = false;
         try {
             BlockingNumberBetBanking blockNumberEntity = (BlockingNumberBetBanking) sessionFactory.getCurrentSession()
@@ -88,7 +87,7 @@ public class BlockingNumberBetBankingDaoImpl implements BlockingNumberBetBanking
             if (blockNumberEntity != null) {
                 isBlock = true;
             }
-            LOG.log(Level.INFO, "End - BlockingNumberBetBankingDaoImpl.isNumberBlock: " + betBankingId + ", " +  number);
+            LOG.log(Level.INFO, "End - BlockingNumberBetBankingDaoImpl.isNumberBlock: " + betBankingId + ", " + number);
             return isBlock;
         } catch (Exception ex) {
             LOG.log(Level.SEVERE, "Error occur serch if a number is block");

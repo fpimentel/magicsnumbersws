@@ -35,7 +35,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 public class BetBankingServiceImpl implements BetBankingService {
-
+    private static final Logger LOG = Logger.getLogger(BetBankingServiceImpl.class.getName());
     @Autowired
     private BetBankingDao betBankingDao;
     @Autowired
@@ -43,8 +43,7 @@ public class BetBankingServiceImpl implements BetBankingService {
     @Autowired
     private BetDao betDao;
     @Autowired
-    private BlockingNumberBetBankingDao blockingNumberBetBankingDao;
-    private static final Logger LOG = Logger.getLogger(BetBankingServiceImpl.class.getName());
+    private BlockingNumberBetBankingDao blockingNumberBetBankingDao;    
 
     public BetBankingServiceImpl() {
     }

@@ -1,11 +1,13 @@
 package com.exception.magicsnumbersws.service.impl;
 
 import com.exception.magicsnumbersws.constants.Status;
+import com.exception.magicsnumbersws.dao.BetBankingBetLimitDao;
 import com.exception.magicsnumbersws.dao.BlockingNumberBetBankingDao;
 import com.exception.magicsnumbersws.dao.TicketDao;
 import com.exception.magicsnumbersws.dao.TicketDetailDao;
 import com.exception.magicsnumbersws.entities.Ticket;
 import com.exception.magicsnumbersws.entities.TicketDetail;
+import com.exception.magicsnumbersws.exception.FindBetLimitException;
 import com.exception.magicsnumbersws.exception.FindBlockingNumberException;
 import com.exception.magicsnumbersws.exception.SaveTicketException;
 import com.exception.magicsnumbersws.service.TicketService;
@@ -26,6 +28,8 @@ public class TicketServiceImpl implements TicketService {
     private static final Logger LOG = Logger.getLogger(TicketServiceImpl.class.getName());
     @Autowired
     private TicketDao ticketDao;
+    @Autowired
+    private BetBankingBetLimitDao betBankingBetLimitDao;
     @Autowired
     private TicketDetailDao ticketDetailDao;
     @Autowired
@@ -95,10 +99,15 @@ public class TicketServiceImpl implements TicketService {
         if (!blockNumbers.isEmpty()) {
             //Cutting the last "-" character.
             int beginIndex = 0;
-            int offSet = blockNumbers.length() - 1;
-            blockNumbers = blockNumbers.substring(beginIndex, offSet);
+            int endIndex = blockNumbers.length() - 1;
+            blockNumbers = blockNumbers.substring(beginIndex, endIndex);
         }
         LOG.info("End - TicketServiceImpl.isNumbersBlocks( " + betBankingId + ", " + numbers + ")");
         return blockNumbers;
+    }
+    @Transactional
+    @Override
+    public String findBetBankingBetLimitAmount(int betBankingId, int lotteryId, int betId) throws FindBetLimitException{        
+        return this.betBankingBetLimitDao.findBetBankingBetLimitAmount(betBankingId, lotteryId, betId);
     }
 }

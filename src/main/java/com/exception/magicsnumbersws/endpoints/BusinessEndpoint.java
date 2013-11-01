@@ -1,6 +1,7 @@
 package com.exception.magicsnumbersws.endpoints;
 
 import com.exception.magicsnumbersws.entities.Ticket;
+import com.exception.magicsnumbersws.exception.FindBetLimitException;
 import com.exception.magicsnumbersws.exception.FindBlockingNumberException;
 import com.exception.magicsnumbersws.exception.SaveTicketException;
 import javax.ws.rs.Consumes;
@@ -32,4 +33,8 @@ public interface BusinessEndpoint {
     @Path(value = "/isNumbersBlocks/{betBankingId}/{numbers}")
     @Produces(value = MediaType.APPLICATION_JSON)
     public String isNumbersBlocks(@PathParam("betBankingId") int betBankingId, @PathParam("numbers") String numbers) throws FindBlockingNumberException;
+    @GET
+    @Path(value = "/findLimitAmount/{betBankingId}/{lotteryId}/{betId}")
+    @Produces(value = MediaType.APPLICATION_JSON)
+    public String findBetBankingBetLimitAmount(@PathParam("betBankingId") int betBankingId, @PathParam("lotteryId") int lotteryId,@PathParam("betId") int betId)  throws FindBetLimitException;
 }

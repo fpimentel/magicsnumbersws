@@ -150,7 +150,7 @@ public class BetBankingServiceImpl implements BetBankingService {
         if (betLimits.get(0).getBet() != null) {
             for (BetBankingBetLimit currBetLimit : betLimits) {
                 currBetLimit.setCreationDate(new Date());
-                currBetLimit.setBetBanking(betBanking);
+                currBetLimit.setBetBanking(betBanking);                
                 betBankingBetLimitDao.add(currBetLimit);
             }
         }

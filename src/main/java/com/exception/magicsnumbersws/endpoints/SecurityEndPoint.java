@@ -1,17 +1,14 @@
 package com.exception.magicsnumbersws.endpoints;
 
-import com.exception.magicsnumbersws.entities.Consortium;
 import com.exception.magicsnumbersws.entities.Profile;
 import com.exception.magicsnumbersws.entities.SystemOption;
 import com.exception.magicsnumbersws.entities.User;
 import com.exception.magicsnumbersws.exception.SaveSystemOptionsDataException;
 import com.exception.magicsnumbersws.exception.SaveUsersDataException;
-import com.exception.magicsnumbersws.exception.SearchAllConsortiumException;
 import com.exception.magicsnumbersws.exception.SearchAllProfileException;
 import com.exception.magicsnumbersws.exception.SearchAllSystemOptionException;
 import com.exception.magicsnumbersws.exception.SearchAllUserException;
 import java.util.List;
-import java.util.Set;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -47,7 +44,7 @@ public interface SecurityEndPoint {
     @GET
     @Path("/user/{userName}/{pass}")
     @Produces(MediaType.APPLICATION_JSON)
-    User getUserByCredential(@PathParam("userName") String userName, @PathParam("pass") String pass);           
+    User getUserByCredential(@PathParam("userName") String userName, @PathParam("pass") String pass);
 
     @POST
     @Path(value = "/user/save")
@@ -60,4 +57,9 @@ public interface SecurityEndPoint {
     @Consumes("application/json")
     @Produces(value = MediaType.APPLICATION_JSON)
     void saveSystemOptionsData(List<SystemOption> systemOptions) throws SaveSystemOptionsDataException;
+
+    @GET
+    @Path("/findUsersByConsortiumIds/{userId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<User> findUsersByConsortiumIds(@PathParam("userId") int userId) throws SearchAllUserException;
 }

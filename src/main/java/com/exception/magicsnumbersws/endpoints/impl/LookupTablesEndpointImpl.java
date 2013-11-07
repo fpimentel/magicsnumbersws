@@ -204,5 +204,4 @@ public class LookupTablesEndpointImpl implements LookupTablesEndpoint {
         logger.entering("LookupTablesEndpointImpl", "findBetsByLotteryAndBetBanking");
         return this.betBankingService.findBetsByLotteryAndBetBanking(lotteryId, betBankingId);
     }
-
 }

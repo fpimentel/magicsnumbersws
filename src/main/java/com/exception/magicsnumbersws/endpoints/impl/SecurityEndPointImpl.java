@@ -77,4 +77,8 @@ public class SecurityEndPointImpl implements SecurityEndPoint {
         systemOptionService.saveSystemOptionsData(systemOptions);
     }
 
+    @Override
+    public List<User> findUsersByConsortiumIds(int userId) throws SearchAllUserException {
+        return userService.findUsersByConsortiumIds(userId);
+    }
 }

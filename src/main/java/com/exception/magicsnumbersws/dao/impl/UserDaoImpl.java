@@ -54,7 +54,11 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User findById(int id) {
-        return (User) sessionFactory.getCurrentSession().get(User.class, id);
+       User user = (User)sessionFactory.getCurrentSession().createCriteria(User.class)
+                .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)
+                .setFetchMode("consortiums", FetchMode.JOIN)
+                .add(Restrictions.eq("id", id)).uniqueResult();
+        return user;
     }
 
     public SessionFactory getSessionFactory() {

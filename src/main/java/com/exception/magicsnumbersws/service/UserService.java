@@ -30,4 +30,6 @@ public interface UserService {
     public User getUserByCredentials(String userName, String pass);
 
     public void saveUsersData(List<User> users) throws SaveUsersDataException;
+    
+    public List<User> findUsersByConsortiumIds(int userId) throws SearchAllUserException; 
 }

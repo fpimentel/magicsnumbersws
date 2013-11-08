@@ -61,10 +61,7 @@ public class Consortium implements Serializable, Comparable<Consortium>{
     private Status status;
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "USERS_CONSORTIUMS", joinColumns = { @JoinColumn(name = "CONSORTIUM_ID") }, inverseJoinColumns = { @JoinColumn(name = "USER_ID") })
-    private Set<User> users = new HashSet<User>(0);    
-    //@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    //@JoinTable(name = "CONSORTIUMS_BETBANKINGS", joinColumns = { @JoinColumn(name = "CONSORTIUM_ID") }, inverseJoinColumns = { @JoinColumn(name = "BETBANKING_ID") })
-    //private Set<BetBanking> betBankings = new HashSet<BetBanking>(0);
+    private Set<User> users = new HashSet<User>(0);        
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "consortium")
     private Set<BetBanking> betBankings = new HashSet<BetBanking>(0);        
     
@@ -132,7 +129,7 @@ public class Consortium implements Serializable, Comparable<Consortium>{
     public void setStatus(Status status) {
         this.status = status;
     }
-    @XmlTransient
+    
     public Set<User> getUsers() {
         return users;
     }

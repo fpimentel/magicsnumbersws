@@ -11,7 +11,6 @@ import com.exception.magicsnumbersws.dao.LotteryDao;
 import com.exception.magicsnumbersws.entities.Bet;
 import com.exception.magicsnumbersws.entities.Lottery;
 import com.exception.magicsnumbersws.exception.FindLotteryException;
-import com.mchange.v2.beans.BeansUtils;
 import java.util.ArrayList;
 import org.hibernate.Criteria;
 import org.springframework.beans.BeanUtils;

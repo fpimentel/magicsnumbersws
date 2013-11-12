@@ -132,21 +132,32 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public List<User> findAll() throws SearchAllUserException {
+        
         List<User> users = (List<User>) sessionFactory.getCurrentSession().createCriteria(User.class)
                 .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)
                 .setFetchMode("profile", FetchMode.JOIN)
                 .setFetchMode("status", FetchMode.JOIN)
                 .setFetchMode("profile.options", FetchMode.JOIN)
+                .setFetchMode("betBankings", FetchMode.JOIN)
                 .add(Restrictions.eq("status.id", ACTIVO))
                 .list();
+        String[] BET_BANKING_IGNORED_PROPERTIES ={"lotteries","lotteries","consortium","status"};
         User copiedUser;
         List<User> finalUsers = new ArrayList<User>();
+        
         for (User currUser : users) {
             copiedUser = new User();
             BeanUtils.copyProperties(currUser, copiedUser);
             copiedUser.setConsortiums(null);
-            copiedUser.setBetBankings(null);
-            finalUsers.add(copiedUser);
+            
+            Set<BetBanking> betBankings = new HashSet<BetBanking>();
+            for(BetBanking currBetBanking : currUser.getBetBankings()){
+                BetBanking copyBetBanking = new BetBanking();
+                BeanUtils.copyProperties(currBetBanking, copyBetBanking,BET_BANKING_IGNORED_PROPERTIES);
+                betBankings.add(copyBetBanking);
+            }
+            copiedUser.setBetBankings(betBankings);
+            finalUsers.add(copiedUser);            
         }
         return finalUsers;
     }

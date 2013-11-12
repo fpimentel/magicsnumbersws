@@ -3,6 +3,7 @@ package com.exception.magicsnumbersws.dao.impl;
 import com.exception.magicsnumbersws.dao.BetBankingDao;
 import com.exception.magicsnumbersws.dao.ConsortiumDao;
 import com.exception.magicsnumbersws.dao.UserDao;
+import com.exception.magicsnumbersws.entities.BetBanking;
 import com.exception.magicsnumbersws.entities.Consortium;
 import com.exception.magicsnumbersws.entities.SystemOption;
 import com.exception.magicsnumbersws.entities.User;
@@ -61,19 +62,37 @@ public class ConsortiumDaoImpl implements ConsortiumDao {
                 .createCriteria(Consortium.class)
                 .setFetchMode("status", FetchMode.JOIN)
                 .setFetchMode("users", FetchMode.JOIN)
+                .setFetchMode("betBankings", FetchMode.JOIN)
                 .add(Restrictions.eq("status.id", ACTIVO))
                 .list();
-        String[] userIgnoredProperties = {"betBankings", "profile", "status", "consortiums"};
+        String[] userIgnoredProperties = {"profile", "status", "consortiums"};
+        String[] betBankingIgnoredProperties = {"lotteries", "consortium", "status"};
         Set<User> users;
+        Set<BetBanking> betBankings;
         for (Consortium consortium : consortiums) {
-            consortium.setBetBankings(null);
+           // consortium.setBetBankings(null);
             users = new HashSet<User>();
-            for (User currUser : consortium.getUsers()) {
-                User copyUser = new User();
-                BeanUtils.copyProperties(currUser, copyUser, userIgnoredProperties);
-                users.add(copyUser);
+            betBankings = new HashSet<BetBanking>();
+
+            if (consortium.getUsers() != null) {
+                for (User currUser : consortium.getUsers()) {
+                    currUser.setBetBankings(null);
+                    User copyUser = new User();
+                    BeanUtils.copyProperties(currUser, copyUser, userIgnoredProperties);
+                    users.add(copyUser);
+                }
             }
+
+            if (consortium.getBetBankings() != null) {
+                for (BetBanking currBetBanking : consortium.getBetBankings()) {
+                    BetBanking copyBetBanking = new BetBanking();
+                    BeanUtils.copyProperties(currBetBanking, copyBetBanking, betBankingIgnoredProperties);
+                    betBankings.add(copyBetBanking);
+                }
+            }
+
             consortium.setUsers(users);
+            consortium.setBetBankings(betBankings);
         }
         return consortiums;
     }
@@ -94,6 +113,7 @@ public class ConsortiumDaoImpl implements ConsortiumDao {
             return null;
         }
         String[] userIgnoredProperties = {"betBankings", "profile", "status", "consortiums"};
+        String[] betBankingIgnoredProperties = {"lotteries", "consortium", "status"};
         User userResult = (User) sessionFactory.getCurrentSession()
                 .createCriteria(User.class)
                 .setFetchMode("status", FetchMode.JOIN)
@@ -109,19 +129,30 @@ public class ConsortiumDaoImpl implements ConsortiumDao {
         Consortium copiedConsortium;
         List<Consortium> finalConsortiums = new ArrayList<Consortium>();
         Set<User> users;
+        Set<BetBanking> betBankings;
         if (userResult != null) {
-            for (Consortium currConsortium : userResult.getConsortiums()) {
-                copiedConsortium = new Consortium();
-                users = new HashSet<User>();
-                BeanUtils.copyProperties(currConsortium, copiedConsortium);
-                copiedConsortium.setBetBankings(null);
-                for (User currUser : copiedConsortium.getUsers()) {
-                    User copyUser = new User();
-                    BeanUtils.copyProperties(currUser, copyUser, userIgnoredProperties);
-                    users.add(copyUser);
+            if (userResult.getConsortiums() != null) {
+                for (Consortium currConsortium : userResult.getConsortiums()) {
+                    betBankings = new HashSet<BetBanking>();
+                    copiedConsortium = new Consortium();
+                    users = new HashSet<User>();
+                    BeanUtils.copyProperties(currConsortium, copiedConsortium);
+                    
+                    for (User currUser : copiedConsortium.getUsers()) {
+                        currUser.setBetBankings(null);
+                        User copyUser = new User();
+                        BeanUtils.copyProperties(currUser, copyUser, userIgnoredProperties);
+                        users.add(copyUser);
+                    }
+                    for (BetBanking currBetBanking : currConsortium.getBetBankings()) {
+                        BetBanking copyBetBanking = new BetBanking();
+                        BeanUtils.copyProperties(currBetBanking, copyBetBanking, betBankingIgnoredProperties);
+                        betBankings.add(copyBetBanking);
+                    }
+                    copiedConsortium.setUsers(users);
+                    copiedConsortium.setBetBankings(betBankings);
+                    finalConsortiums.add(copiedConsortium);
                 }
-                copiedConsortium.setUsers(users);
-                finalConsortiums.add(copiedConsortium);
             }
         }
         return finalConsortiums;

@@ -54,7 +54,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User findById(int id) {
-       User user = (User)sessionFactory.getCurrentSession().createCriteria(User.class)
+        User user = (User) sessionFactory.getCurrentSession().createCriteria(User.class)
                 .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)
                 .setFetchMode("consortiums", FetchMode.JOIN)
                 .add(Restrictions.eq("id", id)).uniqueResult();
@@ -87,20 +87,20 @@ public class UserDaoImpl implements UserDao {
         String[] userIgnoredProperties = {"consortiums", "betBankings"};
         final String[] BET_BANKING_IGNORED_PROPERTIES = {"lotteries", "consortium"};
         final String[] LOTTERY_IGNORED_PROPERTIES = {"bets",
-                                            "status",
-                                            "creationDate",
-                                            "userCreation"
-                                            };
+            "status",
+            "creationDate",
+            "userCreation"
+        };
         final String[] BET_IGNORED_PROPERTIES = {"status",
-                                           "betType",
-                                           "creationDate",
-                                           "creationUser",
-                                           "numberOfWayToWin",
-                                           "numberQtyToPlay",
-                                           "unitMultiplier",
-                                           "minimumBetAmount",
-                                           "lotteryNumberQty" 
-                                        };
+            "betType",
+            "creationDate",
+            "creationUser",
+            "numberOfWayToWin",
+            "numberQtyToPlay",
+            "unitMultiplier",
+            "minimumBetAmount",
+            "lotteryNumberQty"
+        };
         BeanUtils.copyProperties(userResult, copyUser, userIgnoredProperties);
 
         Set<BetBanking> copyBetBankings = new HashSet<BetBanking>();
@@ -108,19 +108,19 @@ public class UserDaoImpl implements UserDao {
             for (BetBanking currBetBanking : userResult.getBetBankings()) {
                 BetBanking copyBetBanking = new BetBanking();
                 BeanUtils.copyProperties(currBetBanking, copyBetBanking, BET_BANKING_IGNORED_PROPERTIES);
-                Set<Lottery> copyLotteries = new HashSet<Lottery>();                
+                Set<Lottery> copyLotteries = new HashSet<Lottery>();
                 copyBetBankings.add(copyBetBanking);
                 for (Lottery currLottery : currBetBanking.getLotteries()) {
-                   Lottery copyLottery = new Lottery();
-                   BeanUtils.copyProperties(currLottery, copyLottery,LOTTERY_IGNORED_PROPERTIES);                   
-                   Set<Bet> copyBets = new HashSet<Bet>();                
-                   for(Bet currBet : currLottery.getBets()){
-                       Bet copyBet = new Bet();
-                       BeanUtils.copyProperties(currBet, copyBet,BET_IGNORED_PROPERTIES);
-                       copyBets.add(copyBet);
-                   }
-                   copyLottery.setBets(copyBets);
-                   copyLotteries.add(copyLottery);
+                    Lottery copyLottery = new Lottery();
+                    BeanUtils.copyProperties(currLottery, copyLottery, LOTTERY_IGNORED_PROPERTIES);
+                    Set<Bet> copyBets = new HashSet<Bet>();
+                    for (Bet currBet : currLottery.getBets()) {
+                        Bet copyBet = new Bet();
+                        BeanUtils.copyProperties(currBet, copyBet, BET_IGNORED_PROPERTIES);
+                        copyBets.add(copyBet);
+                    }
+                    copyLottery.setBets(copyBets);
+                    copyLotteries.add(copyLottery);
                 }
                 copyBetBanking.setLotteries(copyLotteries);
             }
@@ -132,7 +132,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public List<User> findAll() throws SearchAllUserException {
-        
+
         List<User> users = (List<User>) sessionFactory.getCurrentSession().createCriteria(User.class)
                 .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)
                 .setFetchMode("profile", FetchMode.JOIN)
@@ -141,23 +141,23 @@ public class UserDaoImpl implements UserDao {
                 .setFetchMode("betBankings", FetchMode.JOIN)
                 .add(Restrictions.eq("status.id", ACTIVO))
                 .list();
-        String[] BET_BANKING_IGNORED_PROPERTIES ={"lotteries","lotteries","consortium","status"};
+        String[] BET_BANKING_IGNORED_PROPERTIES = {"lotteries", "lotteries", "consortium", "status"};
         User copiedUser;
         List<User> finalUsers = new ArrayList<User>();
-        
+
         for (User currUser : users) {
             copiedUser = new User();
             BeanUtils.copyProperties(currUser, copiedUser);
             copiedUser.setConsortiums(null);
-            
+
             Set<BetBanking> betBankings = new HashSet<BetBanking>();
-            for(BetBanking currBetBanking : currUser.getBetBankings()){
+            for (BetBanking currBetBanking : currUser.getBetBankings()) {
                 BetBanking copyBetBanking = new BetBanking();
-                BeanUtils.copyProperties(currBetBanking, copyBetBanking,BET_BANKING_IGNORED_PROPERTIES);
+                BeanUtils.copyProperties(currBetBanking, copyBetBanking, BET_BANKING_IGNORED_PROPERTIES);
                 betBankings.add(copyBetBanking);
             }
             copiedUser.setBetBankings(betBankings);
-            finalUsers.add(copiedUser);            
+            finalUsers.add(copiedUser);
         }
         return finalUsers;
     }
@@ -171,6 +171,18 @@ public class UserDaoImpl implements UserDao {
                 update(user);
             } else {
                 add(currUser);
+            }
+        }
+    }
+
+    public void saveUser(User user) throws SaveUsersDataException {
+        if (user != null) {
+            if (user.getId() > 0) {//Update
+                User userEntity = (User) sessionFactory.getCurrentSession().get(user.getClass(), user.getId());
+                BeanUtils.copyProperties(user,userEntity);
+                update(userEntity);
+            } else {
+                add(user);
             }
         }
     }

@@ -53,6 +53,12 @@ public interface SecurityEndPoint {
     void saveUsersData(List<User> users) throws SaveUsersDataException;
 
     @POST
+    @Path(value = "/user/saveUser")
+    @Consumes("application/json")
+    @Produces(value = MediaType.APPLICATION_JSON)
+    public void saveUser(User user) throws SaveUsersDataException;
+    
+    @POST
     @Path(value = "/systemoption/save")
     @Consumes("application/json")
     @Produces(value = MediaType.APPLICATION_JSON)

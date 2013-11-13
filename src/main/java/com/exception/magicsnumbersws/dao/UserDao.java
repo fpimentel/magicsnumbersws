@@ -31,4 +31,6 @@ public interface UserDao {
     public void saveUsersData(List<User> users) throws SaveUsersDataException;
 
     public User findByUserName(String userName) throws SearchAllUserException;
+    
+    public void saveUser(User user) throws SaveUsersDataException;
 }

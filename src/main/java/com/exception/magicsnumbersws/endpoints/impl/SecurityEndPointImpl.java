@@ -81,4 +81,10 @@ public class SecurityEndPointImpl implements SecurityEndPoint {
     public List<User> findUsersByConsortiumIds(int userId) throws SearchAllUserException {
         return userService.findUsersByConsortiumIds(userId);
     }
+
+    @Override
+    public void saveUser(User user) throws SaveUsersDataException {
+        logger.log(Level.INFO, "init- saveUser");
+        userService.saveUser(user);
+    }
 }

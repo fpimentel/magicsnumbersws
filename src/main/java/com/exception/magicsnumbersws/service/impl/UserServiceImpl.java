@@ -80,4 +80,9 @@ public class UserServiceImpl implements UserService {
         }
         return userConsortiumDao.findUsersByConsortiumIds(new ArrayList<Integer>(consortiumsIds));
     }
+
+    @Override
+    public void saveUser(User user) throws SaveUsersDataException {
+        userDao.saveUser(user);
+    }
 }

@@ -18,8 +18,7 @@ public interface UserDao {
     public void update(User user);
 
     public void delete(int userId);
-
-    @Transactional(readOnly = true, propagation = Propagation.REQUIRES_NEW)
+    
     public User findById(int id);
 
     @Transactional(readOnly = true, propagation = Propagation.REQUIRES_NEW)
@@ -33,4 +32,6 @@ public interface UserDao {
     public User findByUserName(String userName) throws SearchAllUserException;
     
     public void saveUser(User user) throws SaveUsersDataException;
+    
+    public void deleteBetBankingsUserByUserId(int userId);
 }

@@ -8,8 +8,10 @@ import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -27,45 +29,30 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class UserConsortium implements Serializable {
     private static final long serialVersionUID = 1L;
-    @EmbeddedId
-    protected UserConsortiumPK userConsortiumPK;    
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID")
+    private Integer id;
     @Basic(optional = false)
     @NotNull
     @Column(name = "CREATION_DATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date creationDate;
-    @JoinColumn(name = "USER_ID", referencedColumnName = "ID", insertable = false, updatable = false)
+    @JoinColumn(name = "USER_ID", referencedColumnName = "ID",  updatable = false)
     @ManyToOne(optional = false)
     private User user;
-    @JoinColumn(name = "CONSORTIUM_ID", referencedColumnName = "ID", insertable = false, updatable = false)
+    @JoinColumn(name = "CONSORTIUM_ID", referencedColumnName = "ID", updatable = false)
     @ManyToOne(optional = false)
     private Consortium consortium;
 
     public UserConsortium() {
     }
 
-    public UserConsortium(UserConsortiumPK userConsortiumPK) {
-        this.userConsortiumPK = userConsortiumPK;
-    }
 
-    public UserConsortium(UserConsortiumPK userConsortiumPK, String creationUser, Date creationDate) {
-        this.userConsortiumPK = userConsortiumPK;        
+    public UserConsortium(String creationUser, Date creationDate) {        
         this.creationDate = creationDate;
     }
-
-    public UserConsortium(int userId, int consortiumId) {
-        this.userConsortiumPK = new UserConsortiumPK(userId, consortiumId);
-    }
-
-    public UserConsortiumPK getUserConsortiumPK() {
-        return userConsortiumPK;
-    }
-
-    public void setUserConsortiumPK(UserConsortiumPK userConsortiumPK) {
-        this.userConsortiumPK = userConsortiumPK;
-    }
-
-
+  
     public Date getCreationDate() {
         return creationDate;
     }
@@ -92,27 +79,30 @@ public class UserConsortium implements Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 0;
-        hash += (userConsortiumPK != null ? userConsortiumPK.hashCode() : 0);
+        int hash = 3;
+        hash = 41 * hash + (this.id != null ? this.id.hashCode() : 0);
         return hash;
     }
 
     @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof UserConsortium)) {
+    public boolean equals(Object obj) {
+        if (obj == null) {
             return false;
         }
-        UserConsortium other = (UserConsortium) object;
-        if ((this.userConsortiumPK == null && other.userConsortiumPK != null) || (this.userConsortiumPK != null && !this.userConsortiumPK.equals(other.userConsortiumPK))) {
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final UserConsortium other = (UserConsortium) obj;
+        if (this.id != other.id && (this.id == null || !this.id.equals(other.id))) {
             return false;
         }
         return true;
     }
 
+    
     @Override
     public String toString() {
-        return "com.exception.magicsnumbersws.entities.UserConsortium[ userConsortiumPK=" + userConsortiumPK + " ]";
+        return "com.exception.magicsnumbersws.entities.UserConsortium[ id" + id + " ]";
     }
     
 }

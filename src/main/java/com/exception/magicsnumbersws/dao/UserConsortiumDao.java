@@ -14,5 +14,6 @@ public interface UserConsortiumDao {
     public void add(UserConsortium userConsortium);    
     public void update(UserConsortium userConsortium);    
     public void delete(int userConsortiumId);                        
+    public void deleteAllByUserId(int userId);
     public List<User> findUsersByConsortiumIds(List<Integer> consortiumIds) throws SearchAllUserException;    
 }

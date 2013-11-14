@@ -1,6 +1,7 @@
 package com.exception.magicsnumbersws.entities;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.Basic;
@@ -16,6 +17,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlElement;
@@ -52,6 +55,12 @@ public class User implements Serializable , Comparable<User>{
     @Size(min = 1, max = 50)
     @Column(name = "USER_NAME")
     private String userName;
+    @Size(min = 1, max = 50)
+    @Column(name = "CREATION_USER")
+    private String creationUser;
+    @Column(name = "CREATION_DATE")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date creationDate;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 50)
@@ -64,11 +73,11 @@ public class User implements Serializable , Comparable<User>{
     @ManyToOne(fetch = FetchType.LAZY)
     private Profile profile;
     
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "USERS_CONSORTIUMS", joinColumns = { @JoinColumn(name = "USER_ID") }, inverseJoinColumns = { @JoinColumn(name = "CONSORTIUM_ID") })
     private Set<Consortium> consortiums = new HashSet<Consortium>(0);
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY )
     @JoinTable(name = "BET_BANKINGS_USERS", joinColumns = { @JoinColumn(name = "USER_ID") }, inverseJoinColumns = { @JoinColumn(name = "BETBANKING_ID") })
     private Set<BetBanking> betBankings = new HashSet<BetBanking>(0);
     
@@ -204,6 +213,22 @@ public class User implements Serializable , Comparable<User>{
         this.profile = profile;
     }
 
+    public String getCreationUser() {
+        return creationUser;
+    }
+
+    public void setCreationUser(String creationUser) {
+        this.creationUser = creationUser;
+    }
+
+    public Date getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
+    }   
+    
     @Override
     public int compareTo(User that) {
         return this.id - that.id;

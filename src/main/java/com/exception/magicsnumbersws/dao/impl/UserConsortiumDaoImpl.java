@@ -36,7 +36,7 @@ public class UserConsortiumDaoImpl implements UserConsortiumDao {
 
     @Override
     public void add(UserConsortium userConsortium) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        sessionFactory.getCurrentSession().save(userConsortium);
     }
 
     @Override
@@ -93,5 +93,13 @@ public class UserConsortiumDaoImpl implements UserConsortiumDao {
             LOG.log(Level.SEVERE, null, ex);
             throw new SearchAllUserException(ex.getMessage());
         }
+    }
+
+    @Override
+    public void deleteAllByUserId(int userId) {
+        Query query = sessionFactory.getCurrentSession().createQuery("delete from UserConsortium uc where uc.user.id = :userId");
+        query.setParameter("userId", userId);
+        int rows = query.executeUpdate();
+        LOG.log(Level.INFO, "{0} rows deleted.", rows);
     }
 }

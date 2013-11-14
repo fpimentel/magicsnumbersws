@@ -59,7 +59,7 @@ public class Consortium implements Serializable, Comparable<Consortium>{
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "STATUS_ID", nullable = true)
     private Status status;
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "USERS_CONSORTIUMS", joinColumns = { @JoinColumn(name = "CONSORTIUM_ID") }, inverseJoinColumns = { @JoinColumn(name = "USER_ID") })
     private Set<User> users = new HashSet<User>(0);        
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "consortium")

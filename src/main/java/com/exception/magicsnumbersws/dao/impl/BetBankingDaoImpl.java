@@ -87,11 +87,16 @@ public class BetBankingDaoImpl implements BetBankingDao {
 
     @Override    
     public BetBanking findById(int id) {       
+        final String[] betBankingIgnoredProperties = {"lotteries","consortium","status"};
+        BetBanking copyBetBanking = new BetBanking();
+        
         BetBanking betBanking = (BetBanking) sessionFactory.getCurrentSession()
                  .createCriteria(BetBanking.class)                 
                  .add(Restrictions.eq("id", id))
                  .uniqueResult();
-        return betBanking;
+        
+        BeanUtils.copyProperties(betBanking, copyBetBanking,betBankingIgnoredProperties);
+        return copyBetBanking;
     }
 
     @Override

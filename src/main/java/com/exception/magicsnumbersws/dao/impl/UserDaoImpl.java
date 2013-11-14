@@ -11,8 +11,11 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
+import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.BeanUtils;
@@ -29,6 +32,7 @@ public class UserDaoImpl implements UserDao {
     private static int ACTIVO = 1;
     @Autowired
     private SessionFactory sessionFactory;
+    private static final Logger LOG = Logger.getLogger(UserDaoImpl.class.getName());
 
     public UserDaoImpl() {
     }
@@ -179,7 +183,7 @@ public class UserDaoImpl implements UserDao {
         if (user != null) {
             if (user.getId() > 0) {//Update
                 User userEntity = (User) sessionFactory.getCurrentSession().get(user.getClass(), user.getId());
-                BeanUtils.copyProperties(user,userEntity);
+                BeanUtils.copyProperties(user, userEntity);
                 update(userEntity);
             } else {
                 add(user);
@@ -191,5 +195,19 @@ public class UserDaoImpl implements UserDao {
     public User findByUserName(String userName) throws SearchAllUserException {
         return (User) sessionFactory.getCurrentSession().createCriteria(User.class)
                 .add(Restrictions.eq("userName", userName)).uniqueResult();
+    }
+
+    @Override
+    public void deleteBetBankingsUserByUserId(int userId) {
+        LOG.log(Level.INFO, "Init- deleteBetBankingsUserByUserId");
+        try {
+            Query query = sessionFactory.getCurrentSession().createQuery("delete from BetBankingUser bbu where bbu.user.id = :userId");
+            query.setParameter("userId", userId);
+            int rows = query.executeUpdate();
+            LOG.log(Level.INFO, "{0} rows deleted.", rows);
+        } catch (Exception ex) {
+            LOG.log(Level.SEVERE, "error eliminando BetBanking_User by userId", ex);
+        }
+
     }
 }

@@ -135,11 +135,11 @@ public class UserServiceImpl implements UserService {
                         betBankingUserObj.setCreationUser(user.getCreationUser());
                         betBankingUserDao.add(betBankingUserObj);
 
-                        //Asignamos el consorcio de la banca al usuario.
-                        BetBanking betBankingEntity = betBankingDao.findById(currBetBanking.getId());
+                        //Asignamos el consorcio de la banca al usuario.                        
+                        Consortium consortium = betBankingDao.findConsortiumByBetBankingId(currBetBanking.getId());
                         UserConsortium userConsortiumObj = new UserConsortium();
                         userConsortiumObj.setUser(user);
-                        userConsortiumObj.setConsortium(betBankingEntity.getConsortium());
+                        userConsortiumObj.setConsortium(consortium);
                         userConsortiumObj.setCreationDate(new Date());
                         userConsortiumDao.add(userConsortiumObj);
                     }

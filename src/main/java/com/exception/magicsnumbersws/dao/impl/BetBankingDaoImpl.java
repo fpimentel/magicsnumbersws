@@ -99,6 +99,14 @@ public class BetBankingDaoImpl implements BetBankingDao {
         return copyBetBanking;
     }
 
+    public Consortium findConsortiumByBetBankingId(int betBankingId) {                               
+        BetBanking betBanking = (BetBanking) sessionFactory.getCurrentSession()
+                 .createCriteria(BetBanking.class)                 
+                 .add(Restrictions.eq("id", betBankingId))
+                 .uniqueResult();                
+        return betBanking.getConsortium();
+    }
+    
     @Override
     public List<BetBanking> findAsigned(int consortiumId) throws SearchAllBetBankingException {
         List<BetBanking> result = (List<BetBanking>) sessionFactory.getCurrentSession().createCriteria(BetBanking.class)

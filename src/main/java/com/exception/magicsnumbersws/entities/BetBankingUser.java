@@ -7,6 +7,9 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -25,8 +28,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class BetBankingUser implements Serializable {
     private static final long serialVersionUID = 1L;
-    @EmbeddedId
-    protected BetBankingUserPK betBankingUserPK;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID")
+    private Integer id;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 50)
@@ -37,36 +42,20 @@ public class BetBankingUser implements Serializable {
     @Column(name = "CREATION_DATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date creationDate;
-    @JoinColumn(name = "USER_ID", referencedColumnName = "ID", insertable = false, updatable = false)
+    @JoinColumn(name = "USER_ID", referencedColumnName = "ID", updatable = false)
     @ManyToOne(optional = false)
     private User user;
-    @JoinColumn(name = "BETBANKING_ID", referencedColumnName = "ID", insertable = false, updatable = false)
+    @JoinColumn(name = "BETBANKING_ID", referencedColumnName = "ID", updatable = false)
     @ManyToOne(optional = false)
     private BetBanking betBanking;
 
     public BetBankingUser() {
     }
 
-    public BetBankingUser(BetBankingUserPK betBankingUserPK) {
-        this.betBankingUserPK = betBankingUserPK;
-    }
 
-    public BetBankingUser(BetBankingUserPK betBankingUserPK, String creationUser, Date creationDate) {
-        this.betBankingUserPK = betBankingUserPK;
+    public BetBankingUser(String creationUser, Date creationDate) {
         this.creationUser = creationUser;
         this.creationDate = creationDate;
-    }
-
-    public BetBankingUser(int betbankingId, int userId) {
-        this.betBankingUserPK = new BetBankingUserPK(betbankingId, userId);
-    }
-
-    public BetBankingUserPK getBetBankingUserPK() {
-        return betBankingUserPK;
-    }
-
-    public void setBetBankingUserPK(BetBankingUserPK betBankingUserPK) {
-        this.betBankingUserPK = betBankingUserPK;
     }
 
     public String getCreationUser() {
@@ -103,19 +92,21 @@ public class BetBankingUser implements Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 0;
-        hash += (betBankingUserPK != null ? betBankingUserPK.hashCode() : 0);
+        int hash = 7;
+        hash = 61 * hash + (this.id != null ? this.id.hashCode() : 0);
         return hash;
     }
 
     @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof BetBankingUser)) {
+    public boolean equals(Object obj) {
+        if (obj == null) {
             return false;
         }
-        BetBankingUser other = (BetBankingUser) object;
-        if ((this.betBankingUserPK == null && other.betBankingUserPK != null) || (this.betBankingUserPK != null && !this.betBankingUserPK.equals(other.betBankingUserPK))) {
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final BetBankingUser other = (BetBankingUser) obj;
+        if (this.id != other.id && (this.id == null || !this.id.equals(other.id))) {
             return false;
         }
         return true;
@@ -123,7 +114,7 @@ public class BetBankingUser implements Serializable {
 
     @Override
     public String toString() {
-        return "com.exception.magicsnumbersws.entities.BetBankingUser[ betBankingUserPK=" + betBankingUserPK + " ]";
+        return "com.exception.magicsnumbersws.entities.BetBankingUser[ id=" + id + " ]";
     }
     
 }

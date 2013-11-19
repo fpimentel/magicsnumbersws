@@ -148,59 +148,57 @@ public interface LookupTablesEndpoint {
     @Produces(value = MediaType.APPLICATION_JSON)
     void saveConsortiumData(Consortium consortium) throws SaveConsortiumDataException;
 
-    
     @GET
     @Path("/betBanking/blockingNumbers/{betBankingId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<BlockingNumberBetBanking> findBlokingNumbersByBetBankingId(@PathParam("betBankingId") int betBankingId) throws FindBlockingNumberException;   
-    
+    public List<BlockingNumberBetBanking> findBlokingNumbersByBetBankingId(@PathParam("betBankingId") int betBankingId) throws FindBlockingNumberException;
+
     @POST
     @Path(value = "/betBanking/saveData")
     @Consumes("application/json")
     @Produces(value = MediaType.APPLICATION_JSON)
     public void saveBetBankingInformation(BetBanking betBanking) throws SaveBetBankingInfoException;
-    
+
     @POST
     @Path(value = "/betBanking/saveBetLimitInf")
     @Consumes("application/json")
     @Produces(value = MediaType.APPLICATION_JSON)
     public void saveBetBankingBetLimitInformation(List<BetBankingBetLimit> betLimits) throws SaveBetBankingBetLimitException, FindBetLimitException, DeleteBetBankingBetLimitException;
-    
+
     @POST
     @Path(value = "/betBanking/saveBlockingNumbers")
     @Consumes("application/json")
     @Produces(value = MediaType.APPLICATION_JSON)
-    public void saveBlockingNumberInformation(List<BlockingNumberBetBanking> blockingNumbers) throws SaveBlockingNumberException,DeleteBetBankingBetLimitException,FindBetLimitException,FindBlockingNumberException;
-    
+    public void saveBlockingNumberInformation(List<BlockingNumberBetBanking> blockingNumbers) throws SaveBlockingNumberException, DeleteBetBankingBetLimitException, FindBetLimitException, FindBlockingNumberException;
+
     @POST
     @Path(value = "/betBanking/saveBetBankingContainer")
     @Consumes("application/json")
     @Produces(value = MediaType.APPLICATION_JSON)
     public void saveBetBankingInformation(BetBankingContainer betBankingContainer) throws FindBlockingNumberException, SaveBlockingNumberException, SaveBetBankingInfoException, FindBetLimitException, DeleteBetBankingBetLimitException, SaveBetBankingBetLimitException;
-    
+
     @GET
     @Path("/lottery/active")
     @Produces(MediaType.APPLICATION_JSON)
     public List<Lottery> findActiveLottery() throws FindLotteryException;
-    
+
     @GET
     @Path("/lottery/findById/{lotteryId}")
     @Produces(MediaType.APPLICATION_JSON)
     public Lottery findLotteryById(@PathParam("lotteryId") int lotteryId) throws FindLotteryException;
-    
+
     @GET
     @Path("/lottery/findBetsByLotteryId/{lotteryId}")
     @Produces(MediaType.APPLICATION_JSON)
     public List<Bet> findBetsByLotteryId(@PathParam("lotteryId") int lotteryId) throws FindLotteryException;
-    
+
     @GET
     @Path("/lottery/availableTimes/{lotteryId}")
     @Produces(MediaType.APPLICATION_JSON)
     public List<Time> findAvailableTimesByLotteryId(@PathParam("lotteryId") int lotteryId) throws FindLotteryCloseHourException, CloseHourLotteryConfigNotFoundtException;
-        
+
     @GET
     @Path("/findBetsByLotteryAndBetBanking/{lotteryId}/{betBankingId}")
     @Produces(MediaType.APPLICATION_JSON)
     public List<Bet> findBetsByLotteryAndBetBanking(@PathParam("lotteryId") int lotteryId, @PathParam("betBankingId") int betBankingId) throws FindBetException;
-    
 }

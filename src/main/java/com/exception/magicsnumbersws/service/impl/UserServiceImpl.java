@@ -102,16 +102,21 @@ public class UserServiceImpl implements UserService {
         String[] userIgnoreProperties = {"betBankings","consortiums"};
         try {
             if (user != null) {
-                User userEntity = (User) userDao.findById(user.getId());
-                if (user.getId() > 0) {//Update
-                                                           
+                User userEntity; 
+                if (user.getId() != null && user.getId() > 0) {//Update
+                     userEntity = (User) userDao.findById(user.getId());                           
                     BeanUtils.copyProperties(user, userEntity,userIgnoreProperties);                    
                     update(userEntity);
                     //Eliminamos la relaciones user-consorcio y user-bancas.
                     userConsortiumDao.deleteAllByUserId(user.getId());
                     userDao.deleteBetBankingsUserByUserId(user.getId());
                 } else {
-                    add(user);
+                    user.setCreationDate(new Date());
+                    User newUser = new User();                                        
+                    BeanUtils.copyProperties(user, newUser,userIgnoreProperties);
+                    add(newUser);
+                    user.setId(newUser.getId());
+                    userEntity = newUser;
                 }
                 if (user.getBetBankings() == null || user.getBetBankings().size() < 1 ) {//Se graban consorcios si no se especifican bancas.
                     //Grabamos los usuarios y consorsios

@@ -37,8 +37,8 @@ public class StatusType implements Serializable {
     @Size(min = 1, max = 50)
     @Column(name = "NAME")
     private String name;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "statusTypeId")
-    private Collection<Status> statusCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "statusType")
+    private Collection<Status> status;
 
     public StatusType() {
     }
@@ -70,11 +70,11 @@ public class StatusType implements Serializable {
 
     @XmlTransient
     public Collection<Status> getStatusCollection() {
-        return statusCollection;
+        return status;
     }
 
     public void setStatusCollection(Collection<Status> statusCollection) {
-        this.statusCollection = statusCollection;
+        this.status = statusCollection;
     }
 
     @Override

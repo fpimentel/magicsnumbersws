@@ -34,4 +34,6 @@ public interface UserDao {
     public void saveUser(User user) throws SaveUsersDataException;
     
     public void deleteBetBankingsUserByUserId(int userId);
+    
+    public User findUserByUserName(String userName) throws SearchAllUserException;
 }

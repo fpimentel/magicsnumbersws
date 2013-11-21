@@ -12,6 +12,7 @@ import com.exception.magicsnumbersws.entities.UserConsortium;
 import com.exception.magicsnumbersws.exception.SaveUsersDataException;
 import com.exception.magicsnumbersws.exception.SearchAllUserException;
 import com.exception.magicsnumbersws.service.UserService;
+import com.exception.magicsnumbersws.utils.Security;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -78,7 +79,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserByCredentials(String userName, String pass) {
-        return userDao.getUserByCredentials(userName, pass);
+        String encryptedPassword = Security.encryptToMD5(pass);
+        return userDao.getUserByCredentials(userName, encryptedPassword);
     }
 
     @Override
@@ -107,7 +109,7 @@ public class UserServiceImpl implements UserService {
                     userEntity = (User) userDao.findById(user.getId());
                     BeanUtils.copyProperties(user, userEntity, userIgnoreProperties);
                     if (user.getPassword().length() > 0) {
-                        userEntity.setPassword(user.getPassword());
+                        userEntity.setPassword(Security.encryptToMD5(user.getPassword()));
                     } 
                     update(userEntity);
                     //Eliminamos la relaciones user-consorcio y user-bancas.
@@ -117,6 +119,7 @@ public class UserServiceImpl implements UserService {
                     user.setCreationDate(new Date());
                     User newUser = new User();
                     BeanUtils.copyProperties(user, newUser, userIgnoreProperties);
+                    newUser.setPassword(Security.encryptToMD5(user.getPassword()));
                     add(newUser);
                     user.setId(newUser.getId());
                     userEntity = newUser;
@@ -158,5 +161,10 @@ public class UserServiceImpl implements UserService {
             throw new SaveUsersDataException();
         }
         LOG.log(Level.INFO, "End-UserServiceImpl.saveUser");
+    }
+
+    @Override
+    public User findUserByUserName(String userName) throws SearchAllUserException {
+        return userDao.findUserByUserName(userName);
     }
 }

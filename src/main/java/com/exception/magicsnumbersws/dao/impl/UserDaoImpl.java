@@ -133,7 +133,7 @@ public class UserDaoImpl implements UserDao {
         }
         return copyUser;
     }
-
+    
     @Override
     public List<User> findAll() throws SearchAllUserException {
 
@@ -209,5 +209,16 @@ public class UserDaoImpl implements UserDao {
             LOG.log(Level.SEVERE, "error eliminando BetBanking_User by userId", ex);
         }
 
+    }
+
+    @Override
+    public User findUserByUserName(String userName) throws SearchAllUserException {
+         User userResult = (User) sessionFactory.getCurrentSession()
+                .createCriteria(User.class)                
+                .add(Restrictions.eq("userName", userName).ignoreCase()).uniqueResult();
+        User copyUser = new User();
+        String[] userIgnoredProperties = {"consortiums", "betBankings","status","profile","consortiums","betBankings"};        
+        BeanUtils.copyProperties(userResult, copyUser, userIgnoredProperties);                
+        return copyUser;
     }
 }

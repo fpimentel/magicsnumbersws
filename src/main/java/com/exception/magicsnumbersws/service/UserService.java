@@ -34,4 +34,6 @@ public interface UserService {
     public List<User> findUsersByConsortiumIds(int userId) throws SearchAllUserException; 
     
     public void saveUser(User user) throws SaveUsersDataException;
+    
+    public User findUserByUserName(String userName) throws SearchAllUserException;
 }

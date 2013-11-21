@@ -87,4 +87,10 @@ public class SecurityEndPointImpl implements SecurityEndPoint {
         logger.log(Level.INFO, "init- saveUser");
         userService.saveUser(user);
     }
+
+    @Override
+    public User findUserByUserName(String userName) throws SearchAllUserException {
+        logger.log(Level.INFO, "init- findUserByUserName");
+        return userService.findUserByUserName(userName);
+    }
 }

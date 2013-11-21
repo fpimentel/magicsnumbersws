@@ -63,7 +63,7 @@ public class User implements Serializable , Comparable<User>{
     private Date creationDate;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 50)
+    @Size(min = 1, max = 150)
     @Column(name = "PASSWORD")
     private String password;    
     @ManyToOne(fetch = FetchType.LAZY)

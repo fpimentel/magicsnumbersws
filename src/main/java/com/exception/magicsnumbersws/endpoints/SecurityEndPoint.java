@@ -68,4 +68,10 @@ public interface SecurityEndPoint {
     @Path("/findUsersByConsortiumIds/{userId}")
     @Produces(MediaType.APPLICATION_JSON)
     public List<User> findUsersByConsortiumIds(@PathParam("userId") int userId) throws SearchAllUserException;
+    
+    
+    @GET
+    @Path("/findUserByUserName/{userName}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public User findUserByUserName(@PathParam("userName") String userName) throws SearchAllUserException;
 }

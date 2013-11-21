@@ -99,26 +99,29 @@ public class UserServiceImpl implements UserService {
     @Override
     public void saveUser(User user) throws SaveUsersDataException {
         LOG.log(Level.INFO, "Init-UserServiceImpl.saveUser");
-        String[] userIgnoreProperties = {"betBankings","consortiums"};
+        String[] userIgnoreProperties = {"betBankings", "consortiums", "password"};
         try {
             if (user != null) {
-                User userEntity; 
+                User userEntity;
                 if (user.getId() != null && user.getId() > 0) {//Update
-                     userEntity = (User) userDao.findById(user.getId());                           
-                    BeanUtils.copyProperties(user, userEntity,userIgnoreProperties);                    
+                    userEntity = (User) userDao.findById(user.getId());
+                    BeanUtils.copyProperties(user, userEntity, userIgnoreProperties);
+                    if (user.getPassword().length() > 0) {
+                        userEntity.setPassword(user.getPassword());
+                    } 
                     update(userEntity);
                     //Eliminamos la relaciones user-consorcio y user-bancas.
                     userConsortiumDao.deleteAllByUserId(user.getId());
                     userDao.deleteBetBankingsUserByUserId(user.getId());
                 } else {
                     user.setCreationDate(new Date());
-                    User newUser = new User();                                        
-                    BeanUtils.copyProperties(user, newUser,userIgnoreProperties);
+                    User newUser = new User();
+                    BeanUtils.copyProperties(user, newUser, userIgnoreProperties);
                     add(newUser);
                     user.setId(newUser.getId());
                     userEntity = newUser;
                 }
-                if (user.getBetBankings() == null || user.getBetBankings().size() < 1 ) {//Se graban consorcios si no se especifican bancas.
+                if (user.getBetBankings() == null || user.getBetBankings().size() < 1) {//Se graban consorcios si no se especifican bancas.
                     //Grabamos los usuarios y consorsios
                     if (user.getConsortiums() != null) {
                         for (Consortium currConsortium : user.getConsortiums()) {

@@ -32,7 +32,7 @@ public class Status implements Serializable {
     private String name;
     @JoinColumn(name = "STATUS_TYPE_ID", referencedColumnName = "ID")
     @ManyToOne(optional = false)
-    private StatusType statusTypeId;
+    private StatusType statusType;
 
     public Status() {
     }
@@ -62,12 +62,12 @@ public class Status implements Serializable {
         this.name = name;
     }
 
-    public StatusType getStatusTypeId() {
-        return statusTypeId;
+    public StatusType getStatusType() {
+        return statusType;
     }
 
-    public void setStatusTypeId(StatusType statusTypeId) {
-        this.statusTypeId = statusTypeId;
+    public void setStatusType(StatusType statusType) {
+        this.statusType = statusType;
     }
 
     @Override

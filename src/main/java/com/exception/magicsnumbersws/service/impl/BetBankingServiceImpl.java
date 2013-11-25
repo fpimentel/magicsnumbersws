@@ -132,9 +132,9 @@ public class BetBankingServiceImpl implements BetBankingService {
                 betBanking.setCreationDate(new Date());
                 betBankingDao.add(betBanking);
             } else {// Id with value is for editing
-                BetBanking banking = betBankingDao.findById(betBanking.getId());
-                BeanUtils.copyProperties(betBanking, banking);
-                betBankingDao.update(banking);
+                //BetBanking banking = betBankingDao.findById(betBanking.getId());
+               //BeanUtils.copyProperties(betBanking, banking,new String[]{"lotteries"});                
+                betBankingDao.update(betBanking);
             }
         }
         LOG.info("finish - BetBankingServiceImpl.saveBetBankingInformation");

@@ -203,15 +203,20 @@ public class BetBankingDaoImpl implements BetBankingDao {
                 .setFetchMode("consortiums", FetchMode.JOIN)
                 .add(Restrictions.eq("id", userId)).uniqueResult();
 
+        final String [] BET_BANKING_INGORED_PROPERTIES = {"lotteries"};
+        final String [] CONSORTIUM_INGORED_PROPERTIES = {"betBankings","users","status"};        
+        
         Set<Consortium> consortiums = user.getConsortiums();
 
-        for (Consortium consortium : consortiums) {
-            betBankings.addAll(consortium.getBetBankings());
-        }
-
-        //Quitamos los consorcios
-        for (BetBanking betBanking : betBankings) {
-            betBanking.setConsortium(null);
+        for (Consortium consortium : consortiums) {            
+            for(BetBanking currBetBanking : consortium.getBetBankings()){
+                BetBanking copyBetBanking = new BetBanking();
+                Consortium copyConsortium = new Consortium();
+                BeanUtils.copyProperties(currBetBanking, copyBetBanking, BET_BANKING_INGORED_PROPERTIES);
+                BeanUtils.copyProperties(currBetBanking.getConsortium(), copyConsortium, CONSORTIUM_INGORED_PROPERTIES);
+                copyBetBanking.setConsortium(copyConsortium);
+                betBankings.add(copyBetBanking);
+            }            
         }
         LOG.info("finish - BetBankingDaoImpl.findBetBankingsToConsortiumsAssignedToUser(" + userId);
         return betBankings;

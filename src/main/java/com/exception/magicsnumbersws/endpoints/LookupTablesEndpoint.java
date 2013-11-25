@@ -201,4 +201,9 @@ public interface LookupTablesEndpoint {
     @Path("/findBetsByLotteryAndBetBanking/{lotteryId}/{betBankingId}")
     @Produces(MediaType.APPLICATION_JSON)
     public List<Bet> findBetsByLotteryAndBetBanking(@PathParam("lotteryId") int lotteryId, @PathParam("betBankingId") int betBankingId) throws FindBetException;
+    
+    @GET
+    @Path("/lottery/all")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Lottery> findLotteries() throws FindLotteryException;
 }

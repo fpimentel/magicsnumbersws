@@ -14,6 +14,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
@@ -58,8 +59,9 @@ public class ConsortiumDaoImpl implements ConsortiumDao {
      */
     @Override
     public List<Consortium> findActiveConsortium() throws SearchAllConsortiumException {
-        List<Consortium> consortiums = sessionFactory.getCurrentSession()
+        List<Consortium> consortiums = sessionFactory.getCurrentSession()                
                 .createCriteria(Consortium.class)
+                .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)
                 .setFetchMode("status", FetchMode.JOIN)
                 .setFetchMode("users", FetchMode.JOIN)
                 .setFetchMode("betBankings", FetchMode.JOIN)

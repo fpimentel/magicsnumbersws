@@ -63,4 +63,10 @@ public class LotteryServiceImpl implements LotteryService {
     public List<Bet> findBetsByLotteryId(int lotteryId) throws FindLotteryException {
         return this.lotteryDao.findBetsByLotteryId(lotteryId);
     }
+
+    @Transactional
+    @Override
+    public List<Lottery> findLotteries() throws FindLotteryException {
+        return this.lotteryDao.findLotteries();
+    }
 }

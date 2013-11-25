@@ -204,4 +204,10 @@ public class LookupTablesEndpointImpl implements LookupTablesEndpoint {
         logger.entering("LookupTablesEndpointImpl", "findBetsByLotteryAndBetBanking");
         return this.betBankingService.findBetsByLotteryAndBetBanking(lotteryId, betBankingId);
     }
+
+    @Override
+    public List<Lottery> findLotteries() throws FindLotteryException {
+        logger.entering("LookupTablesEndpointImpl", "findLotteries");
+        return this.lotteryService.findLotteries();
+    }
 }

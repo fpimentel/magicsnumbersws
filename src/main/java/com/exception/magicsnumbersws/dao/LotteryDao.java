@@ -23,4 +23,6 @@ public interface LotteryDao {
     public List<Lottery> findActiveLottery() throws FindLotteryException;
     
     public List<Bet> findBetsByLotteryId(int lotteryId) throws FindLotteryException;
+    
+    public List<Lottery> findLotteries() throws FindLotteryException;
 }

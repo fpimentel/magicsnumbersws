@@ -8,6 +8,7 @@ import com.exception.magicsnumbersws.exception.FindLotteryCloseHourException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.logging.Logger;
 import org.hibernate.FetchMode;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
@@ -20,7 +21,7 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public class LotteryCloseHourDaoImpl implements LotteryCloseHourDao {
-    
+    private static final Logger LOG = Logger.getLogger(LotteryCloseHourDaoImpl.class.getName());    
     @Autowired
     private SessionFactory sessionFactory;
 
@@ -96,5 +97,25 @@ public class LotteryCloseHourDaoImpl implements LotteryCloseHourDao {
            }
         }
         return availableTimes;
+    }
+
+    @Override
+    public List<LotteryCloseHour> findAvailableCloseHour(int lotteryId) throws FindLotteryCloseHourException, CloseHourLotteryConfigNotFoundtException {
+        LOG.entering("LotteryCloseHourDaoImpl", "findAvailableCloseHour");
+        try{
+            List<LotteryCloseHour> lotteryCloseHours = sessionFactory.getCurrentSession()
+                .createCriteria(LotteryCloseHour.class)
+                .setFetchMode("lottery", FetchMode.JOIN)
+                .setFetchMode("day", FetchMode.JOIN)
+                .createAlias("day", "d")
+                .add(Restrictions.eq("lottery.id", lotteryId))
+                .add(Restrictions.eq("d.dayOfWeek", 1))
+                .list();
+            return lotteryCloseHours;
+        }
+        catch(Exception ex){
+            throw new FindLotteryCloseHourException();
+        }
+        
     }
 }

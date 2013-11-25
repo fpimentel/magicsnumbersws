@@ -125,13 +125,17 @@ public class LotteryDaoImpl implements LotteryDao {
         LOG.entering("LotteryDaoImpl", "findActiveLottery");
         try {
             String[] LOTTERY_IGNORED_PROPERTIES = {"bets","status"};
+            String[] STATUS_IGNORED_PROPERTIES = {"bets"};
             List<Lottery> copylotteries = new ArrayList<Lottery>();
             List<Lottery> lotteries = (List<Lottery>) sessionFactory.getCurrentSession()
                     .createCriteria(Lottery.class)               
                     .list();
             for(Lottery currLottery : lotteries){
                 Lottery copyLottery = new Lottery();
+                com.exception.magicsnumbersws.entities.Status statusCopy = new com.exception.magicsnumbersws.entities.Status();
                 BeanUtils.copyProperties(currLottery, copyLottery, LOTTERY_IGNORED_PROPERTIES);
+                BeanUtils.copyProperties(currLottery.getStatus(), STATUS_IGNORED_PROPERTIES);
+                copyLottery.setStatus(statusCopy);
                 copylotteries.add(copyLottery);
             }
             

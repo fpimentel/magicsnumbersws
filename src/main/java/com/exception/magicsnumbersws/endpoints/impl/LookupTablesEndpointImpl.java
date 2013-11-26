@@ -1,6 +1,7 @@
 package com.exception.magicsnumbersws.endpoints.impl;
 
 import com.exception.magicsnumbersws.containers.BetBankingContainer;
+import com.exception.magicsnumbersws.containers.LotteryContainer;
 import com.exception.magicsnumbersws.endpoints.LookupTablesEndpoint;
 import com.exception.magicsnumbersws.entities.Bet;
 import com.exception.magicsnumbersws.entities.BetBanking;
@@ -26,6 +27,7 @@ import com.exception.magicsnumbersws.exception.SaveBetBankingBetLimitException;
 import com.exception.magicsnumbersws.exception.SaveBetBankingInfoException;
 import com.exception.magicsnumbersws.exception.SaveBlockingNumberException;
 import com.exception.magicsnumbersws.exception.SaveConsortiumDataException;
+import com.exception.magicsnumbersws.exception.SaveLotteryException;
 import com.exception.magicsnumbersws.exception.SearchAllBetBankingException;
 import com.exception.magicsnumbersws.exception.SearchAllConsortiumException;
 import com.exception.magicsnumbersws.service.BetBankingService;
@@ -237,5 +239,11 @@ public class LookupTablesEndpointImpl implements LookupTablesEndpoint {
     public List<Time> findAllTimes() throws FindTimeException {
         logger.entering("LookupTablesEndpointImpl", "findAllTimes");
         return timeService.findAll();
+    }
+
+    @Override
+    public void saveLotteryInf(LotteryContainer lotteryConverter) throws SaveLotteryException {
+        logger.entering("LookupTablesEndpointImpl", "saveLotteryInf");
+        lotteryService.saveLotteryInfo(lotteryConverter);
     }
 }

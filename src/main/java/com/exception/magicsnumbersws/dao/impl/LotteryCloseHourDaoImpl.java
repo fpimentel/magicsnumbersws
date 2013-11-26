@@ -9,6 +9,7 @@ import com.exception.magicsnumbersws.exception.FindLotteryCloseHourException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.hibernate.FetchMode;
 import org.hibernate.Query;
@@ -135,6 +136,6 @@ public class LotteryCloseHourDaoImpl implements LotteryCloseHourDao {
         Query query = sessionFactory.getCurrentSession().createQuery("delete from LotteryCloseHour lch where lch.lottery.id = :lotteryId");
         query.setParameter("lotteryId", lotteryId);
         int rows = query.executeUpdate();
-//        LOG.log(Level.INFO, "{0} rows deleted.", rows);
+        LOG.log(Level.INFO, "{0} rows deleted.", rows);
     }
 }

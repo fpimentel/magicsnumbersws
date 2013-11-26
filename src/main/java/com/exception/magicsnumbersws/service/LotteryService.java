@@ -4,6 +4,7 @@ import com.exception.magicsnumbersws.entities.Bet;
 import com.exception.magicsnumbersws.entities.Lottery;
 import com.exception.magicsnumbersws.exception.FindLotteryCloseHourException;
 import com.exception.magicsnumbersws.exception.FindLotteryException;
+import com.exception.magicsnumbersws.exception.SaveLotteryException;
 import java.util.List;
 
 /**
@@ -27,5 +28,5 @@ public interface LotteryService {
     
     public List<Lottery> findLotteries() throws FindLotteryException;  
     
-    public void saveLotteryInfo(LotteryContainer lotteryContainer) throws FindLotteryCloseHourException; 
+    public void saveLotteryInfo(LotteryContainer lotteryContainer) throws SaveLotteryException; 
 }

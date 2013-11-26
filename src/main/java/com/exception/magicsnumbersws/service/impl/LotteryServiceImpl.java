@@ -6,8 +6,8 @@ import com.exception.magicsnumbersws.dao.LotteryDao;
 import com.exception.magicsnumbersws.entities.Bet;
 import com.exception.magicsnumbersws.entities.Lottery;
 import com.exception.magicsnumbersws.entities.LotteryCloseHour;
-import com.exception.magicsnumbersws.exception.FindLotteryCloseHourException;
 import com.exception.magicsnumbersws.exception.FindLotteryException;
+import com.exception.magicsnumbersws.exception.SaveLotteryException;
 import com.exception.magicsnumbersws.service.LotteryService;
 import java.util.List;
 import java.util.logging.Logger;
@@ -78,7 +78,7 @@ public class LotteryServiceImpl implements LotteryService {
 
     @Transactional
     @Override
-    public void saveLotteryInfo(LotteryContainer lotteryContainer) throws FindLotteryCloseHourException {
+    public void saveLotteryInfo(LotteryContainer lotteryContainer) throws SaveLotteryException {
         Lottery lottery = lotteryContainer.getLottery();
         if(lottery != null){
             if(lottery.getId() != null && lottery.getId() > 0){//update
@@ -87,7 +87,11 @@ public class LotteryServiceImpl implements LotteryService {
                lotteryCloseHourDao.deleteAllByLotteryId(lottery.getId());
             }
             else{
-                this.lotteryDao.update(lottery);
+                this.lotteryDao.add(lottery);
+            }
+            //se graban los horarios de la loteria.
+            for(LotteryCloseHour currLotCloseHour : lotteryContainer.getLotteryCloseHour()){
+                this.lotteryCloseHourDao.add(currLotCloseHour);
             }
         }
     }    

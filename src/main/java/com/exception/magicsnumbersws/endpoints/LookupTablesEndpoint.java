@@ -1,6 +1,7 @@
 package com.exception.magicsnumbersws.endpoints;
 
 import com.exception.magicsnumbersws.containers.BetBankingContainer;
+import com.exception.magicsnumbersws.containers.LotteryContainer;
 import com.exception.magicsnumbersws.entities.Bet;
 import com.exception.magicsnumbersws.entities.BetBanking;
 import com.exception.magicsnumbersws.entities.BetBankingBetLimit;
@@ -25,6 +26,7 @@ import com.exception.magicsnumbersws.exception.SaveBetBankingBetLimitException;
 import com.exception.magicsnumbersws.exception.SaveBetBankingInfoException;
 import com.exception.magicsnumbersws.exception.SaveBlockingNumberException;
 import com.exception.magicsnumbersws.exception.SaveConsortiumDataException;
+import com.exception.magicsnumbersws.exception.SaveLotteryException;
 import com.exception.magicsnumbersws.exception.SearchAllBetBankingException;
 import com.exception.magicsnumbersws.exception.SearchAllConsortiumException;
 import java.util.List;
@@ -225,4 +227,10 @@ public interface LookupTablesEndpoint {
     @Path("/time/all")
     @Produces(MediaType.APPLICATION_JSON)
     public List<Time> findAllTimes() throws FindTimeException;    
+    
+    @POST
+    @Path(value = "/lottery/saveLotteryInf")
+    @Consumes("application/json")
+    @Produces(value = MediaType.APPLICATION_JSON)
+    public void saveLotteryInf(LotteryContainer lotteryConverter) throws SaveLotteryException;    
 }

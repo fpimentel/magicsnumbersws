@@ -1,6 +1,7 @@
 package com.exception.magicsnumbersws.dao.impl;
 
 import com.exception.magicsnumbersws.dao.LotteryCloseHourDao;
+import com.exception.magicsnumbersws.entities.Lottery;
 import com.exception.magicsnumbersws.entities.LotteryCloseHour;
 import com.exception.magicsnumbersws.entities.Time;
 import com.exception.magicsnumbersws.exception.CloseHourLotteryConfigNotFoundtException;
@@ -106,7 +107,7 @@ public class LotteryCloseHourDaoImpl implements LotteryCloseHourDao {
         LOG.entering("LotteryCloseHourDaoImpl", "findAvailableCloseHour");
         List<LotteryCloseHour> lotteryCloseHourCopy = new ArrayList<LotteryCloseHour>();
         String[] CLOSE_HOUR_IGNORED_PROPERTIES = {"lottery"};
-        String[] LOTTERY_IGNORED_PROPERTIES = {"bets"};
+        String[] LOTTERY_IGNORED_PROPERTIES = {"bets","status"};
         try {
             List<LotteryCloseHour> lotteryCloseHours = sessionFactory.getCurrentSession()
                     .createCriteria(LotteryCloseHour.class)
@@ -116,8 +117,10 @@ public class LotteryCloseHourDaoImpl implements LotteryCloseHourDao {
                     .list();
             for(LotteryCloseHour currLotCloseHour : lotteryCloseHours){
                 LotteryCloseHour copyLotteryCloseHour = new LotteryCloseHour();
+                Lottery lotteryCopy = new Lottery();
                 BeanUtils.copyProperties(currLotCloseHour, copyLotteryCloseHour, CLOSE_HOUR_IGNORED_PROPERTIES);
-                
+                BeanUtils.copyProperties(currLotCloseHour.getIdLottery(), lotteryCopy, LOTTERY_IGNORED_PROPERTIES);
+                copyLotteryCloseHour.setIdLottery(lotteryCopy);
                 lotteryCloseHourCopy.add(copyLotteryCloseHour);
             }            
             LOG.exiting("LotteryCloseHourDaoImpl", "findAvailableCloseHour");

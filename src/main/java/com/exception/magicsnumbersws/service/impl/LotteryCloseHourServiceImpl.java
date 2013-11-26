@@ -69,4 +69,10 @@ public class LotteryCloseHourServiceImpl implements LotteryCloseHourService {
     public List<Time> findAvailableTimesByLotteryId(int lotteryId) throws FindLotteryCloseHourException, CloseHourLotteryConfigNotFoundtException {
         return lotteryCloseHourDao.findAvailableTimesByLotteryId(lotteryId);
     }
+
+    @Transactional
+    @Override
+    public List<LotteryCloseHour> findAvailableCloseHour(int lotteryId) throws FindLotteryCloseHourException {
+        return lotteryCloseHourDao.findAvailableCloseHour(lotteryId);
+    }
 }

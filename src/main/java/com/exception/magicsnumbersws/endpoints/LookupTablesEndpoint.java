@@ -8,6 +8,7 @@ import com.exception.magicsnumbersws.entities.BlockingNumberBetBanking;
 import com.exception.magicsnumbersws.entities.Category;
 import com.exception.magicsnumbersws.entities.Consortium;
 import com.exception.magicsnumbersws.entities.Lottery;
+import com.exception.magicsnumbersws.entities.LotteryCloseHour;
 import com.exception.magicsnumbersws.entities.Status;
 import com.exception.magicsnumbersws.entities.Time;
 import com.exception.magicsnumbersws.exception.CloseHourLotteryConfigNotFoundtException;
@@ -206,4 +207,9 @@ public interface LookupTablesEndpoint {
     @Path("/lottery/all")
     @Produces(MediaType.APPLICATION_JSON)
     public List<Lottery> findLotteries() throws FindLotteryException;
+    
+    @GET
+    @Path("/lottery/closeHours/{lotteryId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<LotteryCloseHour> findAvailableCloseHour(@PathParam("lotteryId") int lotteryId) throws FindLotteryCloseHourException;
 }

@@ -3,6 +3,8 @@ package com.exception.magicsnumbersws.service.impl;
 import com.exception.magicsnumbersws.dao.LotteryDao;
 import com.exception.magicsnumbersws.entities.Bet;
 import com.exception.magicsnumbersws.entities.Lottery;
+import com.exception.magicsnumbersws.entities.LotteryCloseHour;
+import com.exception.magicsnumbersws.exception.FindLotteryCloseHourException;
 import com.exception.magicsnumbersws.exception.FindLotteryException;
 import com.exception.magicsnumbersws.service.LotteryService;
 import java.util.List;
@@ -69,4 +71,5 @@ public class LotteryServiceImpl implements LotteryService {
     public List<Lottery> findLotteries() throws FindLotteryException {
         return this.lotteryDao.findLotteries();
     }
+    
 }

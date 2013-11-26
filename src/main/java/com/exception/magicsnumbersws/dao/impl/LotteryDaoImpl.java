@@ -134,7 +134,7 @@ public class LotteryDaoImpl implements LotteryDao {
                 Lottery copyLottery = new Lottery();
                 com.exception.magicsnumbersws.entities.Status statusCopy = new com.exception.magicsnumbersws.entities.Status();
                 BeanUtils.copyProperties(currLottery, copyLottery, LOTTERY_IGNORED_PROPERTIES);
-                BeanUtils.copyProperties(currLottery.getStatus(), STATUS_IGNORED_PROPERTIES);
+                BeanUtils.copyProperties(currLottery.getStatus(),statusCopy, STATUS_IGNORED_PROPERTIES);
                 copyLottery.setStatus(statusCopy);
                 copylotteries.add(copyLottery);
             }

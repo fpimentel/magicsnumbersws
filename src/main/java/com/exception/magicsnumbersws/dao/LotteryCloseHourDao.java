@@ -17,4 +17,6 @@ public interface LotteryCloseHourDao {
     public List<LotteryCloseHour> findAll() throws FindLotteryCloseHourException;
     public List<Time> findAvailableTimesByLotteryId(int lotteryId) throws FindLotteryCloseHourException,CloseHourLotteryConfigNotFoundtException;
     public List<LotteryCloseHour> findAvailableCloseHour(int lotteryId) throws FindLotteryCloseHourException;
+    public void deleteAllByLotteryId(int lotteryId);
+    
 }

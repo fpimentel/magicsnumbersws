@@ -1,7 +1,7 @@
 package com.exception.magicsnumbersws.service;
+import com.exception.magicsnumbersws.containers.LotteryContainer;
 import com.exception.magicsnumbersws.entities.Bet;
 import com.exception.magicsnumbersws.entities.Lottery;
-import com.exception.magicsnumbersws.entities.LotteryCloseHour;
 import com.exception.magicsnumbersws.exception.FindLotteryCloseHourException;
 import com.exception.magicsnumbersws.exception.FindLotteryException;
 import java.util.List;
@@ -25,5 +25,7 @@ public interface LotteryService {
     
     public List<Bet> findBetsByLotteryId(int lotteryId) throws FindLotteryException;
     
-    public List<Lottery> findLotteries() throws FindLotteryException;    
+    public List<Lottery> findLotteries() throws FindLotteryException;  
+    
+    public void saveLotteryInfo(LotteryContainer lotteryContainer) throws FindLotteryCloseHourException; 
 }

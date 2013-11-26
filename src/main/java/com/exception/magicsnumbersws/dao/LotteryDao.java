@@ -1,6 +1,8 @@
 package com.exception.magicsnumbersws.dao;
+import com.exception.magicsnumbersws.containers.LotteryContainer;
 import com.exception.magicsnumbersws.entities.Bet;
 import com.exception.magicsnumbersws.entities.Lottery;
+import com.exception.magicsnumbersws.exception.FindLotteryCloseHourException;
 import com.exception.magicsnumbersws.exception.FindLotteryException;
 import java.util.List;
 
@@ -25,4 +27,5 @@ public interface LotteryDao {
     public List<Bet> findBetsByLotteryId(int lotteryId) throws FindLotteryException;
     
     public List<Lottery> findLotteries() throws FindLotteryException;
+        
 }

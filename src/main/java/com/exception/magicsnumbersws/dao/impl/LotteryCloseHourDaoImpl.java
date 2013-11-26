@@ -11,6 +11,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.logging.Logger;
 import org.hibernate.FetchMode;
+import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.BeanUtils;
@@ -128,5 +129,12 @@ public class LotteryCloseHourDaoImpl implements LotteryCloseHourDao {
         } catch (Exception ex) {
             throw new FindLotteryCloseHourException();
         }
+    }
+     @Override
+    public void deleteAllByLotteryId(int lotteryId) {
+        Query query = sessionFactory.getCurrentSession().createQuery("delete from LotteryCloseHour lch where lch.lottery.id = :lotteryId");
+        query.setParameter("lotteryId", lotteryId);
+        int rows = query.executeUpdate();
+//        LOG.log(Level.INFO, "{0} rows deleted.", rows);
     }
 }

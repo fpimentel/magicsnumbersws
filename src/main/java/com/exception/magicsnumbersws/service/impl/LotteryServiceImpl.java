@@ -1,5 +1,7 @@
 package com.exception.magicsnumbersws.service.impl;
 
+import com.exception.magicsnumbersws.containers.LotteryContainer;
+import com.exception.magicsnumbersws.dao.LotteryCloseHourDao;
 import com.exception.magicsnumbersws.dao.LotteryDao;
 import com.exception.magicsnumbersws.entities.Bet;
 import com.exception.magicsnumbersws.entities.Lottery;
@@ -23,6 +25,8 @@ public class LotteryServiceImpl implements LotteryService {
 
     @Autowired
     private LotteryDao lotteryDao;
+    @Autowired
+    private LotteryCloseHourDao lotteryCloseHourDao;
     
     private static final Logger LOG = Logger.getLogger(LotteryServiceImpl.class.getName());
 
@@ -71,5 +75,20 @@ public class LotteryServiceImpl implements LotteryService {
     public List<Lottery> findLotteries() throws FindLotteryException {
         return this.lotteryDao.findLotteries();
     }
-    
+
+    @Transactional
+    @Override
+    public void saveLotteryInfo(LotteryContainer lotteryContainer) throws FindLotteryCloseHourException {
+        Lottery lottery = lotteryContainer.getLottery();
+        if(lottery != null){
+            if(lottery.getId() != null && lottery.getId() > 0){//update
+               this.lotteryDao.update(lottery);
+               //se eliminan los horarios configurados.
+               lotteryCloseHourDao.deleteAllByLotteryId(lottery.getId());
+            }
+            else{
+                this.lotteryDao.update(lottery);
+            }
+        }
+    }    
 }

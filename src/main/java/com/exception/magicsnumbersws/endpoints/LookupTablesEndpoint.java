@@ -224,6 +224,5 @@ public interface LookupTablesEndpoint {
     @GET
     @Path("/time/all")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Time> findAllTimes() throws FindTimeException;
-    
+    public List<Time> findAllTimes() throws FindTimeException;    
 }

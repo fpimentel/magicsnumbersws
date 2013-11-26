@@ -23,7 +23,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Entity
 @Table(name = "LOTTERIES_CLOSE_HOUR")
 @XmlRootElement
-public class LotteryCloseHour implements Serializable {
+public class LotteryCloseHour implements Serializable , Comparable<User>{
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -124,6 +124,11 @@ public class LotteryCloseHour implements Serializable {
     @Override
     public String toString() {
         return "com.exception.magicsnumbersws.entities.LotteryCloseHour[ id=" + id + " ]";
+    }
+
+    @Override
+    public int compareTo(User that) {
+        return this.id - that.getId();
     }
     
 }

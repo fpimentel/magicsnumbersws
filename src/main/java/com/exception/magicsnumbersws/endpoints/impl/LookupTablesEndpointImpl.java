@@ -8,6 +8,7 @@ import com.exception.magicsnumbersws.entities.BetBankingBetLimit;
 import com.exception.magicsnumbersws.entities.BlockingNumberBetBanking;
 import com.exception.magicsnumbersws.entities.Category;
 import com.exception.magicsnumbersws.entities.Consortium;
+import com.exception.magicsnumbersws.entities.Day;
 import com.exception.magicsnumbersws.entities.Lottery;
 import com.exception.magicsnumbersws.entities.LotteryCloseHour;
 import com.exception.magicsnumbersws.entities.Status;
@@ -17,6 +18,7 @@ import com.exception.magicsnumbersws.exception.DeleteBetBankingBetLimitException
 import com.exception.magicsnumbersws.exception.FindBetException;
 import com.exception.magicsnumbersws.exception.FindBetLimitException;
 import com.exception.magicsnumbersws.exception.FindBlockingNumberException;
+import com.exception.magicsnumbersws.exception.FindDayException;
 import com.exception.magicsnumbersws.exception.FindLotteryCloseHourException;
 import com.exception.magicsnumbersws.exception.FindLotteryException;
 import com.exception.magicsnumbersws.exception.SaveBetBankingBetLimitException;
@@ -29,6 +31,7 @@ import com.exception.magicsnumbersws.service.BetBankingService;
 import com.exception.magicsnumbersws.service.BetService;
 import com.exception.magicsnumbersws.service.CategoryService;
 import com.exception.magicsnumbersws.service.ConsortiumService;
+import com.exception.magicsnumbersws.service.DayService;
 import com.exception.magicsnumbersws.service.LotteryCloseHourService;
 import com.exception.magicsnumbersws.service.LotteryService;
 import com.exception.magicsnumbersws.service.StatusService;
@@ -64,6 +67,8 @@ public class LookupTablesEndpointImpl implements LookupTablesEndpoint {
     private LotteryService lotteryService;
     @Autowired
     private LotteryCloseHourService lotteryCloseHourService;
+    @Autowired
+    private DayService dayService;
 
     @Override
     public List<Status> getAllStatus() {
@@ -216,5 +221,11 @@ public class LookupTablesEndpointImpl implements LookupTablesEndpoint {
     public List<LotteryCloseHour> findAvailableCloseHour(int lotteryId) throws FindLotteryCloseHourException {
         logger.entering("LookupTablesEndpointImpl", "findAvailableCloseHour(" + lotteryId + ")");
         return this.lotteryCloseHourService.findAvailableCloseHour(lotteryId);
+    }
+
+    @Override
+    public List<Day> findAllDays() throws FindDayException {
+        logger.entering("LookupTablesEndpointImpl", "findAvailableCloseHour");
+        return dayService.findAll();
     }
 }

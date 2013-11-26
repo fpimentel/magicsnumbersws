@@ -7,6 +7,7 @@ import com.exception.magicsnumbersws.entities.BetBankingBetLimit;
 import com.exception.magicsnumbersws.entities.BlockingNumberBetBanking;
 import com.exception.magicsnumbersws.entities.Category;
 import com.exception.magicsnumbersws.entities.Consortium;
+import com.exception.magicsnumbersws.entities.Day;
 import com.exception.magicsnumbersws.entities.Lottery;
 import com.exception.magicsnumbersws.entities.LotteryCloseHour;
 import com.exception.magicsnumbersws.entities.Status;
@@ -16,6 +17,7 @@ import com.exception.magicsnumbersws.exception.DeleteBetBankingBetLimitException
 import com.exception.magicsnumbersws.exception.FindBetException;
 import com.exception.magicsnumbersws.exception.FindBetLimitException;
 import com.exception.magicsnumbersws.exception.FindBlockingNumberException;
+import com.exception.magicsnumbersws.exception.FindDayException;
 import com.exception.magicsnumbersws.exception.FindLotteryCloseHourException;
 import com.exception.magicsnumbersws.exception.FindLotteryException;
 import com.exception.magicsnumbersws.exception.SaveBetBankingBetLimitException;
@@ -212,4 +214,10 @@ public interface LookupTablesEndpoint {
     @Path("/lottery/closeHours/{lotteryId}")
     @Produces(MediaType.APPLICATION_JSON)
     public List<LotteryCloseHour> findAvailableCloseHour(@PathParam("lotteryId") int lotteryId) throws FindLotteryCloseHourException;
+    
+    @GET
+    @Path("/day/all")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Day> findAllDays() throws FindDayException;
+    
 }

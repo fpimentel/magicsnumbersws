@@ -21,6 +21,7 @@ import com.exception.magicsnumbersws.exception.FindBlockingNumberException;
 import com.exception.magicsnumbersws.exception.FindDayException;
 import com.exception.magicsnumbersws.exception.FindLotteryCloseHourException;
 import com.exception.magicsnumbersws.exception.FindLotteryException;
+import com.exception.magicsnumbersws.exception.FindTimeException;
 import com.exception.magicsnumbersws.exception.SaveBetBankingBetLimitException;
 import com.exception.magicsnumbersws.exception.SaveBetBankingInfoException;
 import com.exception.magicsnumbersws.exception.SaveBlockingNumberException;
@@ -35,6 +36,7 @@ import com.exception.magicsnumbersws.service.DayService;
 import com.exception.magicsnumbersws.service.LotteryCloseHourService;
 import com.exception.magicsnumbersws.service.LotteryService;
 import com.exception.magicsnumbersws.service.StatusService;
+import com.exception.magicsnumbersws.service.TimeService;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -69,7 +71,9 @@ public class LookupTablesEndpointImpl implements LookupTablesEndpoint {
     private LotteryCloseHourService lotteryCloseHourService;
     @Autowired
     private DayService dayService;
-
+    @Autowired
+    private TimeService timeService;   
+    
     @Override
     public List<Status> getAllStatus() {
         logger.log(Level.INFO, "init - getAllStatus()");
@@ -227,5 +231,11 @@ public class LookupTablesEndpointImpl implements LookupTablesEndpoint {
     public List<Day> findAllDays() throws FindDayException {
         logger.entering("LookupTablesEndpointImpl", "findAvailableCloseHour");
         return dayService.findAll();
+    }
+
+    @Override
+    public List<Time> findAllTimes() throws FindTimeException {
+        logger.entering("LookupTablesEndpointImpl", "findAllTimes");
+        return timeService.findAll();
     }
 }

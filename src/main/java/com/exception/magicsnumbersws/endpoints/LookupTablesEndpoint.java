@@ -20,6 +20,7 @@ import com.exception.magicsnumbersws.exception.FindBlockingNumberException;
 import com.exception.magicsnumbersws.exception.FindDayException;
 import com.exception.magicsnumbersws.exception.FindLotteryCloseHourException;
 import com.exception.magicsnumbersws.exception.FindLotteryException;
+import com.exception.magicsnumbersws.exception.FindTimeException;
 import com.exception.magicsnumbersws.exception.SaveBetBankingBetLimitException;
 import com.exception.magicsnumbersws.exception.SaveBetBankingInfoException;
 import com.exception.magicsnumbersws.exception.SaveBlockingNumberException;
@@ -219,5 +220,10 @@ public interface LookupTablesEndpoint {
     @Path("/day/all")
     @Produces(MediaType.APPLICATION_JSON)
     public List<Day> findAllDays() throws FindDayException;
+    
+    @GET
+    @Path("/time/all")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Time> findAllTimes() throws FindTimeException;
     
 }

@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.exception.magicsnumbersws.entities;
 
 import java.io.Serializable;
@@ -23,7 +19,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Entity
 @Table(name = "LOTTERIES_CLOSE_HOUR")
 @XmlRootElement
-public class LotteryCloseHour implements Serializable , Comparable<User>{
+public class LotteryCloseHour implements Serializable , Comparable<LotteryCloseHour>{
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -127,8 +123,7 @@ public class LotteryCloseHour implements Serializable , Comparable<User>{
     }
 
     @Override
-    public int compareTo(User that) {
+    public int compareTo(LotteryCloseHour that) {
         return this.id - that.getId();
-    }
-    
+    }    
 }

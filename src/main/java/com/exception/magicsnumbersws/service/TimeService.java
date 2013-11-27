@@ -12,4 +12,5 @@ import org.springframework.stereotype.Service;
 @Service
 public interface TimeService {              
     public List<Time> findAll() throws FindTimeException;  
+    public Time findById(int timeId) throws FindTimeException;
 }

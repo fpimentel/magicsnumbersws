@@ -1,4 +1,5 @@
 package com.exception.magicsnumbersws.dao.impl;
+
 import com.exception.magicsnumbersws.dao.TimeDao;
 import com.exception.magicsnumbersws.entities.Time;
 import com.exception.magicsnumbersws.exception.FindTimeException;
@@ -6,6 +7,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -38,5 +40,19 @@ public class TimeDaoImpl implements TimeDao {
             LOG.log(Level.SEVERE, null, ex);
             throw new FindTimeException(ex.getMessage());
         }
-    }   
+    }
+
+    @Override
+    public Time findById(int timeId) throws FindTimeException {
+        try {
+            Time times = (Time)sessionFactory.getCurrentSession()
+                    .createCriteria(Time.class)
+                    .add(Restrictions.eq("id", timeId))
+                    .uniqueResult();
+            return times;
+        } catch (Exception ex) {
+            LOG.log(Level.SEVERE, null, ex);
+            throw new FindTimeException(ex.getMessage());
+        }
+    }
 }

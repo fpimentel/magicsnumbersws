@@ -252,4 +252,10 @@ public class LookupTablesEndpointImpl implements LookupTablesEndpoint {
         logger.entering("LookupTablesEndpointImpl", "findDayById");
         return dayService.findById(dayId);
     }
+
+    @Override
+    public Time findTimeById(int timeId) throws FindTimeException {
+        logger.entering("LookupTablesEndpointImpl", "findTimeById");
+        return timeService.findById(timeId);
+    }
 }

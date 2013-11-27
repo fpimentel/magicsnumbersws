@@ -28,4 +28,10 @@ public class TimeServiceImpl implements  TimeService{
     public List<Time> findAll() throws FindTimeException {
         return timeDao.findAll();
     }        
+    
+    @Transactional
+    @Override
+    public Time findById(int timeId) throws FindTimeException {
+        return timeDao.findById(timeId);
+    }
 }

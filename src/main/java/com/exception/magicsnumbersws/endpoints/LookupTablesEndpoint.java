@@ -233,6 +233,11 @@ public interface LookupTablesEndpoint {
     @Produces(MediaType.APPLICATION_JSON)
     public List<Time> findAllTimes() throws FindTimeException;    
     
+    @GET
+    @Path("time/findById/{timeId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Time findTimeById(@PathParam("timeId") int timeId) throws FindTimeException;
+    
     @POST
     @Path(value = "/lottery/saveLotteryInf")
     @Consumes("application/json")

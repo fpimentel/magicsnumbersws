@@ -9,4 +9,5 @@ import java.util.List;
  */
 public interface DayDao {
     public List<Day> findAll()throws FindDayException;      
+    public Day findById(int dayId)throws FindDayException;      
 }

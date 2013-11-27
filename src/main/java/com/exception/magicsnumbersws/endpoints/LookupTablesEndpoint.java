@@ -224,6 +224,11 @@ public interface LookupTablesEndpoint {
     public List<Day> findAllDays() throws FindDayException;
     
     @GET
+    @Path("/day/findById/{dayId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Day findDayById(@PathParam("dayId") int dayId) throws FindDayException;
+    
+    @GET
     @Path("/time/all")
     @Produces(MediaType.APPLICATION_JSON)
     public List<Time> findAllTimes() throws FindTimeException;    

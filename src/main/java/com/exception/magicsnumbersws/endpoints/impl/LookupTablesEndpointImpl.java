@@ -246,4 +246,10 @@ public class LookupTablesEndpointImpl implements LookupTablesEndpoint {
         logger.entering("LookupTablesEndpointImpl", "saveLotteryInf");
         lotteryService.saveLotteryInfo(lotteryConverter);
     }
+
+    @Override
+    public Day findDayById(int dayId) throws FindDayException {
+        logger.entering("LookupTablesEndpointImpl", "findDayById");
+        return dayService.findById(dayId);
+    }
 }

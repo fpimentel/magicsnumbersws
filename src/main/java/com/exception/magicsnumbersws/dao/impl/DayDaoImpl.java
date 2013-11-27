@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -35,6 +36,20 @@ public class DayDaoImpl implements DayDao {
                     .createCriteria(Day.class)
                     .list();
             return days;
+        } catch (Exception ex) {
+            LOG.log(Level.SEVERE, null, ex);
+            throw new FindDayException(ex.getMessage());
+        }
+    }
+
+    @Override
+    public Day findById(int dayId) throws FindDayException {
+        try {
+            Day day = (Day)sessionFactory.getCurrentSession()
+                    .createCriteria(Day.class)
+                    .add(Restrictions.eq("id", dayId))
+                    .uniqueResult();
+            return day;
         } catch (Exception ex) {
             LOG.log(Level.SEVERE, null, ex);
             throw new FindDayException(ex.getMessage());

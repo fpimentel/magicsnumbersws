@@ -27,7 +27,6 @@ public class LotteryServiceImpl implements LotteryService {
     private LotteryDao lotteryDao;
     @Autowired
     private LotteryCloseHourDao lotteryCloseHourDao;
-    
     private static final Logger LOG = Logger.getLogger(LotteryServiceImpl.class.getName());
 
     public LotteryServiceImpl() {
@@ -62,7 +61,7 @@ public class LotteryServiceImpl implements LotteryService {
     @Override
     public List<Lottery> findActiveLottery() throws FindLotteryException {
         return this.lotteryDao.findActiveLottery();
-    }   
+    }
 
     @Transactional(readOnly = true)
     @Override
@@ -80,19 +79,20 @@ public class LotteryServiceImpl implements LotteryService {
     @Override
     public void saveLotteryInfo(LotteryContainer lotteryContainer) throws SaveLotteryException {
         Lottery lottery = lotteryContainer.getLottery();
-        if(lottery != null){
-            if(lottery.getId() != null && lottery.getId() > 0){//update
-               this.lotteryDao.update(lottery);
-               //se eliminan los horarios configurados.
-               lotteryCloseHourDao.deleteAllByLotteryId(lottery.getId());
-            }
-            else{
+        if (lottery != null) {
+            if (lottery.getId() != null && lottery.getId() > 0) {//update
+                this.lotteryDao.update(lottery);
+                //se eliminan los horarios configurados.
+                lotteryCloseHourDao.deleteAllByLotteryId(lottery.getId());
+            } else {
                 this.lotteryDao.add(lottery);
             }
             //se graban los horarios de la loteria.
-            for(LotteryCloseHour currLotCloseHour : lotteryContainer.getLotteryCloseHour()){
-                this.lotteryCloseHourDao.add(currLotCloseHour);
+            if (lotteryContainer.getLotteryCloseHour() != null) {
+                for (LotteryCloseHour currLotCloseHour : lotteryContainer.getLotteryCloseHour()) {
+                    this.lotteryCloseHourDao.add(currLotCloseHour);
+                }
             }
         }
-    }    
+    }
 }

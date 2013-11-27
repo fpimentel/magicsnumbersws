@@ -105,10 +105,10 @@ public class UserDaoImpl implements UserDao {
             "minimumBetAmount",
             "lotteryNumberQty"
         };
-        BeanUtils.copyProperties(userResult, copyUser, userIgnoredProperties);
 
-        Set<BetBanking> copyBetBankings = new HashSet<BetBanking>();
         if (userResult != null) {
+            BeanUtils.copyProperties(userResult, copyUser, userIgnoredProperties);
+            Set<BetBanking> copyBetBankings = new HashSet<BetBanking>();
             for (BetBanking currBetBanking : userResult.getBetBankings()) {
                 BetBanking copyBetBanking = new BetBanking();
                 BeanUtils.copyProperties(currBetBanking, copyBetBanking, BET_BANKING_IGNORED_PROPERTIES);
@@ -133,7 +133,7 @@ public class UserDaoImpl implements UserDao {
         }
         return copyUser;
     }
-    
+
     @Override
     public List<User> findAll() throws SearchAllUserException {
 
@@ -213,12 +213,12 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User findUserByUserName(String userName) throws SearchAllUserException {
-         User userResult = (User) sessionFactory.getCurrentSession()
-                .createCriteria(User.class)                
+        User userResult = (User) sessionFactory.getCurrentSession()
+                .createCriteria(User.class)
                 .add(Restrictions.eq("userName", userName).ignoreCase()).uniqueResult();
         User copyUser = new User();
-        String[] userIgnoredProperties = {"consortiums", "betBankings","status","profile","consortiums","betBankings"};        
-        BeanUtils.copyProperties(userResult, copyUser, userIgnoredProperties);                
+        String[] userIgnoredProperties = {"consortiums", "betBankings", "status", "profile", "consortiums", "betBankings"};
+        BeanUtils.copyProperties(userResult, copyUser, userIgnoredProperties);
         return copyUser;
     }
 }

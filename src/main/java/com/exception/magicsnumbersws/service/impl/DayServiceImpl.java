@@ -29,4 +29,10 @@ public class DayServiceImpl implements  DayService{
     public List<Day> findAll() throws FindDayException{
         return dayDao.findAll();
     }
+
+    @Transactional
+    @Override
+    public Day findById(int dayId) throws FindDayException {
+        return dayDao.findById(dayId);
+    }
 }

@@ -242,5 +242,5 @@ public interface LookupTablesEndpoint {
     @Path(value = "/lottery/saveLotteryInf")
     @Consumes("application/json")
     @Produces(value = MediaType.APPLICATION_JSON)
-    public void saveLotteryInf(LotteryContainer lotteryConverter) throws SaveLotteryException;    
+    public void saveLotteryInf(LotteryContainer lotteryContainer) throws SaveLotteryException;    
 }

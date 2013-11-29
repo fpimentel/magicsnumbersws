@@ -47,7 +47,7 @@ public class LotteryCloseHourDaoImpl implements LotteryCloseHourDao {
 
     @Override
     public void add(LotteryCloseHour lotteryCloseHour) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.sessionFactory.getCurrentSession().save(lotteryCloseHour);
     }
 
     @Override
@@ -121,8 +121,8 @@ public class LotteryCloseHourDaoImpl implements LotteryCloseHourDao {
                 LotteryCloseHour copyLotteryCloseHour = new LotteryCloseHour();
                 Lottery lotteryCopy = new Lottery();
                 BeanUtils.copyProperties(currLotCloseHour, copyLotteryCloseHour, CLOSE_HOUR_IGNORED_PROPERTIES);
-                BeanUtils.copyProperties(currLotCloseHour.getIdLottery(), lotteryCopy, LOTTERY_IGNORED_PROPERTIES);
-                copyLotteryCloseHour.setIdLottery(lotteryCopy);
+                BeanUtils.copyProperties(currLotCloseHour.getLottery(), lotteryCopy, LOTTERY_IGNORED_PROPERTIES);
+                copyLotteryCloseHour.setLottery(lotteryCopy);
                 lotteryCloseHourCopy.add(copyLotteryCloseHour);
             }            
             LOG.exiting("LotteryCloseHourDaoImpl", "findAvailableCloseHour");

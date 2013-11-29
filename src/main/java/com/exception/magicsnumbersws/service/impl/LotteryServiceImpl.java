@@ -10,6 +10,7 @@ import com.exception.magicsnumbersws.exception.FindLotteryException;
 import com.exception.magicsnumbersws.exception.SaveLotteryException;
 import com.exception.magicsnumbersws.service.LotteryService;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -78,21 +79,28 @@ public class LotteryServiceImpl implements LotteryService {
     @Transactional
     @Override
     public void saveLotteryInfo(LotteryContainer lotteryContainer) throws SaveLotteryException {
-        Lottery lottery = lotteryContainer.getLottery();
-        if (lottery != null) {
-            if (lottery.getId() != null && lottery.getId() > 0) {//update
-                this.lotteryDao.update(lottery);
-                //se eliminan los horarios configurados.
-                lotteryCloseHourDao.deleteAllByLotteryId(lottery.getId());
-            } else {
-                this.lotteryDao.add(lottery);
-            }
-            //se graban los horarios de la loteria.
-            if (lotteryContainer.getLotteryCloseHour() != null) {
-                for (LotteryCloseHour currLotCloseHour : lotteryContainer.getLotteryCloseHour()) {
-                    this.lotteryCloseHourDao.add(currLotCloseHour);
+        try {
+            Lottery lottery = lotteryContainer.getLottery();
+            if (lottery != null) {
+                if (lottery.getId() != null && lottery.getId() > 0) {//update
+                    this.lotteryDao.update(lottery);
+                    //se eliminan los horarios configurados.
+                    lotteryCloseHourDao.deleteAllByLotteryId(lottery.getId());
+                } else {
+                    this.lotteryDao.add(lottery);
+                }
+                //se graban los horarios de la loteria.
+                if (lotteryContainer.getLotteryCloseHour() != null) {                    
+                    for (LotteryCloseHour currLotCloseHour : lotteryContainer.getLotteryCloseHour()) {
+                        currLotCloseHour.setLottery(lottery);
+                        this.lotteryCloseHourDao.add(currLotCloseHour);
+                    }
                 }
             }
+        } catch (Exception ex) {
+            LOG.log(Level.SEVERE, null, ex);
+            throw new SaveLotteryException(ex.getMessage());
         }
+
     }
 }

@@ -4,6 +4,8 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -19,10 +21,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Entity
 @Table(name = "LOTTERIES_CLOSE_HOUR")
 @XmlRootElement
-public class LotteryCloseHour implements Serializable , Comparable<LotteryCloseHour>{
+public class LotteryCloseHour implements Serializable, Comparable<LotteryCloseHour> {
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @NotNull
     @Column(name = "ID")
     private Integer id;
@@ -34,11 +38,9 @@ public class LotteryCloseHour implements Serializable , Comparable<LotteryCloseH
     @JoinColumn(name = "ID_TIME", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Time time;
-    
     @JoinColumn(name = "ID_LOTTERY", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private Lottery lottery;
-    
     @JoinColumn(name = "ID_DAY", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Day day;
@@ -79,11 +81,11 @@ public class LotteryCloseHour implements Serializable , Comparable<LotteryCloseH
         this.time = time;
     }
 
-    public Lottery getIdLottery() {
+    public Lottery getLottery() {
         return lottery;
     }
 
-    public void setIdLottery(Lottery lottery) {
+    public void setLottery(Lottery lottery) {
         this.lottery = lottery;
     }
 
@@ -94,8 +96,6 @@ public class LotteryCloseHour implements Serializable , Comparable<LotteryCloseH
     public void setDay(Day day) {
         this.day = day;
     }
-
- 
 
     @Override
     public int hashCode() {
@@ -125,5 +125,5 @@ public class LotteryCloseHour implements Serializable , Comparable<LotteryCloseH
     @Override
     public int compareTo(LotteryCloseHour that) {
         return this.id - that.getId();
-    }    
+    }
 }

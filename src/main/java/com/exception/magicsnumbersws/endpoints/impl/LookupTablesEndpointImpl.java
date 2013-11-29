@@ -242,9 +242,9 @@ public class LookupTablesEndpointImpl implements LookupTablesEndpoint {
     }
 
     @Override
-    public void saveLotteryInf(LotteryContainer lotteryConverter) throws SaveLotteryException {
+    public void saveLotteryInf(LotteryContainer lotteryContainer) throws SaveLotteryException {
         logger.entering("LookupTablesEndpointImpl", "saveLotteryInf");
-        lotteryService.saveLotteryInfo(lotteryConverter);
+        lotteryService.saveLotteryInfo(lotteryContainer);
     }
 
     @Override

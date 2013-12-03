@@ -40,6 +40,7 @@ import com.exception.magicsnumbersws.service.LotteryService;
 import com.exception.magicsnumbersws.service.StatusService;
 import com.exception.magicsnumbersws.service.TimeService;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ws.rs.Path;
@@ -257,5 +258,11 @@ public class LookupTablesEndpointImpl implements LookupTablesEndpoint {
     public Time findTimeById(int timeId) throws FindTimeException {
         logger.entering("LookupTablesEndpointImpl", "findTimeById");
         return timeService.findById(timeId);
+    }
+
+    @Override
+    public Set<Time> findTimesByLottery(int lotteryId) throws FindLotteryCloseHourException {
+        logger.entering("LookupTablesEndpointImpl", "findTimeById");
+        return lotteryCloseHourService.findTimesByLottery(lotteryId);
     }
 }

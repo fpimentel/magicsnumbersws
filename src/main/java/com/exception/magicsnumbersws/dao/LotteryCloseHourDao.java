@@ -4,6 +4,7 @@ import com.exception.magicsnumbersws.entities.Time;
 import com.exception.magicsnumbersws.exception.CloseHourLotteryConfigNotFoundtException;
 import com.exception.magicsnumbersws.exception.FindLotteryCloseHourException;
 import java.util.List;
+import java.util.Set;
 
 /**
  *
@@ -18,5 +19,5 @@ public interface LotteryCloseHourDao {
     public List<Time> findAvailableTimesByLotteryId(int lotteryId) throws FindLotteryCloseHourException,CloseHourLotteryConfigNotFoundtException;
     public List<LotteryCloseHour> findAvailableCloseHour(int lotteryId) throws FindLotteryCloseHourException;
     public void deleteAllByLotteryId(int lotteryId);
-    
+    public Set<Time> findTimesByLottery(int lotteryId) throws FindLotteryCloseHourException; 
 }

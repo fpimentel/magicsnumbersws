@@ -30,6 +30,7 @@ import com.exception.magicsnumbersws.exception.SaveLotteryException;
 import com.exception.magicsnumbersws.exception.SearchAllBetBankingException;
 import com.exception.magicsnumbersws.exception.SearchAllConsortiumException;
 import java.util.List;
+import java.util.Set;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -243,4 +244,9 @@ public interface LookupTablesEndpoint {
     @Consumes("application/json")
     @Produces(value = MediaType.APPLICATION_JSON)
     public void saveLotteryInf(LotteryContainer lotteryContainer) throws SaveLotteryException;    
+    
+    @GET
+    @Path("time/findByLotteryId/{lotteryId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Set<Time> findTimesByLottery(@PathParam("lotteryId") int lotteryId) throws FindLotteryCloseHourException;
 }

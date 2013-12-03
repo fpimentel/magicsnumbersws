@@ -8,7 +8,9 @@ import com.exception.magicsnumbersws.exception.CloseHourLotteryConfigNotFoundtEx
 import com.exception.magicsnumbersws.exception.FindLotteryCloseHourException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.hibernate.FetchMode;
@@ -109,7 +111,7 @@ public class LotteryCloseHourDaoImpl implements LotteryCloseHourDao {
         LOG.entering("LotteryCloseHourDaoImpl", "findAvailableCloseHour");
         List<LotteryCloseHour> lotteryCloseHourCopy = new ArrayList<LotteryCloseHour>();
         String[] CLOSE_HOUR_IGNORED_PROPERTIES = {"lottery"};
-        String[] LOTTERY_IGNORED_PROPERTIES = {"bets","status"};
+        String[] LOTTERY_IGNORED_PROPERTIES = {"bets", "status"};
         try {
             List<LotteryCloseHour> lotteryCloseHours = sessionFactory.getCurrentSession()
                     .createCriteria(LotteryCloseHour.class)
@@ -117,25 +119,48 @@ public class LotteryCloseHourDaoImpl implements LotteryCloseHourDao {
                     .setFetchMode("day", FetchMode.JOIN)
                     .add(Restrictions.eq("lottery.id", lotteryId))
                     .list();
-            for(LotteryCloseHour currLotCloseHour : lotteryCloseHours){
+            for (LotteryCloseHour currLotCloseHour : lotteryCloseHours) {
                 LotteryCloseHour copyLotteryCloseHour = new LotteryCloseHour();
                 Lottery lotteryCopy = new Lottery();
                 BeanUtils.copyProperties(currLotCloseHour, copyLotteryCloseHour, CLOSE_HOUR_IGNORED_PROPERTIES);
                 BeanUtils.copyProperties(currLotCloseHour.getLottery(), lotteryCopy, LOTTERY_IGNORED_PROPERTIES);
                 copyLotteryCloseHour.setLottery(lotteryCopy);
                 lotteryCloseHourCopy.add(copyLotteryCloseHour);
-            }            
+            }
             LOG.exiting("LotteryCloseHourDaoImpl", "findAvailableCloseHour");
             return lotteryCloseHourCopy;
         } catch (Exception ex) {
             throw new FindLotteryCloseHourException();
         }
     }
-     @Override
+
+    @Override
     public void deleteAllByLotteryId(int lotteryId) {
         Query query = sessionFactory.getCurrentSession().createQuery("delete from LotteryCloseHour lch where lch.lottery.id = :lotteryId");
         query.setParameter("lotteryId", lotteryId);
         int rows = query.executeUpdate();
         LOG.log(Level.INFO, "{0} rows deleted.", rows);
+    }
+
+    @Override
+    public Set<Time> findTimesByLottery(int lotteryId) throws FindLotteryCloseHourException {
+        LOG.entering("LotteryCloseHourDaoImpl", "findTimesByLottery");
+
+        List<LotteryCloseHour> lotteryCloseHours = sessionFactory.getCurrentSession()
+                .createCriteria(LotteryCloseHour.class)
+                .setFetchMode("lottery", FetchMode.JOIN)
+                .setFetchMode("time", FetchMode.JOIN)
+                .add(Restrictions.eq("lottery.id", lotteryId))
+                .list();
+
+        Set<Time> availableTimes = new HashSet<Time>();
+        if (lotteryCloseHours != null) {
+            for (LotteryCloseHour currCloseHour : lotteryCloseHours) {
+                availableTimes.add(currCloseHour.getTime());
+            }
+        }
+
+        LOG.exiting("LotteryCloseHourDaoImpl", "findTimesByLottery");
+        return availableTimes;
     }
 }

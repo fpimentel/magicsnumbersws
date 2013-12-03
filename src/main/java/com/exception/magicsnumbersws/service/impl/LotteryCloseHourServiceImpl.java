@@ -7,6 +7,7 @@ import com.exception.magicsnumbersws.exception.CloseHourLotteryConfigNotFoundtEx
 import com.exception.magicsnumbersws.exception.FindLotteryCloseHourException;
 import com.exception.magicsnumbersws.service.LotteryCloseHourService;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -74,5 +75,11 @@ public class LotteryCloseHourServiceImpl implements LotteryCloseHourService {
     @Override
     public List<LotteryCloseHour> findAvailableCloseHour(int lotteryId) throws FindLotteryCloseHourException {
         return lotteryCloseHourDao.findAvailableCloseHour(lotteryId);
+    }
+
+    @Transactional
+    @Override
+    public Set<Time> findTimesByLottery(int lotteryId) throws FindLotteryCloseHourException {
+        return lotteryCloseHourDao.findTimesByLottery(lotteryId);
     }
 }

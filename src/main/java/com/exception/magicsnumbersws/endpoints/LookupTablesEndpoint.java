@@ -8,6 +8,7 @@ import com.exception.magicsnumbersws.entities.BetBankingBetLimit;
 import com.exception.magicsnumbersws.entities.BlockingNumberBetBanking;
 import com.exception.magicsnumbersws.entities.Category;
 import com.exception.magicsnumbersws.entities.Consortium;
+import com.exception.magicsnumbersws.entities.ConsortiumGeneralLimit;
 import com.exception.magicsnumbersws.entities.Day;
 import com.exception.magicsnumbersws.entities.Lottery;
 import com.exception.magicsnumbersws.entities.LotteryCloseHour;
@@ -18,6 +19,7 @@ import com.exception.magicsnumbersws.exception.DeleteBetBankingBetLimitException
 import com.exception.magicsnumbersws.exception.FindBetException;
 import com.exception.magicsnumbersws.exception.FindBetLimitException;
 import com.exception.magicsnumbersws.exception.FindBlockingNumberException;
+import com.exception.magicsnumbersws.exception.FindConsortiumGeneralLimitException;
 import com.exception.magicsnumbersws.exception.FindDayException;
 import com.exception.magicsnumbersws.exception.FindLotteryCloseHourException;
 import com.exception.magicsnumbersws.exception.FindLotteryException;
@@ -249,4 +251,9 @@ public interface LookupTablesEndpoint {
     @Path("time/findByLotteryId/{lotteryId}")
     @Produces(MediaType.APPLICATION_JSON)
     public Set<Time> findTimesByLottery(@PathParam("lotteryId") int lotteryId) throws FindLotteryCloseHourException;
+    
+    @GET
+    @Path("consortiumLimit/findByConsortiumId/{consortiumId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<ConsortiumGeneralLimit> findByConsortiumId(@PathParam("consortiumId") int consortiumId) throws FindConsortiumGeneralLimitException;
 }

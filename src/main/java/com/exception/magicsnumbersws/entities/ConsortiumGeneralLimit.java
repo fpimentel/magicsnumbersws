@@ -35,6 +35,9 @@ public class ConsortiumGeneralLimit implements Serializable , Comparable<Consort
     @JoinColumn(name = "TIME_ID", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Time time;
+    @JoinColumn(name = "BET_ID", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private Bet bet;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 50)
@@ -88,6 +91,14 @@ public class ConsortiumGeneralLimit implements Serializable , Comparable<Consort
 
     public void setTime(Time time) {
         this.time = time;
+    }
+
+    public Bet getBet() {
+        return bet;
+    }
+
+    public void setBet(Bet bet) {
+        this.bet = bet;
     }
     
     public String getCreationUser() {

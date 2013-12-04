@@ -9,6 +9,7 @@ import com.exception.magicsnumbersws.entities.BetBankingBetLimit;
 import com.exception.magicsnumbersws.entities.BlockingNumberBetBanking;
 import com.exception.magicsnumbersws.entities.Category;
 import com.exception.magicsnumbersws.entities.Consortium;
+import com.exception.magicsnumbersws.entities.ConsortiumGeneralLimit;
 import com.exception.magicsnumbersws.entities.Day;
 import com.exception.magicsnumbersws.entities.Lottery;
 import com.exception.magicsnumbersws.entities.LotteryCloseHour;
@@ -19,6 +20,7 @@ import com.exception.magicsnumbersws.exception.DeleteBetBankingBetLimitException
 import com.exception.magicsnumbersws.exception.FindBetException;
 import com.exception.magicsnumbersws.exception.FindBetLimitException;
 import com.exception.magicsnumbersws.exception.FindBlockingNumberException;
+import com.exception.magicsnumbersws.exception.FindConsortiumGeneralLimitException;
 import com.exception.magicsnumbersws.exception.FindDayException;
 import com.exception.magicsnumbersws.exception.FindLotteryCloseHourException;
 import com.exception.magicsnumbersws.exception.FindLotteryException;
@@ -33,6 +35,7 @@ import com.exception.magicsnumbersws.exception.SearchAllConsortiumException;
 import com.exception.magicsnumbersws.service.BetBankingService;
 import com.exception.magicsnumbersws.service.BetService;
 import com.exception.magicsnumbersws.service.CategoryService;
+import com.exception.magicsnumbersws.service.ConsortiumGeneralLimitService;
 import com.exception.magicsnumbersws.service.ConsortiumService;
 import com.exception.magicsnumbersws.service.DayService;
 import com.exception.magicsnumbersws.service.LotteryCloseHourService;
@@ -76,6 +79,8 @@ public class LookupTablesEndpointImpl implements LookupTablesEndpoint {
     private DayService dayService;
     @Autowired
     private TimeService timeService;   
+    @Autowired
+    private ConsortiumGeneralLimitService consortiumGeneralLimitService;
     
     @Override
     public List<Status> getAllStatus() {
@@ -264,5 +269,11 @@ public class LookupTablesEndpointImpl implements LookupTablesEndpoint {
     public Set<Time> findTimesByLottery(int lotteryId) throws FindLotteryCloseHourException {
         logger.entering("LookupTablesEndpointImpl", "findTimeById");
         return lotteryCloseHourService.findTimesByLottery(lotteryId);
+    }
+
+    @Override
+    public List<ConsortiumGeneralLimit> findByConsortiumId(int consortiumId) throws FindConsortiumGeneralLimitException {
+        logger.entering("LookupTablesEndpointImpl", "findByConsortiumId");
+        return consortiumGeneralLimitService.findByConsortiumId(consortiumId);
     }
 }

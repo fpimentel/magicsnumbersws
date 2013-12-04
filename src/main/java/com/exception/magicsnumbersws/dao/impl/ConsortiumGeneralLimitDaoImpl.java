@@ -105,9 +105,15 @@ public class ConsortiumGeneralLimitDaoImpl implements ConsortiumGeneralLimitDao 
                 Lottery lotteryCopy = new Lottery();
                 
                 BeanUtils.copyProperties(currConsLimit.getConsortium(), consortiumCopy, CONSORTIUM_IGNORED_PROPERITES);
-                BeanUtils.copyProperties(currConsLimit.getBet(), betCopy, BET_IGNORED_PROPERITES);
+                BeanUtils.copyProperties(currConsLimit.getBet(), betCopy, BET_IGNORED_PROPERITES);                
                 BeanUtils.copyProperties(currConsLimit.getLottery(), lotteryCopy, LOTTERY_IGNORED_PROPERITES);  
                 
+                for(Bet currBet: currConsLimit.getLottery().getBets()){
+                    Bet lotteryBetCopy = new Bet();
+                    BeanUtils.copyProperties(currBet, lotteryBetCopy, BET_IGNORED_PROPERITES);  
+                    lotteryCopy.getBets().add(lotteryBetCopy);
+                }
+                                                
                 consortiumGeneralLimitCopy.setConsortium(consortiumCopy);
                 consortiumGeneralLimitCopy.setLottery(lotteryCopy);
                 consortiumGeneralLimitCopy.setBet(betCopy);

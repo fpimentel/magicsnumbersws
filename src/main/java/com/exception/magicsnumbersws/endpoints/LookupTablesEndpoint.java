@@ -255,5 +255,5 @@ public interface LookupTablesEndpoint {
     @GET
     @Path("consortiumLimit/findByConsortiumId/{consortiumId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<ConsortiumGeneralLimit> findByConsortiumId(@PathParam("consortiumId") int consortiumId) throws FindConsortiumGeneralLimitException;
+    public List<ConsortiumGeneralLimit> findConsortiumLimitByConsortiumId(int consortiumId) throws FindConsortiumGeneralLimitException;
 }

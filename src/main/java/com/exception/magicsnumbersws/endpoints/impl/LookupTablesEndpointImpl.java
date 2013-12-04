@@ -272,7 +272,7 @@ public class LookupTablesEndpointImpl implements LookupTablesEndpoint {
     }
 
     @Override
-    public List<ConsortiumGeneralLimit> findByConsortiumId(int consortiumId) throws FindConsortiumGeneralLimitException {
+    public List<ConsortiumGeneralLimit> findConsortiumLimitByConsortiumId(int consortiumId) throws FindConsortiumGeneralLimitException {
         logger.entering("LookupTablesEndpointImpl", "findByConsortiumId");
         return consortiumGeneralLimitService.findByConsortiumId(consortiumId);
     }

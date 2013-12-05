@@ -46,7 +46,7 @@ public class ConsortiumGeneralLimit implements Serializable , Comparable<Consort
     @Basic(optional = false)
     @NotNull
     @Column(name = "AMOUNT")
-    private long amount;
+    private float amount;
 
     public ConsortiumGeneralLimit() {
     }
@@ -109,11 +109,11 @@ public class ConsortiumGeneralLimit implements Serializable , Comparable<Consort
         this.creationUser = creationUser;
     }
 
-    public long getAmount() {
+    public float getAmount() {
         return amount;
     }
 
-    public void setAmount(long amount) {
+    public void setAmount(float amount) {
         this.amount = amount;
     }
 

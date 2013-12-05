@@ -1,6 +1,10 @@
 package com.exception.magicsnumbersws.service.impl;
+
+import com.exception.magicsnumbersws.containers.ConsortiumContainer;
 import com.exception.magicsnumbersws.dao.ConsortiumDao;
+import com.exception.magicsnumbersws.dao.ConsortiumGeneralLimitDao;
 import com.exception.magicsnumbersws.entities.Consortium;
+import com.exception.magicsnumbersws.entities.ConsortiumGeneralLimit;
 import com.exception.magicsnumbersws.exception.SaveConsortiumDataException;
 import com.exception.magicsnumbersws.exception.SearchAllConsortiumException;
 import com.exception.magicsnumbersws.service.ConsortiumService;
@@ -20,6 +24,8 @@ public class ConsortiumServiceImpl implements ConsortiumService {
 
     @Autowired
     private ConsortiumDao consortiumDao;
+    @Autowired
+    private ConsortiumGeneralLimitDao consortiumGeneralLimitDao;
 
     public ConsortiumServiceImpl() {
     }
@@ -66,10 +72,18 @@ public class ConsortiumServiceImpl implements ConsortiumService {
         consortiumDao.saveConsortiumsData(consortiums);
     }
 
+    @Transactional
     @Override
-    public void saveConsortiumData(Consortium consortium) throws SaveConsortiumDataException {
+    public void saveConsortiumData(ConsortiumContainer consortiumContainer) throws SaveConsortiumDataException {
         try {
-            consortiumDao.saveConsortiumData(consortium);
+            consortiumDao.saveConsortiumData(consortiumContainer.getConsortium());
+            if (consortiumContainer.getConsortiumGeneralLimit() != null) {
+                //Se procede a grabar los limites.
+                for (ConsortiumGeneralLimit currConsLimit : consortiumContainer.getConsortiumGeneralLimit()) {
+                    currConsLimit.setConsortium(consortiumContainer.getConsortium());
+                    consortiumGeneralLimitDao.add(null);
+                }
+            }
         } catch (Exception ex) {
             throw new SaveConsortiumDataException();
         }

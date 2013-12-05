@@ -1,6 +1,7 @@
 package com.exception.magicsnumbersws.endpoints.impl;
 
 import com.exception.magicsnumbersws.containers.BetBankingContainer;
+import com.exception.magicsnumbersws.containers.ConsortiumContainer;
 import com.exception.magicsnumbersws.containers.LotteryContainer;
 import com.exception.magicsnumbersws.endpoints.LookupTablesEndpoint;
 import com.exception.magicsnumbersws.entities.Bet;
@@ -121,9 +122,9 @@ public class LookupTablesEndpointImpl implements LookupTablesEndpoint {
     }
 
     @Override
-    public void saveConsortiumData(Consortium consortium) throws SaveConsortiumDataException {
+    public void saveConsortiumData(ConsortiumContainer consortiumContainer) throws SaveConsortiumDataException {
         try {
-            consortiumService.saveConsortiumData(consortium);
+            consortiumService.saveConsortiumData(consortiumContainer);
         } catch (Exception ex) {
             logger.log(Level.SEVERE, "saveConsortium()".concat(ex.getMessage()));
             throw new SaveConsortiumDataException(ex.getMessage(), ex);

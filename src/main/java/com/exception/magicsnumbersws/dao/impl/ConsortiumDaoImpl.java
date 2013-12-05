@@ -5,6 +5,7 @@ import com.exception.magicsnumbersws.dao.ConsortiumDao;
 import com.exception.magicsnumbersws.dao.UserDao;
 import com.exception.magicsnumbersws.entities.BetBanking;
 import com.exception.magicsnumbersws.entities.Consortium;
+import com.exception.magicsnumbersws.entities.ConsortiumGeneralLimit;
 import com.exception.magicsnumbersws.entities.SystemOption;
 import com.exception.magicsnumbersws.entities.User;
 import com.exception.magicsnumbersws.exception.SaveConsortiumDataException;

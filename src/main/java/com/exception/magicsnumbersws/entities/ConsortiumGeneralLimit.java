@@ -4,6 +4,8 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -22,6 +24,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class ConsortiumGeneralLimit implements Serializable , Comparable<ConsortiumGeneralLimit>{
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @NotNull
     @Column(name = "ID")
@@ -119,8 +122,8 @@ public class ConsortiumGeneralLimit implements Serializable , Comparable<Consort
 
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 29 * hash + (this.id != null ? this.id.hashCode() : 0);
+        int hash = 3;
+        hash = 97 * hash + (this.id != null ? this.id.hashCode() : 0);
         return hash;
     }
 
@@ -138,6 +141,8 @@ public class ConsortiumGeneralLimit implements Serializable , Comparable<Consort
         }
         return true;
     }
+
+ 
 
     @Override
     public String toString() {

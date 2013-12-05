@@ -1,6 +1,7 @@
 package com.exception.magicsnumbersws.endpoints;
 
 import com.exception.magicsnumbersws.containers.BetBankingContainer;
+import com.exception.magicsnumbersws.containers.ConsortiumContainer;
 import com.exception.magicsnumbersws.containers.LotteryContainer;
 import com.exception.magicsnumbersws.entities.Bet;
 import com.exception.magicsnumbersws.entities.BetBanking;
@@ -155,7 +156,7 @@ public interface LookupTablesEndpoint {
     @Path(value = "/consortium/saveData")
     @Consumes("application/json")
     @Produces(value = MediaType.APPLICATION_JSON)
-    void saveConsortiumData(Consortium consortium) throws SaveConsortiumDataException;
+    void saveConsortiumData(ConsortiumContainer consortiumContainer) throws SaveConsortiumDataException;
 
     @GET
     @Path("/betBanking/blockingNumbers/{betBankingId}")

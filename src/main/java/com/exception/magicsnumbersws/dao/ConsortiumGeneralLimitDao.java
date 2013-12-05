@@ -2,6 +2,7 @@ package com.exception.magicsnumbersws.dao;
 import com.exception.magicsnumbersws.entities.ConsortiumGeneralLimit;
 import com.exception.magicsnumbersws.exception.DeleteConsortiumGeneralLimitException;
 import com.exception.magicsnumbersws.exception.FindConsortiumGeneralLimitException;
+import com.exception.magicsnumbersws.exception.SaveConsortiumGeneralLimitException;
 import java.util.List;
 
 /**
@@ -17,4 +18,5 @@ public interface ConsortiumGeneralLimitDao {
     public void deleteByConsortiumId(int consortiumId) throws DeleteConsortiumGeneralLimitException;            
     public ConsortiumGeneralLimit findById(int id) throws FindConsortiumGeneralLimitException;
     public List<ConsortiumGeneralLimit> findByConsortiumId(int consortiumId) throws FindConsortiumGeneralLimitException;
+    public void saveConsortiumGeneralLimit(List<ConsortiumGeneralLimit> consGeneralLimit) throws SaveConsortiumGeneralLimitException;    
 }

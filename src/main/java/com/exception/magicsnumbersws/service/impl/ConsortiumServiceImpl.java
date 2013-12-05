@@ -5,10 +5,13 @@ import com.exception.magicsnumbersws.dao.ConsortiumDao;
 import com.exception.magicsnumbersws.dao.ConsortiumGeneralLimitDao;
 import com.exception.magicsnumbersws.entities.Consortium;
 import com.exception.magicsnumbersws.entities.ConsortiumGeneralLimit;
+import com.exception.magicsnumbersws.exception.DeleteConsortiumGeneralLimitException;
 import com.exception.magicsnumbersws.exception.SaveConsortiumDataException;
 import com.exception.magicsnumbersws.exception.SearchAllConsortiumException;
 import com.exception.magicsnumbersws.service.ConsortiumService;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -72,19 +75,26 @@ public class ConsortiumServiceImpl implements ConsortiumService {
         consortiumDao.saveConsortiumsData(consortiums);
     }
 
+    
+    
     @Transactional
     @Override
     public void saveConsortiumData(ConsortiumContainer consortiumContainer) throws SaveConsortiumDataException {
         try {
-            consortiumDao.saveConsortiumData(consortiumContainer.getConsortium());
+            consortiumDao.saveConsortiumData(consortiumContainer.getConsortium());            
+            //Se eliminan los limites de la base de datos.
+            consortiumGeneralLimitDao.deleteByConsortiumId(consortiumContainer.getConsortium().getId());
             if (consortiumContainer.getConsortiumGeneralLimit() != null) {
                 //Se procede a grabar los limites.
                 for (ConsortiumGeneralLimit currConsLimit : consortiumContainer.getConsortiumGeneralLimit()) {
                     currConsLimit.setConsortium(consortiumContainer.getConsortium());
-                    consortiumGeneralLimitDao.add(null);
+                    consortiumGeneralLimitDao.add(currConsLimit);
                 }
             }
-        } catch (Exception ex) {
+        } catch (DeleteConsortiumGeneralLimitException ex) {
+            Logger.getLogger(ConsortiumServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+        catch (Exception ex) {
             throw new SaveConsortiumDataException();
         }
     }

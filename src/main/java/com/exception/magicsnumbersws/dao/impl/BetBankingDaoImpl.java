@@ -84,7 +84,7 @@ public class BetBankingDaoImpl implements BetBankingDao {
         }
         return copyBetBakings;
     }
-
+    
     @Override    
     public BetBanking findById(int id) {       
         final String[] betBankingIgnoredProperties = {"lotteries","consortium","status"};
@@ -146,8 +146,10 @@ public class BetBankingDaoImpl implements BetBankingDao {
     public void assingConsortium(Consortium cons) {
         for (BetBanking currBanking : cons.getBetBankings()) {
             BetBanking betBanking = findById(currBanking.getId());
-            betBanking.setConsortium(cons);
-            update(betBanking);
+            BetBanking betBankingToUpdate = new BetBanking();
+            BeanUtils.copyProperties(betBanking, betBankingToUpdate, new String[]{"lotteries"});
+            currBanking.setConsortium(cons);
+            update(betBankingToUpdate);
         }
     }
 

@@ -20,16 +20,14 @@ import org.springframework.transaction.annotation.Transactional;
 public interface BetBankingDao {
 
     public void add(BetBanking betBanking);
-
-    @Transactional
+    
     public void update(BetBanking betBanking);
 
     public void delete(int betBankingId);
 
     //@Transactional(readOnly = true, propagation = Propagation.REQUIRES_NEW)
     public List<BetBankingBetLimit> findBetLimitsByBetBankingId(int betBankingId) throws FindBetLimitException;
-    
-    //@Transactional(readOnly = true,propagation = Propagation.REQUIRES_NEW)
+        
     public BetBanking findById(int id);
 
     @Transactional(readOnly = true, propagation = Propagation.REQUIRES_NEW)

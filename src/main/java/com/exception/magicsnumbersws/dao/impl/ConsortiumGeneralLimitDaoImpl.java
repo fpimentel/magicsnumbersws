@@ -131,10 +131,9 @@ public class ConsortiumGeneralLimitDaoImpl implements ConsortiumGeneralLimitDao 
             for (ConsortiumGeneralLimit currConsLimit : consGeneralLimit) {
                 add(currConsLimit);
             }
-        }
-        catch(Exception ex){
+        } catch (Exception ex) {
             LOG.log(Level.SEVERE, null, ex);
             throw new SaveConsortiumGeneralLimitException();
         }
-    }
+    }    
 }

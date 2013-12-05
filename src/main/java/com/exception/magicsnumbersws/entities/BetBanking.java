@@ -67,7 +67,7 @@ public class BetBanking implements Serializable, Comparable<BetBanking> {
     private Consortium consortium;    
     
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "BETS_BANKINGS_LOTTERIES", joinColumns = { @JoinColumn(name = "BETBANKING_ID") }, 
+    @JoinTable(name = "BETS_BANKINGS_LOTTERIES",  joinColumns = { @JoinColumn(name = "BETBANKING_ID") }, 
                                     inverseJoinColumns = { @JoinColumn(name = "LOTTERY_ID") })
     private Set<Lottery> lotteries = new HashSet<Lottery>(0);
     

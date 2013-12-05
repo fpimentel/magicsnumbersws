@@ -15,6 +15,8 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
 import org.hibernate.SessionFactory;
@@ -30,6 +32,7 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public class ConsortiumDaoImpl implements ConsortiumDao {
+    private static final Logger LOG = Logger.getLogger(ConsortiumDaoImpl.class.getName());
 
     private static int ACTIVO = 1;
     @Autowired
@@ -216,6 +219,7 @@ public class ConsortiumDaoImpl implements ConsortiumDao {
                 betBankingDao.assingConsortium(consortium);
             }
         } catch (Exception ex) {
+            LOG.log(Level.SEVERE, null, ex);
             throw new SaveConsortiumDataException();
         }
     }

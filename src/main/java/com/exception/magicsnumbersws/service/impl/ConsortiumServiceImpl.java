@@ -22,7 +22,6 @@ import org.springframework.transaction.annotation.Transactional;
  * @since 02-sept-2013
  */
 @Service
-@Transactional
 public class ConsortiumServiceImpl implements ConsortiumService {
 
     @Autowired
@@ -74,9 +73,7 @@ public class ConsortiumServiceImpl implements ConsortiumService {
     public void saveConsortiumsData(List<Consortium> consortiums) throws SaveConsortiumDataException {
         consortiumDao.saveConsortiumsData(consortiums);
     }
-
-    
-    
+        
     @Transactional
     @Override
     public void saveConsortiumData(ConsortiumContainer consortiumContainer) throws SaveConsortiumDataException {

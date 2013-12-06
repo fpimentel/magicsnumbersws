@@ -74,4 +74,5 @@ public interface BetBankingDao {
     public List<Bet> findBetsByLotteryAndBetBanking(int lotteryId, int betBankingId) throws FindBetException;
     
     public Consortium findConsortiumByBetBankingId(int betBankingId);    
+    public BetBanking findBetBankingWithLottery(int id);
 }

@@ -19,6 +19,7 @@ import java.util.Set;
 import java.util.logging.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
+import org.hibernate.Hibernate;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.BeanUtils;
@@ -87,13 +88,28 @@ public class BetBankingDaoImpl implements BetBankingDao {
     
     @Override    
     public BetBanking findById(int id) {       
-        final String[] betBankingIgnoredProperties = {"lotteries","consortium","status"};
+        final String[] betBankingIgnoredProperties = {"lotteries","consortium"};
         BetBanking copyBetBanking = new BetBanking();
         
         BetBanking betBanking = (BetBanking) sessionFactory.getCurrentSession()
                  .createCriteria(BetBanking.class)                 
                  .add(Restrictions.eq("id", id))
                  .uniqueResult();
+        
+        BeanUtils.copyProperties(betBanking, copyBetBanking,betBankingIgnoredProperties);
+        return copyBetBanking;
+    }
+    
+    @Override
+    public BetBanking findBetBankingWithLottery(int id) {       
+        final String[] betBankingIgnoredProperties = {"consortium"};
+        BetBanking copyBetBanking = new BetBanking();
+        
+        BetBanking betBanking = (BetBanking) sessionFactory.getCurrentSession()
+                 .createCriteria(BetBanking.class)                 
+                 .add(Restrictions.eq("id", id))
+                .setFetchMode("lotteries", FetchMode.JOIN)
+                 .uniqueResult();  
         
         BeanUtils.copyProperties(betBanking, copyBetBanking,betBankingIgnoredProperties);
         return copyBetBanking;
@@ -145,11 +161,14 @@ public class BetBankingDaoImpl implements BetBankingDao {
     @Override
     public void assingConsortium(Consortium cons) {
         for (BetBanking currBanking : cons.getBetBankings()) {
-            BetBanking betBanking = findById(currBanking.getId());
-            BetBanking betBankingToUpdate = new BetBanking();
-            BeanUtils.copyProperties(betBanking, betBankingToUpdate, new String[]{"lotteries"});
-            currBanking.setConsortium(cons);
-            update(betBankingToUpdate);
+            currBanking.setConsortium(cons);            
+            BetBanking betBanking = findBetBankingWithLottery(currBanking.getId()); 
+            betBanking.setConsortium(cons);
+            sessionFactory.getCurrentSession().clear();
+            //BetBanking betBankingToUpdate = new BetBanking();
+            //BeanUtils.copyProperties(betBanking, betBankingToUpdate, new String[]{"lotteries"});
+            //betBankingToUpdate.setConsortium(cons);
+            update(betBanking);
         }
     }
 

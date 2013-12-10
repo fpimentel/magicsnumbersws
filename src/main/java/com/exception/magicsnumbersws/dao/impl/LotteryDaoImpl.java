@@ -130,8 +130,9 @@ public class LotteryDaoImpl implements LotteryDao {
             String[] STATUS_IGNORED_PROPERTIES = {"bets"};
             String[] BET_IGNORED_PROPERTIES = {"status","betType"};
             List<Lottery> copylotteries = new ArrayList<Lottery>();
-            List<Lottery> lotteries = (List<Lottery>) sessionFactory.getCurrentSession()
+            List<Lottery> lotteries = (List<Lottery>) sessionFactory.getCurrentSession()                    
                     .createCriteria(Lottery.class)
+                    .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)
                     .setFetchMode("bets", FetchMode.JOIN)
                     .list();
             for(Lottery currLottery : lotteries){

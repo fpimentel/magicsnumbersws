@@ -13,6 +13,8 @@ import com.exception.magicsnumbersws.entities.Bet;
 import com.exception.magicsnumbersws.entities.Lottery;
 import com.exception.magicsnumbersws.exception.FindLotteryException;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.logging.Level;
 import org.hibernate.Criteria;
 import org.springframework.beans.BeanUtils;
@@ -126,14 +128,23 @@ public class LotteryDaoImpl implements LotteryDao {
         try {
             String[] LOTTERY_IGNORED_PROPERTIES = {"bets","status"};
             String[] STATUS_IGNORED_PROPERTIES = {"bets"};
+            String[] BET_IGNORED_PROPERTIES = {"status","betType"};
             List<Lottery> copylotteries = new ArrayList<Lottery>();
             List<Lottery> lotteries = (List<Lottery>) sessionFactory.getCurrentSession()
-                    .createCriteria(Lottery.class)               
+                    .createCriteria(Lottery.class)
+                    .setFetchMode("bets", FetchMode.JOIN)
                     .list();
             for(Lottery currLottery : lotteries){
                 Lottery copyLottery = new Lottery();
                 com.exception.magicsnumbersws.entities.Status statusCopy = new com.exception.magicsnumbersws.entities.Status();
                 BeanUtils.copyProperties(currLottery, copyLottery, LOTTERY_IGNORED_PROPERTIES);
+                Set<Bet> copyBets = new HashSet<Bet>();
+                for(Bet currBet : currLottery.getBets()){
+                    Bet copyBet = new Bet();
+                    BeanUtils.copyProperties(currBet, copyBet, BET_IGNORED_PROPERTIES);
+                    copyBets.add(copyBet);
+                }
+                copyLottery.setBets(copyBets);
                 BeanUtils.copyProperties(currLottery.getStatus(),statusCopy, STATUS_IGNORED_PROPERTIES);
                 copyLottery.setStatus(statusCopy);
                 copylotteries.add(copyLottery);

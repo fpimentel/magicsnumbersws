@@ -97,7 +97,7 @@ public class UserServiceImpl implements UserService {
         }
         return userConsortiumDao.findUsersByConsortiumIds(new ArrayList<Integer>(consortiumsIds));
     }
-
+    
     @Override
     public void saveUser(User user) throws SaveUsersDataException {
         LOG.log(Level.INFO, "Init-UserServiceImpl.saveUser");
@@ -166,5 +166,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findUserByUserName(String userName) throws SearchAllUserException {
         return userDao.findUserByUserName(userName);
+    }
+
+    @Override
+    public void updateUserPassword(int idUser, String newPassword) throws SaveUsersDataException {
+        User user = userDao.findById(idUser);
+        if(user != null){
+            user.setPassword(Security.encryptToMD5(newPassword));
+            userDao.saveUser(user);
+        }        
     }
 }

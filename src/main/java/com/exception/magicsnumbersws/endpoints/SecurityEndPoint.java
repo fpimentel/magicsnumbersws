@@ -74,4 +74,10 @@ public interface SecurityEndPoint {
     @Path("/findUserByUserName/{userName}")
     @Produces(MediaType.APPLICATION_JSON)
     public User findUserByUserName(@PathParam("userName") String userName) throws SearchAllUserException;
+    
+    @POST
+    @Path("/updateUserPassword/{idUser}/{newPassword}")
+    @Consumes("application/json")
+    @Produces(MediaType.APPLICATION_JSON)
+    public void updateUserPassword(@PathParam("idUser") int idUser,@PathParam("newPassword") String newPassword) throws SaveUsersDataException;
 }

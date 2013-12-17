@@ -93,4 +93,9 @@ public class SecurityEndPointImpl implements SecurityEndPoint {
         logger.log(Level.INFO, "init- findUserByUserName");
         return userService.findUserByUserName(userName);
     }
+
+    @Override
+    public void updateUserPassword(int idUser, String newPassword) throws SaveUsersDataException {
+        userService.updateUserPassword(idUser, newPassword);
+    }
 }

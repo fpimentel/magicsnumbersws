@@ -3,9 +3,11 @@ package com.exception.magicsnumbersws.dao.impl;
 import com.exception.magicsnumbersws.dao.BetBankingDao;
 import com.exception.magicsnumbersws.dao.ConsortiumDao;
 import com.exception.magicsnumbersws.dao.UserDao;
+import com.exception.magicsnumbersws.entities.Bet;
 import com.exception.magicsnumbersws.entities.BetBanking;
 import com.exception.magicsnumbersws.entities.Consortium;
 import com.exception.magicsnumbersws.entities.ConsortiumGeneralLimit;
+import com.exception.magicsnumbersws.entities.Lottery;
 import com.exception.magicsnumbersws.entities.SystemOption;
 import com.exception.magicsnumbersws.entities.User;
 import com.exception.magicsnumbersws.exception.SaveConsortiumDataException;
@@ -32,8 +34,8 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public class ConsortiumDaoImpl implements ConsortiumDao {
-    private static final Logger LOG = Logger.getLogger(ConsortiumDaoImpl.class.getName());
 
+    private static final Logger LOG = Logger.getLogger(ConsortiumDaoImpl.class.getName());
     private static int ACTIVO = 1;
     @Autowired
     private SessionFactory sessionFactory;
@@ -63,7 +65,7 @@ public class ConsortiumDaoImpl implements ConsortiumDao {
      */
     @Override
     public List<Consortium> findActiveConsortium() throws SearchAllConsortiumException {
-        List<Consortium> consortiums = sessionFactory.getCurrentSession()                
+        List<Consortium> consortiums = sessionFactory.getCurrentSession()
                 .createCriteria(Consortium.class)
                 .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)
                 .setFetchMode("status", FetchMode.JOIN)
@@ -72,11 +74,13 @@ public class ConsortiumDaoImpl implements ConsortiumDao {
                 .add(Restrictions.eq("status.id", ACTIVO))
                 .list();
         String[] userIgnoredProperties = {"profile", "status", "consortiums"};
-        String[] betBankingIgnoredProperties = {"lotteries", "consortium", "status"};
+        String[] betBankingIgnoredProperties = {"consortium", "status"};
+        String[] lotteryIgnoredProperties = {"status"};
+        String[] betIgnoredProperties = {"status", "betType"};
         Set<User> users;
         Set<BetBanking> betBankings;
         for (Consortium consortium : consortiums) {
-           // consortium.setBetBankings(null);
+            // consortium.setBetBankings(null);
             users = new HashSet<User>();
             betBankings = new HashSet<BetBanking>();
 
@@ -93,6 +97,20 @@ public class ConsortiumDaoImpl implements ConsortiumDao {
                 for (BetBanking currBetBanking : consortium.getBetBankings()) {
                     BetBanking copyBetBanking = new BetBanking();
                     BeanUtils.copyProperties(currBetBanking, copyBetBanking, betBankingIgnoredProperties);
+                    Set<Lottery> lotteriesCopy = new HashSet<Lottery>();
+                    for (Lottery currLottery : currBetBanking.getLotteries()) {
+                        Lottery copyLottery = new Lottery();
+                        BeanUtils.copyProperties(currLottery, copyLottery, lotteryIgnoredProperties);
+                        Set<Bet> copyBets = new HashSet<Bet>();
+                        for (Bet currBet : copyLottery.getBets()) {
+                            Bet betCopy = new Bet();
+                            BeanUtils.copyProperties(currBet,betCopy, betIgnoredProperties);
+                            copyBets.add(betCopy);
+                        }
+                        copyLottery.setBets(copyBets);
+                        lotteriesCopy.add(copyLottery);
+                    }
+                    copyBetBanking.setLotteries(lotteriesCopy);
                     betBankings.add(copyBetBanking);
                 }
             }
@@ -119,7 +137,10 @@ public class ConsortiumDaoImpl implements ConsortiumDao {
             return null;
         }
         String[] userIgnoredProperties = {"betBankings", "profile", "status", "consortiums"};
-        String[] betBankingIgnoredProperties = {"lotteries", "consortium", "status"};
+        String[] betBankingIgnoredProperties = {"consortium", "status"};
+        String[] lotteryIgnoredProperties = {"status"};
+        String[] betIgnoredProperties = {"status", "betType"};
+        
         User userResult = (User) sessionFactory.getCurrentSession()
                 .createCriteria(User.class)
                 .setFetchMode("status", FetchMode.JOIN)
@@ -143,7 +164,7 @@ public class ConsortiumDaoImpl implements ConsortiumDao {
                     copiedConsortium = new Consortium();
                     users = new HashSet<User>();
                     BeanUtils.copyProperties(currConsortium, copiedConsortium);
-                    
+
                     for (User currUser : copiedConsortium.getUsers()) {
                         currUser.setBetBankings(null);
                         User copyUser = new User();
@@ -153,6 +174,20 @@ public class ConsortiumDaoImpl implements ConsortiumDao {
                     for (BetBanking currBetBanking : currConsortium.getBetBankings()) {
                         BetBanking copyBetBanking = new BetBanking();
                         BeanUtils.copyProperties(currBetBanking, copyBetBanking, betBankingIgnoredProperties);
+                        Set<Lottery> lotteriesCopy = new HashSet<Lottery>();
+                        for (Lottery currLottery : currBetBanking.getLotteries()) {
+                            Lottery copyLottery = new Lottery();
+                            BeanUtils.copyProperties(currLottery, copyLottery, lotteryIgnoredProperties);
+                            Set<Bet> copyBets = new HashSet<Bet>();
+                            for (Bet currBet : copyLottery.getBets()) {
+                                Bet betCopy = new Bet();
+                                BeanUtils.copyProperties(currBet,betCopy, betIgnoredProperties);
+                                copyBets.add(betCopy);
+                            }
+                            copyLottery.setBets(copyBets);
+                            lotteriesCopy.add(copyLottery);
+                        }
+                        copyBetBanking.setLotteries(lotteriesCopy);
                         betBankings.add(copyBetBanking);
                     }
                     copiedConsortium.setUsers(users);

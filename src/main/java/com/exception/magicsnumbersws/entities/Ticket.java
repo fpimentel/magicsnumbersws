@@ -27,7 +27,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Entity
 @Table(name = "TICKETS")
 @XmlRootElement
-public class Ticket implements Serializable {
+public class Ticket implements Serializable, Comparable<Ticket> {
     private static final long serialVersionUID = 1L;    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -170,4 +170,9 @@ public class Ticket implements Serializable {
     public void setTicketDetails(Set<TicketDetail> ticketDetails) {
         this.ticketDetails = ticketDetails;
     }            
+
+    @Override
+    public int compareTo(Ticket that) {
+        return this.id - that.id;
+    }
 }

@@ -50,15 +50,24 @@ public class TicketServiceImpl implements TicketService {
         this.ticketDao = ticketDao;
     }
 
+    public void aggregateAmounts(Ticket ticket){
+        float totalBetAmount=0.0f;
+        for(TicketDetail currTicketDetail : ticket.getTicketDetails()){
+            totalBetAmount += Float.parseFloat(currTicketDetail.getBetAmount().toString());           
+        }
+        ticket.setTotalBetAmount(totalBetAmount);
+    }
+    
     @Transactional
     @Override
     public void add(Ticket ticket) throws SaveTicketException {
         LOG.info("INIT- TicketServiceImpl.add");
         com.exception.magicsnumbersws.entities.Status pendingStatus = new com.exception.magicsnumbersws.entities.Status();
-        pendingStatus.setId(Status.TICKET_PENDIENTE.getId());
+        pendingStatus.setId(Status.VENDIDO.getId());
         ticket.setCreationDate(new Date());
         ticket.setStatus(pendingStatus);
         ticket.setSecurityCode(ticket.getRandomSecurityCode());
+        aggregateAmounts(ticket);
         LOG.info("INSERTING TICKETHEADER- TicketServiceImpl.add");
         this.ticketDao.add(ticket);
         LOG.info("INSERTING TICKETDETAIL");

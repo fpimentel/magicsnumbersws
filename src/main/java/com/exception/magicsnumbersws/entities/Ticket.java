@@ -27,12 +27,16 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Entity
 @Table(name = "TICKETS")
 @XmlRootElement
-public class Ticket implements Serializable, Comparable<Ticket> {
+public class Ticket implements Serializable, Comparable<Ticket> {    
+    
     private static final long serialVersionUID = 1L;    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private Integer id;
+    @JoinColumn(name = "BETBAKING_ID", referencedColumnName = "ID")
+    @ManyToOne
+    private BetBanking betBanking;       
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 50)
@@ -57,8 +61,14 @@ public class Ticket implements Serializable, Comparable<Ticket> {
     private Date modificationDate;
     @Size(max = 50)
     @Column(name = "MODIFICATION_USER")
-    private String modificationUser;     
+    private String modificationUser;  
+    
+    @Column(name = "TOTAL_BET_AMOUNT")    
+    private float totalBetAmount;
 
+    @Column(name = "TOTAL_WIN_AMOUNT")    
+    private float totalWinAmount;
+    
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "ticket")
     private Set<TicketDetail> ticketDetails= new HashSet<TicketDetail>(0);   
     
@@ -171,8 +181,35 @@ public class Ticket implements Serializable, Comparable<Ticket> {
         this.ticketDetails = ticketDetails;
     }            
 
+    public float getTotalBetAmount() {
+        return totalBetAmount;
+    }
+
+    public void setTotalBetAmount(float totalBetAmount) {
+        this.totalBetAmount = totalBetAmount;
+    }
+
+    public BetBanking getBetBanking() {
+        return betBanking;
+    }
+
+    public void setBetBanking(BetBanking betBanking) {
+        this.betBanking = betBanking;
+    }
+
+    public float getTotalWinAmount() {
+        return totalWinAmount;
+    }
+
+    public void setTotalWinAmount(float totalWinAmount) {
+        this.totalWinAmount = totalWinAmount;
+    }
+    
+    
     @Override
     public int compareTo(Ticket that) {
         return this.id - that.id;
     }
+
+    
 }

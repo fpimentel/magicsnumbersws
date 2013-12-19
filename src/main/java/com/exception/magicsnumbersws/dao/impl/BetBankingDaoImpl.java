@@ -165,9 +165,6 @@ public class BetBankingDaoImpl implements BetBankingDao {
             BetBanking betBanking = findBetBankingWithLottery(currBanking.getId()); 
             betBanking.setConsortium(cons);
             sessionFactory.getCurrentSession().clear();
-            //BetBanking betBankingToUpdate = new BetBanking();
-            //BeanUtils.copyProperties(betBanking, betBankingToUpdate, new String[]{"lotteries"});
-            //betBankingToUpdate.setConsortium(cons);
             update(betBanking);
         }
     }

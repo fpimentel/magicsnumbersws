@@ -1,6 +1,7 @@
 package com.exception.magicsnumbersws.service.impl;
 
 import com.exception.magicsnumbersws.constants.Status;
+import com.exception.magicsnumbersws.containers.TicketReportContainer;
 import com.exception.magicsnumbersws.dao.BetBankingBetLimitDao;
 import com.exception.magicsnumbersws.dao.BlockingNumberBetBankingDao;
 import com.exception.magicsnumbersws.dao.TicketDao;
@@ -9,9 +10,11 @@ import com.exception.magicsnumbersws.entities.Ticket;
 import com.exception.magicsnumbersws.entities.TicketDetail;
 import com.exception.magicsnumbersws.exception.FindBetLimitException;
 import com.exception.magicsnumbersws.exception.FindBlockingNumberException;
+import com.exception.magicsnumbersws.exception.FindTicketException;
 import com.exception.magicsnumbersws.exception.SaveTicketException;
 import com.exception.magicsnumbersws.service.TicketService;
 import java.util.Date;
+import java.util.List;
 import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -118,5 +121,10 @@ public class TicketServiceImpl implements TicketService {
     @Override
     public String findBetBankingBetLimitAmount(int betBankingId, int lotteryId, int betId) throws FindBetLimitException{        
         return this.betBankingBetLimitDao.findBetBankingBetLimitAmount(betBankingId, lotteryId, betId);
+    }
+
+    @Override
+    public List<Ticket> findTicket(TicketReportContainer ticketReportContainer) throws FindTicketException {
+        return ticketDao.findTicket(ticketReportContainer);
     }
 }

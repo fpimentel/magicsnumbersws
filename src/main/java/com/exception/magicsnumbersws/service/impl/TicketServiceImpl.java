@@ -123,8 +123,9 @@ public class TicketServiceImpl implements TicketService {
         return this.betBankingBetLimitDao.findBetBankingBetLimitAmount(betBankingId, lotteryId, betId);
     }
 
+    @Transactional
     @Override
-    public List<Ticket> findTicket(TicketReportContainer ticketReportContainer) throws FindTicketException {
-        return ticketDao.findTicket(ticketReportContainer);
+    public List<Ticket> findTicket(int betBankingId, String fromDate, String toDate) throws FindTicketException {
+        return ticketDao.findTicket(betBankingId, fromDate, toDate);
     }
 }

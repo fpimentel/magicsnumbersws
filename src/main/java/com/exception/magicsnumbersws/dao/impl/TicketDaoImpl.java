@@ -1,6 +1,5 @@
 package com.exception.magicsnumbersws.dao.impl;
 
-import com.exception.magicsnumbersws.containers.TicketReportContainer;
 import com.exception.magicsnumbersws.dao.TicketDao;
 import com.exception.magicsnumbersws.entities.Ticket;
 import com.exception.magicsnumbersws.exception.FindTicketException;
@@ -9,10 +8,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -59,14 +56,12 @@ public class TicketDaoImpl implements TicketDao {
     }
 
     @Override
-    public List<Ticket> findTicket(TicketReportContainer ticketReportContainer) throws FindTicketException {
+    public List<Ticket> findTicket(int betBankingId, String fromDate, String toDate) throws FindTicketException {
         try {
             List<Ticket> ticketsFromDb;
-            StringBuilder queryString = new StringBuilder("from Ticket ti");
-            queryString.append("where creationDate >= " + ticketReportContainer.getFromDate());
-            queryString.append("and creationDate <= " + ticketReportContainer.getToDate());
-            queryString.append("and betBanking.id = " + ticketReportContainer.getBetBankingId());
-            Query query = sessionFactory.getCurrentSession().createQuery(queryString.toString());
+            String queryString = "from Ticket ti where ti.creationDate >= :fromDate and ti.creationDate <= :toDate and ti.betBanking.id = :betBankingId";
+            Query query = sessionFactory.getCurrentSession().createQuery(queryString);
+            
             
             ticketsFromDb = query.list();
             return ticketsFromDb;

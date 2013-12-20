@@ -1,6 +1,5 @@
 package com.exception.magicsnumbersws.endpoints.impl;
 
-import com.exception.magicsnumbersws.containers.TicketReportContainer;
 import com.exception.magicsnumbersws.endpoints.ReportsEndpoint;
 import com.exception.magicsnumbersws.entities.Ticket;
 import com.exception.magicsnumbersws.exception.FindTicketException;
@@ -21,14 +20,14 @@ public class ReportsEndpointImpl implements ReportsEndpoint{
     @Autowired
     private TicketService ticketService;
     
-    public List<Ticket> findTicket(TicketReportContainer ticketReportContainer) throws FindTicketException{
+    public List<Ticket> findTicket(int betBankingId, String fromDate, String toDate) throws FindTicketException{
         //String fDate = new SimpleDateFormat("dd/MM/yyyy").format(fromDate);
         //String tDate = new SimpleDateFormat("dd/MM/yyyy").format(toDate);
         //try {
             //SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
             //Date fDate = formatter.parse(fromDate);
             //Date tDate = formatter.parse(toDate);
-            return ticketService.findTicket(ticketReportContainer);
+            return ticketService.findTicket(betBankingId, fromDate, toDate);
        // } catch (ParseException ex) {
          //   Logger.getLogger(ReportsEndpointImpl.class.getName()).log(Level.SEVERE, null, ex);
            // throw new FindTicketException();

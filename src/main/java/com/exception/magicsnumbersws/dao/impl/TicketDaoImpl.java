@@ -61,20 +61,19 @@ public class TicketDaoImpl implements TicketDao {
     @Override
     public List<Ticket> findTicket(int betBankingId, String fromDate, String toDate) throws FindTicketException {
         try {            
-            SimpleDateFormat formatter = new SimpleDateFormat("dd-mm-yyyy");
+            SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
             Date fDate = formatter.parse(fromDate);
-            fDate.setHours(0);
-            fDate.setMinutes(0);
-            Date tDate = formatter.parse(toDate);              
-            Calendar c = Calendar.getInstance();
-            int day=fDate.getDay()+1;
-            c.set(fDate.getYear(), fDate.getMinutes(),day );
+          Date tDate = formatter.parse(toDate);
             List<Ticket> ticketsFromDb;
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(tDate);
+            calendar.add(Calendar.DAY_OF_MONTH, 1);
+            calendar.add(Calendar.SECOND, -1);
             //String queryString = "from Ticket ti where ti.creationDate >= :fromDate and ti.creationDate <= :toDate and ti.betBanking.id = :betBankingId";
             String queryString = "from Ticket ti where ti.creationDate between :fromDate and :toDate and ti.betBanking.id = :betBankingId";
             Query query = sessionFactory.getCurrentSession().createQuery(queryString);            
             query.setParameter("fromDate", fDate);
-            query.setParameter("toDate", c.getTime());
+            query.setParameter("toDate", calendar.getTime());
             query.setParameter("betBankingId", betBankingId);
             
             ticketsFromDb = query.list();

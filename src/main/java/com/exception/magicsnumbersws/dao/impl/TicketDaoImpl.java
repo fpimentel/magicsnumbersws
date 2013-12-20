@@ -4,6 +4,9 @@ import com.exception.magicsnumbersws.dao.TicketDao;
 import com.exception.magicsnumbersws.entities.Ticket;
 import com.exception.magicsnumbersws.exception.FindTicketException;
 import com.exception.magicsnumbersws.exception.SaveTicketException;
+import com.sun.org.apache.xalan.internal.xsltc.compiler.util.Type;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -57,11 +60,22 @@ public class TicketDaoImpl implements TicketDao {
 
     @Override
     public List<Ticket> findTicket(int betBankingId, String fromDate, String toDate) throws FindTicketException {
-        try {
+        try {            
+            SimpleDateFormat formatter = new SimpleDateFormat("dd-mm-yyyy");
+            Date fDate = formatter.parse(fromDate);
+            fDate.setHours(0);
+            fDate.setMinutes(0);
+            Date tDate = formatter.parse(toDate);              
+            Calendar c = Calendar.getInstance();
+            int day=fDate.getDay()+1;
+            c.set(fDate.getYear(), fDate.getMinutes(),day );
             List<Ticket> ticketsFromDb;
-            String queryString = "from Ticket ti where ti.creationDate >= :fromDate and ti.creationDate <= :toDate and ti.betBanking.id = :betBankingId";
-            Query query = sessionFactory.getCurrentSession().createQuery(queryString);
-            
+            //String queryString = "from Ticket ti where ti.creationDate >= :fromDate and ti.creationDate <= :toDate and ti.betBanking.id = :betBankingId";
+            String queryString = "from Ticket ti where ti.creationDate between :fromDate and :toDate and ti.betBanking.id = :betBankingId";
+            Query query = sessionFactory.getCurrentSession().createQuery(queryString);            
+            query.setParameter("fromDate", fDate);
+            query.setParameter("toDate", c.getTime());
+            query.setParameter("betBankingId", betBankingId);
             
             ticketsFromDb = query.list();
             return ticketsFromDb;

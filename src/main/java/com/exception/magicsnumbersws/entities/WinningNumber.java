@@ -5,6 +5,7 @@
 package com.exception.magicsnumbersws.entities;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,6 +15,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -28,6 +31,16 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "WinningNumber.findAll", query = "SELECT w FROM WinningNumber w")})
 public class WinningNumber implements Serializable {
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "CREATION_DATE")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date creationDate;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "DRAWING_DATE")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date drawingDate;
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -44,17 +57,12 @@ public class WinningNumber implements Serializable {
     @Size(min = 1, max = 50)
     @Column(name = "CREATION_USER")
     private String creationUser;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 10)
-    @Column(name = "CREATION_DATE")
-    private String creationDate;
     @JoinColumn(name = "LOTTERY_ID", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private Lottery lotteryId;
-    @JoinColumn(name = "BET_ID", referencedColumnName = "ID")
+    @JoinColumn(name = "TIME_ID", referencedColumnName = "ID")
     @ManyToOne(optional = false)
-    private Bet betId;
+    private Time time;
 
     public WinningNumber() {
     }
@@ -63,7 +71,7 @@ public class WinningNumber implements Serializable {
         this.id = id;
     }
 
-    public WinningNumber(Integer id, String numbers, String creationUser, String creationDate) {
+    public WinningNumber(Integer id, String numbers, String creationUser, Date creationDate) {
         this.id = id;
         this.numbers = numbers;
         this.creationUser = creationUser;
@@ -94,11 +102,11 @@ public class WinningNumber implements Serializable {
         this.creationUser = creationUser;
     }
 
-    public String getCreationDate() {
+    public Date getCreationDate() {
         return creationDate;
     }
 
-    public void setCreationDate(String creationDate) {
+    public void setCreationDate(Date creationDate) {
         this.creationDate = creationDate;
     }
 
@@ -110,13 +118,15 @@ public class WinningNumber implements Serializable {
         this.lotteryId = lotteryId;
     }
 
-    public Bet getBetId() {
-        return betId;
+    public Time getTime() {
+        return time;
     }
 
-    public void setBetId(Bet betId) {
-        this.betId = betId;
+    public void setTime(Time time) {
+        this.time = time;
     }
+
+
 
     @Override
     public int hashCode() {
@@ -141,6 +151,15 @@ public class WinningNumber implements Serializable {
     @Override
     public String toString() {
         return "com.exception.magicsnumbersws.entities.WinningNumber[ id=" + id + " ]";
+    }
+
+
+    public Date getDrawingDate() {
+        return drawingDate;
+    }
+
+    public void setDrawingDate(Date drawingDate) {
+        this.drawingDate = drawingDate;
     }
     
 }

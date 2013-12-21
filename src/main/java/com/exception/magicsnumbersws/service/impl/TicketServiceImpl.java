@@ -1,11 +1,9 @@
 package com.exception.magicsnumbersws.service.impl;
-
-import com.exception.magicsnumbersws.constants.Status;
-import com.exception.magicsnumbersws.containers.TicketReportContainer;
 import com.exception.magicsnumbersws.dao.BetBankingBetLimitDao;
 import com.exception.magicsnumbersws.dao.BlockingNumberBetBankingDao;
 import com.exception.magicsnumbersws.dao.TicketDao;
 import com.exception.magicsnumbersws.dao.TicketDetailDao;
+import com.exception.magicsnumbersws.entities.Status;
 import com.exception.magicsnumbersws.entities.Ticket;
 import com.exception.magicsnumbersws.entities.TicketDetail;
 import com.exception.magicsnumbersws.exception.FindBetLimitException;
@@ -13,9 +11,11 @@ import com.exception.magicsnumbersws.exception.FindBlockingNumberException;
 import com.exception.magicsnumbersws.exception.FindTicketException;
 import com.exception.magicsnumbersws.exception.SaveTicketException;
 import com.exception.magicsnumbersws.service.TicketService;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -66,7 +66,7 @@ public class TicketServiceImpl implements TicketService {
     public void add(Ticket ticket) throws SaveTicketException {
         LOG.info("INIT- TicketServiceImpl.add");
         com.exception.magicsnumbersws.entities.Status pendingStatus = new com.exception.magicsnumbersws.entities.Status();
-        pendingStatus.setId(Status.VENDIDO.getId());
+        pendingStatus.setId(com.exception.magicsnumbersws.constants.Status.VENDIDO.getId());
         ticket.setCreationDate(new Date());
         ticket.setStatus(pendingStatus);
         ticket.setSecurityCode(ticket.getRandomSecurityCode());
@@ -126,6 +126,18 @@ public class TicketServiceImpl implements TicketService {
     @Transactional
     @Override
     public List<Ticket> findTicket(int betBankingId, String fromDate, String toDate) throws FindTicketException {
-        return ticketDao.findTicket(betBankingId, fromDate, toDate);
+        final String[] TICKET_IGNORED_PROPERTIES = {"status","ticketDetails","betBanking"};
+        final String[] STATUS_IGNORED_PROPERTIES = {"statusType"};
+        List<Ticket> ticketsFromDb = ticketDao.findTicket(betBankingId, fromDate, toDate);        
+        List<Ticket> ticketsResult = new ArrayList<Ticket>();
+        for(Ticket currTicket : ticketsFromDb){
+            Ticket ticketCopy = new Ticket();
+            Status statusCopy = new Status();
+            BeanUtils.copyProperties(currTicket, ticketCopy, TICKET_IGNORED_PROPERTIES);
+            BeanUtils.copyProperties(currTicket.getStatus(), statusCopy, STATUS_IGNORED_PROPERTIES);
+            ticketCopy.setStatus(statusCopy);
+            ticketsResult.add(ticketCopy);
+        }        
+        return ticketsResult;
     }
 }

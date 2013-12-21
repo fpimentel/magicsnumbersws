@@ -69,7 +69,7 @@ public class Ticket implements Serializable, Comparable<Ticket> {
     @Column(name = "TOTAL_WIN_AMOUNT")    
     private float totalWinAmount;
     
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "ticket")
+    @OneToMany(mappedBy = "ticket")
     private Set<TicketDetail> ticketDetails= new HashSet<TicketDetail>(0);   
     
     public Ticket() {

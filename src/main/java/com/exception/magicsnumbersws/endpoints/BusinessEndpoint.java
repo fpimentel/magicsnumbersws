@@ -1,9 +1,12 @@
 package com.exception.magicsnumbersws.endpoints;
 
 import com.exception.magicsnumbersws.entities.Ticket;
+import com.exception.magicsnumbersws.entities.WinningNumber;
 import com.exception.magicsnumbersws.exception.FindBetLimitException;
 import com.exception.magicsnumbersws.exception.FindBlockingNumberException;
 import com.exception.magicsnumbersws.exception.SaveTicketException;
+import com.exception.magicsnumbersws.exception.SearchWinningNumbersException;
+import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -37,4 +40,9 @@ public interface BusinessEndpoint {
     @Path(value = "/findLimitAmount/{betBankingId}/{lotteryId}/{betId}")
     @Produces(value = MediaType.APPLICATION_JSON)
     public String findBetBankingBetLimitAmount(@PathParam("betBankingId") int betBankingId, @PathParam("lotteryId") int lotteryId,@PathParam("betId") int betId)  throws FindBetLimitException;
+    
+    @GET
+    @Path(value = "/findWinningNumbers/{fromDate}/{ToDate}")
+    @Produces(value = MediaType.APPLICATION_JSON)
+    public List<WinningNumber> findWinningNumbers(@PathParam("fromDate") String fromDate, @PathParam("ToDate") String ToDate)  throws SearchWinningNumbersException;
 }

@@ -2,7 +2,6 @@ package com.exception.magicsnumbersws.service;
 import com.exception.magicsnumbersws.containers.LotteryContainer;
 import com.exception.magicsnumbersws.entities.Bet;
 import com.exception.magicsnumbersws.entities.Lottery;
-import com.exception.magicsnumbersws.exception.FindLotteryCloseHourException;
 import com.exception.magicsnumbersws.exception.FindLotteryException;
 import com.exception.magicsnumbersws.exception.SaveLotteryException;
 import java.util.List;

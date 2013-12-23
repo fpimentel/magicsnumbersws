@@ -9,6 +9,8 @@ import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -30,7 +32,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "WinningNumber.findAll", query = "SELECT w FROM WinningNumber w")})
-public class WinningNumber implements Serializable {
+public class WinningNumber implements Serializable, Comparable<WinningNumber> {
     @Basic(optional = false)
     @NotNull
     @Column(name = "CREATION_DATE")
@@ -43,8 +45,7 @@ public class WinningNumber implements Serializable {
     private Date drawingDate;
     private static final long serialVersionUID = 1L;
     @Id
-    @Basic(optional = false)
-    @NotNull
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private Integer id;
     @Basic(optional = false)
@@ -59,7 +60,7 @@ public class WinningNumber implements Serializable {
     private String creationUser;
     @JoinColumn(name = "LOTTERY_ID", referencedColumnName = "ID")
     @ManyToOne(optional = false)
-    private Lottery lotteryId;
+    private Lottery lottery;
     @JoinColumn(name = "TIME_ID", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private Time time;
@@ -110,12 +111,12 @@ public class WinningNumber implements Serializable {
         this.creationDate = creationDate;
     }
 
-    public Lottery getLotteryId() {
-        return lotteryId;
+    public Lottery getLottery() {
+        return lottery;
     }
 
-    public void setLotteryId(Lottery lotteryId) {
-        this.lotteryId = lotteryId;
+    public void setLottery(Lottery lotteryId) {
+        this.lottery = lotteryId;
     }
 
     public Time getTime() {
@@ -161,5 +162,9 @@ public class WinningNumber implements Serializable {
     public void setDrawingDate(Date drawingDate) {
         this.drawingDate = drawingDate;
     }
-    
+
+    @Override
+    public int compareTo(WinningNumber that) {
+        return this.id - that.id;
+    }
 }

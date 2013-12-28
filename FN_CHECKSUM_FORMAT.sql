@@ -1,6 +1,6 @@
 USE [BASEDATOS02]
 GO
-/****** Object:  UserDefinedFunction [dbo].[FN_CHECKSUM_FORMAT]    Script Date: 12/22/2013 18:34:40 ******/
+/****** Object:  UserDefinedFunction [dbo].[FN_CHECKSUM_FORMAT]    Script Date: 12/25/2013 14:57:54 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON

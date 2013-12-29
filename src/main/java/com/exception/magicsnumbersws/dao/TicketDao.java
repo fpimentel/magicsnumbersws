@@ -14,4 +14,5 @@ public interface TicketDao {
     public void update(Ticket ticket);
     public void delete(int ticket);       
     public List<Ticket> findTicket(int betBankingId, String fromDate, String toDate) throws FindTicketException;
+    public List<Ticket> findTodayTicketByUserName(String userName) throws FindTicketException;
 }

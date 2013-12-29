@@ -140,4 +140,22 @@ public class TicketServiceImpl implements TicketService {
         }        
         return ticketsResult;
     }
+    
+    @Transactional
+    @Override
+    public List<Ticket> findTodayTicketByUserName(String userName) throws FindTicketException {
+        final String[] TICKET_IGNORED_PROPERTIES = {"status","ticketDetails","betBanking"};
+        final String[] STATUS_IGNORED_PROPERTIES = {"statusType"};
+        List<Ticket> ticketsFromDb = this.ticketDao.findTodayTicketByUserName(userName);
+        List<Ticket> ticketsResult = new ArrayList<Ticket>();
+        for(Ticket currTicket : ticketsFromDb){
+            Ticket ticketCopy = new Ticket();
+            Status statusCopy = new Status();
+            BeanUtils.copyProperties(currTicket, ticketCopy, TICKET_IGNORED_PROPERTIES);
+            BeanUtils.copyProperties(currTicket.getStatus(), statusCopy, STATUS_IGNORED_PROPERTIES);
+            ticketCopy.setStatus(statusCopy);
+            ticketsResult.add(ticketCopy);
+        }        
+        return ticketsResult;        
+    }
 }

@@ -4,6 +4,7 @@ import com.exception.magicsnumbersws.entities.Ticket;
 import com.exception.magicsnumbersws.entities.WinningNumber;
 import com.exception.magicsnumbersws.exception.FindBetLimitException;
 import com.exception.magicsnumbersws.exception.FindBlockingNumberException;
+import com.exception.magicsnumbersws.exception.FindTicketException;
 import com.exception.magicsnumbersws.exception.SaveTicketException;
 import com.exception.magicsnumbersws.exception.SearchWinningNumbersException;
 import com.exception.magicsnumbersws.service.TicketService;
@@ -47,5 +48,10 @@ public class BusinessEndpointImpl implements BusinessEndpoint {
     @Override
     public List<WinningNumber> findWinningNumbers(String fromDate, String ToDate) throws SearchWinningNumbersException {
         return this.winningService.findWinningNumber(fromDate, ToDate);
+    }
+
+    @Override
+    public List<Ticket> findTodayTicketByUserName(String userName) throws FindTicketException {
+        return this.ticketService.findTodayTicketByUserName(userName);
     }
 }

@@ -4,6 +4,7 @@ import com.exception.magicsnumbersws.entities.Ticket;
 import com.exception.magicsnumbersws.entities.WinningNumber;
 import com.exception.magicsnumbersws.exception.FindBetLimitException;
 import com.exception.magicsnumbersws.exception.FindBlockingNumberException;
+import com.exception.magicsnumbersws.exception.FindTicketException;
 import com.exception.magicsnumbersws.exception.SaveTicketException;
 import com.exception.magicsnumbersws.exception.SearchWinningNumbersException;
 import java.util.List;
@@ -45,4 +46,9 @@ public interface BusinessEndpoint {
     @Path(value = "/findWinningNumbers/{fromDate}/{ToDate}")
     @Produces(value = MediaType.APPLICATION_JSON)
     public List<WinningNumber> findWinningNumbers(@PathParam("fromDate") String fromDate, @PathParam("ToDate") String ToDate)  throws SearchWinningNumbersException;
+    
+    @GET
+    @Path(value = "/findTodayTicketByUserName/{userName}")
+    @Produces(value = MediaType.APPLICATION_JSON)
+    public List<Ticket> findTodayTicketByUserName(@PathParam("userName") String userName)throws FindTicketException;
 }

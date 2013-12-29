@@ -4,7 +4,7 @@ import com.exception.magicsnumbersws.dao.TicketDao;
 import com.exception.magicsnumbersws.entities.Ticket;
 import com.exception.magicsnumbersws.exception.FindTicketException;
 import com.exception.magicsnumbersws.exception.SaveTicketException;
-import com.sun.org.apache.xalan.internal.xsltc.compiler.util.Type;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -60,7 +60,7 @@ public class TicketDaoImpl implements TicketDao {
 
     @Override
     public List<Ticket> findTicket(int betBankingId, String fromDate, String toDate) throws FindTicketException {
-        try {            
+        try {
             SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
             Date fDate = formatter.parse(fromDate);
             Date tDate = formatter.parse(toDate);
@@ -70,17 +70,46 @@ public class TicketDaoImpl implements TicketDao {
             calendar.add(Calendar.DAY_OF_MONTH, 1);
             calendar.add(Calendar.SECOND, -1);
             String queryString = "from Ticket ti where ti.creationDate between :fromDate and :toDate and ti.betBanking.id = :betBankingId";
-            Query query = sessionFactory.getCurrentSession().createQuery(queryString);            
+            Query query = sessionFactory.getCurrentSession().createQuery(queryString);
             query.setParameter("fromDate", fDate);
             query.setParameter("toDate", calendar.getTime());
             query.setParameter("betBankingId", betBankingId);
-            
+
             ticketsFromDb = query.list();
             sessionFactory.getCurrentSession().flush();
             return ticketsFromDb;
         } catch (Exception ex) {
-            LOG.log(Level.SEVERE,"findTicket-" + ex.getMessage());
+            LOG.log(Level.SEVERE, "findTicket-" + ex.getMessage());
             throw new FindTicketException(ex.getMessage());
+        }
+    }
+
+    @Override
+    public List<Ticket> findTodayTicketByUserName(String userName) throws FindTicketException {
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+        String dateString = formatter.format(calendar.getTime());
+        try {
+            Date fromDate = formatter.parse(dateString);
+            calendar.setTime(formatter.parse(dateString));
+            calendar.add(Calendar.DAY_OF_MONTH, 1);
+            calendar.add(Calendar.SECOND, -1);
+            List<Ticket> tickets;
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append("from Ticket ti");
+            stringBuilder.append(" where ti.creationDate between :fromDate and :toDate");
+            stringBuilder.append(" and lower(ti.creationUser) = lower(:userName)");
+            Query query = sessionFactory.getCurrentSession().createQuery(stringBuilder.toString());
+            query.setParameter("fromDate", fromDate);
+            query.setParameter("toDate", calendar.getTime());
+            query.setParameter("userName", userName);
+            tickets = query.list();
+            return tickets;
+
+        } catch (Exception ex) {
+            LOG.log(Level.SEVERE, "findTodayTicketByUserName-" + ex.getMessage());
+            throw new FindTicketException(ex.getMessage());
+       
         }
     }
 }

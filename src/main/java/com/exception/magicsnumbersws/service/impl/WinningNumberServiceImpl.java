@@ -4,6 +4,7 @@ import com.exception.magicsnumbersws.dao.WinningNumberDao;
 import com.exception.magicsnumbersws.entities.Lottery;
 import com.exception.magicsnumbersws.entities.Time;
 import com.exception.magicsnumbersws.entities.WinningNumber;
+import com.exception.magicsnumbersws.exception.SaveWinningNumberDataException;
 import com.exception.magicsnumbersws.exception.SearchWinningNumbersException;
 import com.exception.magicsnumbersws.service.WinningNumberService;
 import java.util.ArrayList;
@@ -43,8 +44,13 @@ public class WinningNumberServiceImpl implements WinningNumberService {
     }
 
     @Override
-    public void add(WinningNumber winningNumber) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void saveWinningNumberInfo(WinningNumber winningNumber) throws SaveWinningNumberDataException{
+        if(winningNumber.getId() ==  null){
+            this.winningNumberDao.add(winningNumber);
+        }
+        else{
+            this.winningNumberDao.update(winningNumber);
+        }        
     }
 
     @Override

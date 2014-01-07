@@ -1,6 +1,7 @@
 package com.exception.magicsnumbersws.service;
 
 import com.exception.magicsnumbersws.entities.WinningNumber;
+import com.exception.magicsnumbersws.exception.SaveWinningNumberDataException;
 import com.exception.magicsnumbersws.exception.SearchWinningNumbersException;
 import java.util.List;
 import org.springframework.stereotype.Service;
@@ -13,10 +14,11 @@ import org.springframework.stereotype.Service;
 @Service
 public interface WinningNumberService {
 
- public void add(WinningNumber winningNumber);
-    
+    public void saveWinningNumberInfo(WinningNumber winningNumber) throws SaveWinningNumberDataException;
+
     public void update(WinningNumber winningNumber);
 
     public void delete(int winningNumberId);
-    public List<WinningNumber> findWinningNumber(String fromDate,String ToDate) throws SearchWinningNumbersException;  
+
+    public List<WinningNumber> findWinningNumber(String fromDate, String ToDate) throws SearchWinningNumbersException;
 }

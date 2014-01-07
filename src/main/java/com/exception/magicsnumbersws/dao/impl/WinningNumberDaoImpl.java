@@ -2,6 +2,7 @@ package com.exception.magicsnumbersws.dao.impl;
 
 import com.exception.magicsnumbersws.dao.WinningNumberDao;
 import com.exception.magicsnumbersws.entities.WinningNumber;
+import com.exception.magicsnumbersws.exception.SaveWinningNumberDataException;
 import com.exception.magicsnumbersws.exception.SearchWinningNumbersException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -42,13 +43,23 @@ public class WinningNumberDaoImpl implements WinningNumberDao {
     }
 
     @Override
-    public void add(WinningNumber winningNumber) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void add(WinningNumber winningNumber) throws SaveWinningNumberDataException{
+        try{
+            sessionFactory.getCurrentSession().save(winningNumber);
+        }
+        catch(Exception ex){
+            throw new SaveWinningNumberDataException(ex.getMessage(),ex);
+        }
     }
 
     @Override
-    public void update(WinningNumber winningNumber) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void update(WinningNumber winningNumber) throws SaveWinningNumberDataException{
+        try{
+            sessionFactory.getCurrentSession().update(winningNumber);
+        }
+        catch(Exception ex){
+            throw new SaveWinningNumberDataException(ex.getMessage(),ex);
+        }
     }
 
     @Override

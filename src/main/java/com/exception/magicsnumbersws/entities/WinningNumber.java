@@ -30,9 +30,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Entity
 @Table(name = "WINNING_NUMBERS")
 @XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "WinningNumber.findAll", query = "SELECT w FROM WinningNumber w")})
 public class WinningNumber implements Serializable, Comparable<WinningNumber> {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID")
+    private Integer id;
     @Basic(optional = false)
     @NotNull
     @Column(name = "CREATION_DATE")
@@ -43,11 +45,7 @@ public class WinningNumber implements Serializable, Comparable<WinningNumber> {
     @Column(name = "DRAWING_DATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date drawingDate;
-    private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID")
-    private Integer id;
+    private static final long serialVersionUID = 1L;    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 100)

@@ -44,13 +44,12 @@ public class WinningNumberServiceImpl implements WinningNumberService {
     }
 
     @Override
-    public void saveWinningNumberInfo(WinningNumber winningNumber) throws SaveWinningNumberDataException{
-        if(winningNumber.getId() ==  null){
+    public void saveWinningNumberInfo(WinningNumber winningNumber) throws SaveWinningNumberDataException {
+        if (winningNumber.getId() == null) {
             this.winningNumberDao.add(winningNumber);
-        }
-        else{
+        } else {
             this.winningNumberDao.update(winningNumber);
-        }        
+        }
     }
 
     @Override
@@ -81,5 +80,23 @@ public class WinningNumberServiceImpl implements WinningNumberService {
             winningNumbersResult.add(winningNumberCopy);
         }
         return winningNumbersResult;
+    }
+
+    @Override
+    public WinningNumber findWinningNumber(int lotteryId, int timeId, String drawingDate) throws SearchWinningNumbersException {
+        final String[] WINNING_IGNORED_PROPERTIES = {"time", "Lottery"};
+        final String[] LOTTERY_IGNORED_PROPERTIES = {"bets", "status"};
+        WinningNumber winningNumberFromDB = this.winningNumberDao.findWinningNumber(lotteryId, timeId, drawingDate);
+
+        WinningNumber winningNumberCopy = new WinningNumber();
+        Time timeCopy = new Time();
+        Lottery lotteryCopy = new Lottery();
+        BeanUtils.copyProperties(winningNumberFromDB, winningNumberCopy, WINNING_IGNORED_PROPERTIES);
+        BeanUtils.copyProperties(winningNumberFromDB.getLottery(), lotteryCopy, LOTTERY_IGNORED_PROPERTIES);
+        BeanUtils.copyProperties(winningNumberFromDB.getTime(), timeCopy);
+        winningNumberCopy.setLottery(lotteryCopy);
+        winningNumberCopy.setTime(timeCopy);       
+
+        return winningNumberCopy;
     }
 }

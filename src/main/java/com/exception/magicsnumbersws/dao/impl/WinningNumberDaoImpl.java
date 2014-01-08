@@ -89,4 +89,28 @@ public class WinningNumberDaoImpl implements WinningNumberDao {
             throw new SearchWinningNumbersException(ex.getMessage());
         }
     }
+    @Override
+    public WinningNumber findWinningNumber(int lotteryId, int timeId,String drawingDate) throws SearchWinningNumbersException {
+        try {
+            SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+            Date dDate = formatter.parse(drawingDate);
+            //Date tDate = formatter.parse(drawingDate);
+            WinningNumber winningNumber;
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(dDate);
+            calendar.add(Calendar.DAY_OF_MONTH, 1);
+            calendar.add(Calendar.SECOND, -1);
+            String queryString = "from WinningNumber wn where wn.drawingDate between :fromDate and :toDate and wn.lottery.id = :lotteryId and wn.time.id = :timeId";
+            Query query = sessionFactory.getCurrentSession().createQuery(queryString);
+            query.setParameter("fromDate", dDate);
+            query.setParameter("toDate", calendar.getTime());
+            query.setParameter("lotteryId", lotteryId);
+            query.setParameter("timeId", timeId);
+            winningNumber= (WinningNumber)query.uniqueResult();
+            return winningNumber;
+        } catch (Exception ex) {            
+            Logger.getLogger(WinningNumberDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+            throw new SearchWinningNumbersException(ex.getMessage());
+        }
+    }
 }

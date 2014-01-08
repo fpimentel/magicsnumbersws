@@ -70,4 +70,9 @@ public class BusinessEndpointImpl implements BusinessEndpoint {
             throw new SaveWinningNumberDataException(ex.getMessage(), ex);
         }
     }
+
+    @Override
+    public WinningNumber findWinningNumbers(int lotteryId, int timeId, String drawingDate) throws SearchWinningNumbersException {
+        return this.winningService.findWinningNumber(lotteryId, timeId, drawingDate);
+    }
 }

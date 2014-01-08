@@ -21,4 +21,5 @@ public interface WinningNumberService {
     public void delete(int winningNumberId);
 
     public List<WinningNumber> findWinningNumber(String fromDate, String ToDate) throws SearchWinningNumbersException;
+    public WinningNumber findWinningNumber(int lotteryId, int timeId,String drawingDate) throws SearchWinningNumbersException;
 }

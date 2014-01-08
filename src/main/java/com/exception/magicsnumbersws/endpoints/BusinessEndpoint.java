@@ -58,4 +58,9 @@ public interface BusinessEndpoint {
     @Consumes("application/json")
     @Produces(value = MediaType.APPLICATION_JSON)
     public void saveWinningNumberInfo(WinningNumber winningNumber) throws SaveWinningNumberDataException;
+    
+    @GET
+    @Path(value = "/findWinningNumbers/{lotteryId}/{timeId}/{drawingDate}")
+    @Produces(value = MediaType.APPLICATION_JSON)
+    public WinningNumber findWinningNumbers(@PathParam("lotteryId") int lotteryId, @PathParam("timeId") int timeId, @PathParam("drawingDate") String drawingDate)  throws SearchWinningNumbersException;
 }
